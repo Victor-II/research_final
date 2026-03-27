@@ -1,0 +1,19 @@
+train:
+  - epochs: 1
+  - data: d
+  - aug:
+    - mask
+    - paraphrase
+  - tasks:
+    - aspect
+    - polarity
+
+eval:
+  - data: d1
+    metrics:
+      - m1
+      - m2
+  - data: d2
+    metrics:
+      - m1
+      - m2
