@@ -61,14 +61,7 @@ def prf(
     golds: list[list[dict]],
     keys: list[str],
 ) -> dict:
-    """
-    Micro-averaged precision, recall, F1 over structured predictions.
-
-    Args:
-        preds: predicted outputs, one list of dicts per example.
-        golds: gold outputs, one list of dicts per example.
-        keys:  which fields to include in the comparison.
-    """
+    """Micro-averaged precision, recall, F1 over structured predictions."""
     tp = fp = fn = 0
     for pred, gold in zip(preds, golds):
         pred_set = set(project(pred, keys))
@@ -82,45 +75,177 @@ def prf(
     return {"precision": precision, "recall": recall, "f1": f1}
 
 
+def macro_prf(
+    preds: list[list[dict]],
+    golds: list[list[dict]],
+    key: str,
+) -> dict:
+    """Macro-averaged precision, recall, F1 over a single label key."""
+    classes = {d[key] for gold in golds for d in gold if key in d}
+    per_class = {}
+    for cls in classes:
+        tp = fp = fn = 0
+        for pred_list, gold_list in zip(preds, golds):
+            pred_vals = {frozenset(d.items()) for d in pred_list if d.get(key) == cls}
+            gold_vals = {frozenset(d.items()) for d in gold_list if d.get(key) == cls}
+            tp += len(pred_vals & gold_vals)
+            fp += len(pred_vals - gold_vals)
+            fn += len(gold_vals - pred_vals)
+        p = tp / (tp + fp) if (tp + fp) else 0.0
+        r = tp / (tp + fn) if (tp + fn) else 0.0
+        f = 2 * p * r / (p + r) if (p + r) else 0.0
+        per_class[cls] = {"precision": p, "recall": r, "f1": f}
+    macro = {
+        m: sum(v[m] for v in per_class.values()) / len(per_class)
+        for m in ("precision", "recall", "f1")
+    } if per_class else {"precision": 0.0, "recall": 0.0, "f1": 0.0}
+    return {"macro": macro, "per_class": per_class}
+
+
+def soft_prf(
+    preds: list[list[dict]],
+    golds: list[list[dict]],
+    key: str,
+    threshold: float = 0.8,
+    model_name: str = "all-MiniLM-L6-v2",
+) -> dict:
+    """
+    Soft precision, recall, F1 using embedding similarity for a single key.
+    A predicted value is a soft match if cosine similarity to a gold value >= threshold.
+    """
+    from sentence_transformers import SentenceTransformer
+    import numpy as np
+
+    if key != "aspect":
+        raise ValueError("soft_prf is only meaningful for the 'aspect' key")
+
+    model = SentenceTransformer(model_name)
+
+    tp = fp = fn = 0
+    for pred_list, gold_list in zip(preds, golds):
+        pred_vals = [d[key] for d in pred_list if key in d]
+        gold_vals = [d[key] for d in gold_list if key in d]
+
+        if not pred_vals and not gold_vals:
+            continue
+        if not pred_vals:
+            fn += len(gold_vals)
+            continue
+        if not gold_vals:
+            fp += len(pred_vals)
+            continue
+
+        all_spans = pred_vals + gold_vals
+        embeddings = model.encode(all_spans, convert_to_numpy=True)
+        pred_embs = embeddings[:len(pred_vals)]
+        gold_embs = embeddings[len(pred_vals):]
+
+        # greedy matching: each gold can only be matched once
+        matched_gold = set()
+        for i, pe in enumerate(pred_embs):
+            best_sim = -1
+            best_j = -1
+            for j, ge in enumerate(gold_embs):
+                if j in matched_gold:
+                    continue
+                sim = float(np.dot(pe, ge) / (np.linalg.norm(pe) * np.linalg.norm(ge) + 1e-9))
+                if sim > best_sim:
+                    best_sim = sim
+                    best_j = j
+            if best_sim >= threshold:
+                tp += 1
+                matched_gold.add(best_j)
+            else:
+                fp += 1
+        fn += len(gold_vals) - len(matched_gold)
+
+    precision = tp / (tp + fp) if (tp + fp) else 0.0
+    recall    = tp / (tp + fn) if (tp + fn) else 0.0
+    f1        = 2 * precision * recall / (precision + recall) if (precision + recall) else 0.0
+    return {"precision": precision, "recall": recall, "f1": f1}
+
+
 def evaluate(
     preds: list[list[dict]],
     golds: list[list[dict]],
-    eval_keys: list[list[str]],
+    eval_scopes: list[dict],
 ) -> dict[str, dict]:
     """
-    Run PRF for each key combination in eval_keys.
+    Run requested metrics for each scope in eval_scopes.
 
-    Returns:
-        dict keyed by "+".join(keys), e.g. "aspect+polarity+sentiment"
+    Each scope is a dict with 'keys' (list[str]) and 'metrics' (list[str]).
+    Supported metrics: 'micro_f1', 'macro_f1'.
+    Returns dict keyed by "+".join(keys).
     """
-    return {
-        "+".join(keys): prf(preds, golds, keys)
-        for keys in eval_keys
-    }
+    results = {}
+    for scope in eval_scopes:
+        keys    = scope["keys"]
+        metrics = scope.get("metrics", ["micro_f1"])
+        label   = "+".join(keys)
+        results[label] = {}
+        if "micro_f1" in metrics:
+            results[label]["micro"] = prf(preds, golds, keys)
+        if "macro_f1" in metrics:
+            if len(keys) != 1:
+                raise ValueError(f"macro_f1 requires exactly one key, got {keys}")
+            results[label]["macro"] = macro_prf(preds, golds, keys[0])
+        if "soft_f1" in metrics:
+            if keys != ["aspect"]:
+                raise ValueError("soft_f1 is only valid for keys=['aspect']")
+            threshold = scope.get("soft_threshold", 0.8)
+            model_name = scope.get("soft_model", "all-MiniLM-L6-v2")
+            results[label]["soft"] = soft_prf(preds, golds, "aspect", threshold, model_name)
+    return results
 
 
 # ---------------------------------------------------------------------------
 # Reporting
 # ---------------------------------------------------------------------------
 
+def save_results(
+    val_history: list[dict],
+    test_history: list[dict],
+    train_loss_history: list[float],
+    val_loss_history: list[float],
+    out_dir: str,
+):
+    os.makedirs(out_dir, exist_ok=True)
+    results = {
+        "train_loss": train_loss_history,
+        "val_loss": val_loss_history,
+        "val": val_history,
+        "test": test_history,
+    }
+    with open(os.path.join(out_dir, "results.json"), "w") as f:
+        json.dump(results, f, indent=2)
+
+
 def save_metrics_table(
     metrics: dict[str, dict],
     epoch: int,
     out_dir: str = ".",
+    prefix: str = "metrics",
 ):
-    """Save a formatted metrics table to a .txt file."""
     os.makedirs(out_dir, exist_ok=True)
-    path = os.path.join(out_dir, f"metrics_epoch{epoch}.txt")
+    path = os.path.join(out_dir, f"{prefix}_epoch{epoch}.txt")
 
     col_w = max(len(k) for k in metrics) + 2
-    header = f"{'scope':<{col_w}} {'precision':>10} {'recall':>10} {'f1':>10}"
+    header = f"{'scope':<{col_w}} {'type':<10} {'precision':>10} {'recall':>10} {'f1':>10}"
     sep    = "-" * len(header)
 
     lines = [f"Epoch {epoch}", sep, header, sep]
-    for scope, m in metrics.items():
-        lines.append(
-            f"{scope:<{col_w}} {m['precision']:>10.4f} {m['recall']:>10.4f} {m['f1']:>10.4f}"
-        )
+    for scope, result in metrics.items():
+        if "micro" in result:
+            m = result["micro"]
+            lines.append(f"{scope:<{col_w}} {'micro':<10} {m['precision']:>10.4f} {m['recall']:>10.4f} {m['f1']:>10.4f}")
+        if "macro" in result:
+            m = result["macro"]["macro"]
+            lines.append(f"{scope:<{col_w}} {'macro':<10} {m['precision']:>10.4f} {m['recall']:>10.4f} {m['f1']:>10.4f}")
+            for cls, cm in result["macro"]["per_class"].items():
+                lines.append(f"{scope:<{col_w}} {cls:<10} {cm['precision']:>10.4f} {cm['recall']:>10.4f} {cm['f1']:>10.4f}")
+        if "soft" in result:
+            m = result["soft"]
+            lines.append(f"{scope:<{col_w}} {'soft':<10} {m['precision']:>10.4f} {m['recall']:>10.4f} {m['f1']:>10.4f}")
     lines.append(sep)
 
     with open(path, "w") as f:
@@ -187,30 +312,4 @@ def plot_label_confusion(
     fig.tight_layout()
     fig.savefig(os.path.join(out_dir, f"{label_key}_confusion_epoch{epoch}.png"), dpi=120)
     plt.close(fig)
-
-
-def run_all_plots(
-    preds: list[list[dict]],
-    golds: list[list[dict]],
-    val_losses: list[float],
-    eval_keys: list[list[str]],
-    epoch: int,
-    out_dir: str = ".",
-):
-    """
-    Convenience function: runs val loss curve + a confusion matrix for every
-    single-key group, using all other available keys as match keys.
-    """
-    plot_loss_curve(val_losses, epoch, out_dir)
-
-    all_keys = sorted({k for gold_list in golds for d in gold_list for k in d})
-
-    for keys in eval_keys:
-        if len(keys) == 1:
-            label_key  = keys[0]
-            # Only plot confusion matrix for classification labels, not free-text fields
-            if label_key == "polarity":
-                match_keys = [k for k in all_keys if k != label_key]
-                if match_keys:
-                    plot_label_confusion(preds, golds, match_keys, label_key, epoch, out_dir)
 
