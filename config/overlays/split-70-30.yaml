@@ -1,0 +1,61 @@
+name: split-70-30
+model:
+  name: google/flan-t5-base
+data:
+  train_file: downloads/silviolima/restaurant.json
+  tasks_partition:
+    aspect: 0.233
+    polarity: 0.234
+    sentiment: 0.233
+    full: 0.3
+  shuffle_tasks: true
+  filter_implicit: true
+eval:
+  val_split: 0.1
+test:
+  datasets:
+  - data: downloads/silviolima/laptop.json
+    tasks:
+    - aspect
+    - sentiment
+    - polarity
+  - data: downloads/silviolima/beauty.json
+    tasks:
+    - aspect
+    - sentiment
+    - polarity
+  - data: downloads/silviolima/book.json
+    tasks:
+    - aspect
+    - sentiment
+    - polarity
+  - data: downloads/silviolima/electronics.json
+    tasks:
+    - aspect
+    - sentiment
+    - polarity
+  - data: downloads/silviolima/fashion.json
+    tasks:
+    - aspect
+    - sentiment
+    - polarity
+  - data: downloads/silviolima/grocery.json
+    tasks:
+    - aspect
+    - sentiment
+    - polarity
+  - data: downloads/silviolima/home.json
+    tasks:
+    - aspect
+    - sentiment
+    - polarity
+  - data: downloads/silviolima/pet.json
+    tasks:
+    - aspect
+    - sentiment
+    - polarity
+  - data: downloads/silviolima/toy.json
+    tasks:
+    - aspect
+    - sentiment
+    - polarity

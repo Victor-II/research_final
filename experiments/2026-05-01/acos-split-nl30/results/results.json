@@ -1,0 +1,270 @@
+{
+  "train_loss": [
+    3.440033983439207,
+    1.4971931464970112,
+    1.181301632275184,
+    1.0995315307130415,
+    1.0372007607171934,
+    1.0036984998732805,
+    0.9760528778036436,
+    0.9554972592741251,
+    0.9454659335315228,
+    0.9375971611589193,
+    0.9157087833931049,
+    0.9002432829389969,
+    0.8997349912921587,
+    0.8944272436201572,
+    0.8883035220205784,
+    0.8841647213945786,
+    0.883637297898531,
+    0.8841934700806936,
+    0.8738682083785534,
+    0.881438409909606
+  ],
+  "val_loss": [
+    0.7691041628519694,
+    0.31525368988513947,
+    0.26187826693058014,
+    0.2302204022804896,
+    0.2250512440999349,
+    0.21303687741359076,
+    0.21016982197761536,
+    0.20608274638652802,
+    0.207564207414786,
+    0.20194732894500098,
+    0.185658760368824,
+    0.20271175851424536,
+    0.19712246706088385,
+    0.19945762803157172,
+    0.19610059012969336,
+    0.1958853006362915,
+    0.1952542612950007,
+    0.19539320717255274,
+    0.19516748189926147,
+    0.19499770303567251
+  ],
+  "val": [
+    {
+      "epoch": 0,
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.0759493670886076,
+          "recall": 0.022988505747126436,
+          "f1": 0.03529411764705882
+        }
+      }
+    },
+    {
+      "epoch": 1,
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.3670886075949367,
+          "recall": 0.3333333333333333,
+          "f1": 0.3493975903614458
+        }
+      }
+    },
+    {
+      "epoch": 2,
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.4345991561181435,
+          "recall": 0.3946360153256705,
+          "f1": 0.41365461847389556
+        }
+      }
+    },
+    {
+      "epoch": 3,
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.497907949790795,
+          "recall": 0.4559386973180077,
+          "f1": 0.476
+        }
+      }
+    },
+    {
+      "epoch": 4,
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.4816326530612245,
+          "recall": 0.4521072796934866,
+          "f1": 0.46640316205533594
+        }
+      }
+    },
+    {
+      "epoch": 5,
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.5103734439834025,
+          "recall": 0.47126436781609193,
+          "f1": 0.49003984063745015
+        }
+      }
+    },
+    {
+      "epoch": 6,
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.5,
+          "recall": 0.47126436781609193,
+          "f1": 0.48520710059171596
+        }
+      }
+    },
+    {
+      "epoch": 7,
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.5487804878048781,
+          "recall": 0.5172413793103449,
+          "f1": 0.5325443786982249
+        }
+      }
+    },
+    {
+      "epoch": 8,
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.5333333333333333,
+          "recall": 0.4904214559386973,
+          "f1": 0.5109780439121756
+        }
+      }
+    },
+    {
+      "epoch": 9,
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.53515625,
+          "recall": 0.524904214559387,
+          "f1": 0.5299806576402321
+        }
+      }
+    },
+    {
+      "epoch": 10,
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.5737051792828686,
+          "recall": 0.5517241379310345,
+          "f1": 0.5624999999999999
+        }
+      }
+    },
+    {
+      "epoch": 11,
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.5524193548387096,
+          "recall": 0.524904214559387,
+          "f1": 0.5383104125736738
+        }
+      }
+    },
+    {
+      "epoch": 12,
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.5573770491803278,
+          "recall": 0.5210727969348659,
+          "f1": 0.5386138613861386
+        }
+      }
+    },
+    {
+      "epoch": 13,
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.5528455284552846,
+          "recall": 0.5210727969348659,
+          "f1": 0.5364891518737672
+        }
+      }
+    },
+    {
+      "epoch": 14,
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.5789473684210527,
+          "recall": 0.5478927203065134,
+          "f1": 0.562992125984252
+        }
+      }
+    },
+    {
+      "epoch": 15,
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.5778688524590164,
+          "recall": 0.5402298850574713,
+          "f1": 0.5584158415841584
+        }
+      }
+    },
+    {
+      "epoch": 16,
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.573170731707317,
+          "recall": 0.5402298850574713,
+          "f1": 0.5562130177514792
+        }
+      }
+    },
+    {
+      "epoch": 17,
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.5795918367346938,
+          "recall": 0.5440613026819924,
+          "f1": 0.5612648221343873
+        }
+      }
+    },
+    {
+      "epoch": 18,
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.5789473684210527,
+          "recall": 0.5478927203065134,
+          "f1": 0.562992125984252
+        }
+      }
+    },
+    {
+      "epoch": 19,
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.5789473684210527,
+          "recall": 0.5478927203065134,
+          "f1": 0.562992125984252
+        }
+      }
+    }
+  ],
+  "test": [
+    {
+      "data": "downloads/ABSADatasets/datasets/acos_datasets/504.Restaurant16/rest16_quad_test.tsv.jsonl",
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.5636792452830188,
+          "recall": 0.5218340611353712,
+          "f1": 0.5419501133786849
+        }
+      }
+    },
+    {
+      "data": "downloads/ABSADatasets/datasets/acos_datasets/501.Laptop14/laptop_quad_test.tsv.jsonl",
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+name: acos-baseline
+model:
+  name: google/flan-t5-base
+  learning_rate: 0.0003
+  weight_decay: 0.01
+  max_length: 256
+  batch_size: 8
+  val_batch_size: 32
+  warmup_ratio: 0.06
+  lr_scheduler: cosine
+  max_new_tokens: 64
+  label_smoothing: 0.05
+generation:
+  num_beams: 1
+  repetition_penalty: 1.0
+  length_penalty: 1.0
+trainer:
+  from_checkpoint: null
+  max_epochs: 20
+  precision: bf16-mixed
+  accumulate_grad_batches: 4
+  gradient_clip_val: 1.0
+  log_every_n_steps: 1
+  limit_train_batches: 1.0
+  num_sanity_val_steps: 0
+  reload_dataloaders_every_n_epochs: 1
+  deterministic: true
+data:
+  train_file: downloads/ABSADatasets/datasets/acos_datasets/504.Restaurant16/rest16_quad_train.tsv.jsonl
+  filter_implicit: false
+  tasks_partition:
+    quad: 1.0
+  shuffle_tasks: false
+  natural_language_fraction: 0.0
+  augmentation:
+    duplicate: null
+    mask_aspects: null
+    nlpaug: null
+eval:
+  val_split: 0
+  data: downloads/ABSADatasets/datasets/acos_datasets/504.Restaurant16/rest16_quad_dev.tsv.jsonl
+  tasks:
+  - aspect
+  - sentiment
+  - polarity
+  - category
+  scopes:
+  - keys:
+    - aspect
+    - sentiment
+    - polarity
+    - category
+    metrics:
+    - micro_f1
+test:
+  from_checkpoint: null
+  scopes:
+  - keys:
+    - aspect
+    - sentiment
+    - polarity
+    - category
+    metrics:
+    - micro_f1
+  datasets:
+  - data: downloads/ABSADatasets/datasets/acos_datasets/504.Restaurant16/rest16_quad_test.tsv.jsonl
+    tasks: &id001
+    - aspect
+    - sentiment
+    - polarity
+    - category
+  - data: downloads/ABSADatasets/datasets/acos_datasets/501.Laptop14/laptop_quad_test.tsv.jsonl
+    tasks: *id001
+  filter_implicit: false
+  eval_implicit_split: false
+seed: 42

@@ -1,0 +1,34 @@
+name: acos-baseline
+model:
+  name: google/flan-t5-base
+trainer:
+  max_epochs: 20
+data:
+  train_file: downloads/ABSADatasets/datasets/acos_datasets/504.Restaurant16/rest16_quad_train.tsv.jsonl
+  tasks_partition:
+    quad: 1.0
+  shuffle_tasks: false
+  natural_language_fraction: 0.0
+eval:
+  val_split: 0
+  data: downloads/ABSADatasets/datasets/acos_datasets/504.Restaurant16/rest16_quad_dev.tsv.jsonl
+  tasks: &id002
+  - aspect
+  - sentiment
+  - polarity
+  - category
+  scopes: &id001
+  - keys:
+    - aspect
+    - sentiment
+    - polarity
+    - category
+    metrics:
+    - micro_f1
+test:
+  scopes: *id001
+  datasets:
+  - data: downloads/ABSADatasets/datasets/acos_datasets/504.Restaurant16/rest16_quad_test.tsv.jsonl
+    tasks: *id002
+  - data: downloads/ABSADatasets/datasets/acos_datasets/501.Laptop14/laptop_quad_test.tsv.jsonl
+    tasks: *id002

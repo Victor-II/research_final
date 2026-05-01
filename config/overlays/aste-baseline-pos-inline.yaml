@@ -1,0 +1,31 @@
+name: aste-baseline-pos-inline
+model:
+  name: google/flan-t5-base
+trainer:
+  max_epochs: 20
+data:
+  train_file:
+  - downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/402.Restaurant14/train.txt
+  - downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/403.Restaurant15/train.txt
+  - downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/404.Restaurant16/train.txt
+  syntax_enrichment: pos-inline
+  tasks_partition:
+    full: 1.0
+eval:
+  val_split: 0
+  data: downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/402.Restaurant14/dev.txt
+  tasks: &id001
+  - aspect
+  - sentiment
+  - polarity
+  scopes: &id002
+  - keys: *id001
+    metrics:
+    - micro_f1
+test:
+  scopes: *id002
+  datasets:
+  - data: downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/402.Restaurant14/test.txt
+    tasks: *id001
+  - data: downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/401.Laptop14/test.txt
+    tasks: *id001

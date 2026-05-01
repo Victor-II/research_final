@@ -1,0 +1,38 @@
+name: acos-rest16-baseline-star
+model:
+  name: t5-base
+  learning_rate: 0.0001
+  lr_scheduler: constant
+  label_smoothing: 0.0
+trainer:
+  max_epochs: 20
+data:
+  train_file: downloads/ABSADatasets/datasets/acos_datasets/504.Restaurant16/rest16_quad_train.tsv.jsonl
+  tasks_partition:
+    quad: 1.0
+  shuffle_tasks: true
+eval:
+  val_split: 0
+  data: downloads/ABSADatasets/datasets/acos_datasets/504.Restaurant16/rest16_quad_dev.tsv.jsonl
+  tasks:
+  - aspect
+  - sentiment
+  - polarity
+  - category
+  scopes: &id001
+  - keys:
+    - aspect
+    - sentiment
+    - polarity
+    - category
+    metrics:
+    - micro_f1
+test:
+  scopes: *id001
+  datasets:
+  - data: downloads/ABSADatasets/datasets/acos_datasets/504.Restaurant16/rest16_quad_test.tsv.jsonl
+    tasks:
+    - aspect
+    - sentiment
+    - polarity
+    - category

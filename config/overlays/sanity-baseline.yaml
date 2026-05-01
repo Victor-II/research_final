@@ -1,0 +1,19 @@
+name: sanity-baseline
+model:
+  name: google/flan-t5-base
+data:
+  train_file:
+    - downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/402.Restaurant14/train.txt
+    - downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/403.Restaurant15/train.txt
+    - downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/404.Restaurant16/train.txt
+  tasks_partition:
+    aspect: 0
+    polarity: 0
+    sentiment: 0
+    full: 1.0
+test:
+  datasets:
+    - data: downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/402.Restaurant14/test.txt
+      tasks: [aspect, sentiment, polarity]
+    - data: downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/401.Laptop14/test.txt
+      tasks: [aspect, sentiment, polarity]

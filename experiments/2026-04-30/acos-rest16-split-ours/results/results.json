@@ -1,0 +1,17 @@
+{
+  "train_loss": [],
+  "val_loss": [],
+  "val": [],
+  "test": [
+    {
+      "data": "downloads/ABSADatasets/datasets/acos_datasets/504.Restaurant16/rest16_quad_test.tsv.jsonl",
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.5754385964912281,
+          "recall": 0.537117903930131,
+          "f1": 0.5556182947487296
+        }
+      }
+    }
+  ]
+}

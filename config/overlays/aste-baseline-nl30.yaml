@@ -1,0 +1,35 @@
+name: aste-baseline-nl30
+model:
+  name: google/flan-t5-base
+trainer:
+  max_epochs: 20
+data:
+  train_file:
+  - downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/402.Restaurant14/train.txt
+  - downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/403.Restaurant15/train.txt
+  - downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/404.Restaurant16/train.txt
+  tasks_partition:
+    full: 1.0
+  shuffle_tasks: false
+  natural_language_fraction: 0.3
+eval:
+  val_split: 0
+  data: downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/402.Restaurant14/dev.txt
+  tasks: &id002
+  - aspect
+  - sentiment
+  - polarity
+  scopes: &id001
+  - keys:
+    - aspect
+    - sentiment
+    - polarity
+    metrics:
+    - micro_f1
+test:
+  scopes: *id001
+  datasets:
+  - data: downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/402.Restaurant14/test.txt
+    tasks: *id002
+  - data: downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/401.Laptop14/test.txt
+    tasks: *id002

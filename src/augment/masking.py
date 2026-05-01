@@ -6,6 +6,7 @@ def mask_aspects(
     examples: list[dict],
     fraction: float = 0.5,
     replace: bool = False,
+    mask_target: bool = False,
     seed: int = 42,
 ) -> list[dict]:
     """
@@ -15,6 +16,8 @@ def mask_aspects(
         examples: list of canonical dicts (must have 'tokens' and 'annotations' with 'aspect_idx')
         fraction: proportion of examples to augment
         replace:  if True, replace originals; if False, append masked copies to originals
+        mask_target: if True, aspect text in annotations becomes the sentinel (original behaviour);
+                     if False, keep original aspect text so the model learns to infer it from context
         seed:     random seed
 
     Returns:
@@ -29,7 +32,7 @@ def mask_aspects(
             result.append(ex)
             continue
 
-        masked = _mask_example(ex)
+        masked = _mask_example(ex, mask_target=mask_target)
         if replace:
             result.append(masked)
         else:
@@ -39,7 +42,7 @@ def mask_aspects(
     return result
 
 
-def _mask_example(ex: dict) -> dict:
+def _mask_example(ex: dict, mask_target: bool = False) -> dict:
     ex = copy.deepcopy(ex)
     tokens = ex["tokens"][:]
 
@@ -69,12 +72,13 @@ def _mask_example(ex: dict) -> dict:
     ex["sentence"] = " ".join(tokens)
     ex["tokens"] = tokens
 
-    # update aspect strings and indices in annotations
+    # update annotations
     for ann in ex["annotations"]:
         if ann.get("aspect_idx") is None:
             continue
         span_key = tuple(ann["aspect_idx"])
-        ann["aspect"] = masked_spans[span_key]
+        if mask_target:
+            ann["aspect"] = masked_spans[span_key]
         ann["aspect_idx"] = None  # indices no longer valid after masking
 
     return ex

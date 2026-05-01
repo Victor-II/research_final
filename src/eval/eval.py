@@ -32,13 +32,60 @@ from sklearn.metrics import ConfusionMatrixDisplay, confusion_matrix
 # Parsing
 # ---------------------------------------------------------------------------
 
-def parse_output(raw: str, keys: list[str]) -> list[dict]:
-    """Parse bracket notation '[v1, v2, v3] [v1, v2]' into a list of dicts given key order."""
+def parse_output(raw: str, keys: list[str], output_format: str = "structured") -> list[dict]:
+    """Parse model output into a list of dicts given key order."""
+    if output_format == "natural-language":
+        return _parse_nl_output(raw, keys)
     results = []
     for match in re.finditer(r"\[([^\[\]]+)\]", raw):
         values = [v.strip() for v in match.group(1).split(",")]
         if len(values) == len(keys):
             results.append(dict(zip(keys, values)))
+    return results
+
+
+def _parse_nl_output(raw: str, keys: list[str]) -> list[dict]:
+    """Parse natural-language template output back into structured dicts."""
+    from src.data.data import _NL_TEMPLATES
+    from constants import CANONICAL_KEY_ORDER
+    canonical_keys = [k for k in CANONICAL_KEY_ORDER if k in keys]
+    keys_set = frozenset(canonical_keys)
+    template = _NL_TEMPLATES.get(keys_set)
+    if not template:
+        return []
+
+    # build regex from template
+    pattern = template
+    for key in canonical_keys:
+        pattern = pattern.replace("{" + key + "}", f"(?P<{key}>.+?)")
+    pattern = pattern[::-1].replace("?+.", "+.", 1)[::-1]
+    regex = re.compile(pattern)
+
+    # also build implicit variant regex for aspect
+    implicit_regex = None
+    if "aspect" in canonical_keys:
+        implicit_template = template.replace("{aspect}", "the implied aspect is {aspect},")
+        implicit_template = implicit_template.replace(",,", ",")
+        impl_pattern = implicit_template
+        for key in canonical_keys:
+            impl_pattern = impl_pattern.replace("{" + key + "}", f"(?P<{key}>.+?)")
+        impl_pattern = impl_pattern[::-1].replace("?+.", "+.", 1)[::-1]
+        implicit_regex = re.compile(impl_pattern)
+
+    segments = [s.strip() for s in raw.split(" ; ")]
+    results = []
+    for seg in segments:
+        # try implicit first (more specific)
+        if implicit_regex:
+            m = implicit_regex.match(seg)
+            if m:
+                d = {k: m.group(k).strip() for k in canonical_keys}
+                d["aspect"] = f"IMPLICIT:{d['aspect']}"
+                results.append(d)
+                continue
+        m = regex.match(seg)
+        if m:
+            results.append({k: m.group(k).strip() for k in canonical_keys})
     return results
 
 
@@ -100,6 +147,87 @@ def macro_prf(
         for m in ("precision", "recall", "f1")
     } if per_class else {"precision": 0.0, "recall": 0.0, "f1": 0.0}
     return {"macro": macro, "per_class": per_class}
+
+
+def _token_overlap_f1(a: str, b: str) -> float:
+    a_tokens = a.lower().split()
+    b_tokens = b.lower().split()
+    if not a_tokens or not b_tokens:
+        return float(a_tokens == b_tokens)
+    common = sum(min(a_tokens.count(t), b_tokens.count(t)) for t in set(a_tokens))
+    p = common / len(a_tokens)
+    r = common / len(b_tokens)
+    return 2 * p * r / (p + r) if (p + r) else 0.0
+
+
+def _lcs_length(a: list[str], b: list[str]) -> int:
+    m, n = len(a), len(b)
+    prev = [0] * (n + 1)
+    for i in range(1, m + 1):
+        curr = [0] * (n + 1)
+        for j in range(1, n + 1):
+            if a[i - 1] == b[j - 1]:
+                curr[j] = prev[j - 1] + 1
+            else:
+                curr[j] = max(prev[j], curr[j - 1])
+        prev = curr
+    return prev[n]
+
+
+def _lcs_f1(a: str, b: str) -> float:
+    a_tokens = a.lower().split()
+    b_tokens = b.lower().split()
+    if not a_tokens or not b_tokens:
+        return float(a_tokens == b_tokens)
+    lcs = _lcs_length(a_tokens, b_tokens)
+    p = lcs / len(a_tokens)
+    r = lcs / len(b_tokens)
+    return 2 * p * r / (p + r) if (p + r) else 0.0
+
+
+def _tuple_similarity(pred: frozenset, gold: frozenset, sim_fn) -> float:
+    pred_d = dict(pred)
+    gold_d = dict(gold)
+    if pred_d.keys() != gold_d.keys():
+        return 0.0
+    scores = [sim_fn(pred_d[k], gold_d[k]) for k in pred_d]
+    return min(scores)
+
+
+def lenient_prf(
+    preds: list[list[dict]],
+    golds: list[list[dict]],
+    keys: list[str],
+    sim_fn,
+    threshold: float = 0.8,
+) -> dict:
+    tp = fp = fn = 0
+    for pred_list, gold_list in zip(preds, golds):
+        pred_tuples = project(pred_list, keys)
+        gold_tuples = project(gold_list, keys)
+
+        matched_gold = set()
+        for pt in pred_tuples:
+            best_sim = -1.0
+            best_j = -1
+            for j, gt in enumerate(gold_tuples):
+                if j in matched_gold:
+                    continue
+                sim = _tuple_similarity(pt, gt, sim_fn)
+                if sim > best_sim:
+                    best_sim = sim
+                    best_j = j
+            if best_sim >= threshold:
+                tp += 1
+                matched_gold.add(best_j)
+            else:
+                fp += 1
+        fn += len(gold_tuples) - len(matched_gold)
+
+    precision = tp / (tp + fp) if (tp + fp) else 0.0
+    recall = tp / (tp + fn) if (tp + fn) else 0.0
+    f1 = 2 * precision * recall / (precision + recall) if (precision + recall) else 0.0
+    return {"precision": precision, "recall": recall, "f1": f1}
 
 
 def soft_prf(
@@ -195,6 +323,12 @@ def evaluate(
             threshold = scope.get("soft_threshold", 0.8)
             model_name = scope.get("soft_model", "all-MiniLM-L6-v2")
             results[label]["soft"] = soft_prf(preds, golds, "aspect", threshold, model_name)
+        if "token_f1" in metrics:
+            threshold = scope.get("token_threshold", 0.8)
+            results[label]["token"] = lenient_prf(preds, golds, keys, _token_overlap_f1, threshold)
+        if "rouge_l" in metrics:
+            threshold = scope.get("token_threshold", 0.8)
+            results[label]["rouge_l"] = lenient_prf(preds, golds, keys, _lcs_f1, threshold)
     return results
 
 
@@ -246,6 +380,12 @@ def save_metrics_table(
         if "soft" in result:
             m = result["soft"]
             lines.append(f"{scope:<{col_w}} {'soft':<10} {m['precision']:>10.4f} {m['recall']:>10.4f} {m['f1']:>10.4f}")
+        if "token" in result:
+            m = result["token"]
+            lines.append(f"{scope:<{col_w}} {'token':<10} {m['precision']:>10.4f} {m['recall']:>10.4f} {m['f1']:>10.4f}")
+        if "rouge_l" in result:
+            m = result["rouge_l"]
+            lines.append(f"{scope:<{col_w}} {'rouge_l':<10} {m['precision']:>10.4f} {m['recall']:>10.4f} {m['f1']:>10.4f}")
     lines.append(sep)
 
     with open(path, "w") as f:

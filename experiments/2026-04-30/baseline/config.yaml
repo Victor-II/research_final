@@ -1,0 +1,145 @@
+name: baseline
+model:
+  name: google/flan-t5-base
+  learning_rate: 0.0003
+  weight_decay: 0.01
+  max_length: 256
+  batch_size: 8
+  val_batch_size: 32
+  warmup_ratio: 0.06
+  lr_scheduler: cosine
+  max_new_tokens: 64
+  label_smoothing: 0.1
+generation:
+  num_beams: 1
+  repetition_penalty: 1.0
+  length_penalty: 1.0
+trainer:
+  from_checkpoint: null
+  early_stopping_patience: 3
+  max_epochs: 15
+  precision: bf16-mixed
+  accumulate_grad_batches: 4
+  gradient_clip_val: 1.0
+  log_every_n_steps: 1
+  limit_train_batches: 1.0
+  num_sanity_val_steps: 0
+  reload_dataloaders_every_n_epochs: 1
+  deterministic: true
+data:
+  train_file: downloads/silviolima/restaurant.json
+  filter_implicit: true
+  tasks_partition:
+    aspect: 0
+    polarity: 0
+    sentiment: 0
+    full: 1.0
+  shuffle_tasks: false
+  augmentation:
+    duplicate: null
+    mask_aspects: null
+    nlpaug: null
+eval:
+  val_split: 0.1
+  data: downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/402.Restaurant14/dev.txt
+  tasks:
+  - aspect
+  - sentiment
+  - polarity
+  scopes:
+  - keys:
+    - aspect
+    - sentiment
+    - polarity
+    metrics:
+    - micro_f1
+  - keys:
+    - aspect
+    metrics:
+    - micro_f1
+    - soft_f1
+    soft_threshold: 0.8
+    soft_model: all-MiniLM-L6-v2
+  - keys:
+    - sentiment
+    metrics:
+    - micro_f1
+  - keys:
+    - polarity
+    metrics:
+    - micro_f1
+    - macro_f1
+test:
+  from_checkpoint: null
+  scopes:
+  - keys:
+    - aspect
+    - sentiment
+    - polarity
+    metrics:
+    - micro_f1
+  - keys:
+    - aspect
+    metrics:
+    - micro_f1
+    - soft_f1
+    soft_threshold: 0.8
+    soft_model: all-MiniLM-L6-v2
+  - keys:
+    - sentiment
+    metrics:
+    - micro_f1
+  - keys:
+    - polarity
+    metrics:
+    - micro_f1
+    - macro_f1
+  datasets:
+  - data: downloads/silviolima/laptop.json
+    tasks:
+    - aspect
+    - sentiment
+    - polarity
+  - data: downloads/silviolima/beauty.json
+    tasks:
+    - aspect
+    - sentiment
+    - polarity
+  - data: downloads/silviolima/book.json
+    tasks:
+    - aspect
+    - sentiment
+    - polarity
+  - data: downloads/silviolima/electronics.json
+    tasks:
+    - aspect
+    - sentiment
+    - polarity
+  - data: downloads/silviolima/fashion.json
+    tasks:
+    - aspect
+    - sentiment
+    - polarity
+  - data: downloads/silviolima/grocery.json
+    tasks:
+    - aspect
+    - sentiment
+    - polarity
+  - data: downloads/silviolima/home.json
+    tasks:
+    - aspect
+    - sentiment
+    - polarity
+  - data: downloads/silviolima/pet.json
+    tasks:
+    - aspect
+    - sentiment
+    - polarity
+  - data: downloads/silviolima/toy.json
+    tasks:
+    - aspect
+    - sentiment
+    - polarity
+  filter_implicit: false
+  eval_implicit_split: false
+seed: 42

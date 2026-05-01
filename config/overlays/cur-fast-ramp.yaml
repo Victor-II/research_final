@@ -1,0 +1,48 @@
+name: cur-fast-ramp
+model:
+  name: google/flan-t5-base
+trainer:
+  max_epochs: 30
+  early_stopping_patience: 10
+data:
+  train_file:
+  - downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/402.Restaurant14/train.txt
+  - downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/403.Restaurant15/train.txt
+  - downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/404.Restaurant16/train.txt
+  tasks_partition:
+    full: 1.0
+  shuffle_tasks: true
+  natural_language_fraction: 1.0
+  curriculum:
+  - epoch: 0
+    tasks_partition:
+      aspect: 0.15
+      sentiment: 0.15
+      polarity: 0.15
+      aspect+sentiment: 0.1
+      aspect+polarity: 0.1
+      sentiment+polarity: 0.1
+      full: 0.25
+  - epoch: 5
+    tasks_partition:
+      full: 1.0
+eval:
+  val_split: 0
+  data: downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/402.Restaurant14/dev.txt
+  tasks: &id001
+  - aspect
+  - sentiment
+  - polarity
+  scopes: &id002
+  - keys: *id001
+    metrics:
+    - micro_f1
+  output_format: natural-language
+test:
+  scopes: *id002
+  output_format: natural-language
+  datasets:
+  - data: downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/402.Restaurant14/test.txt
+    tasks: *id001
+  - data: downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/401.Laptop14/test.txt
+    tasks: *id001

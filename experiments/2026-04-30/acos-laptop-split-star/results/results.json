@@ -1,0 +1,17 @@
+{
+  "train_loss": [],
+  "val_loss": [],
+  "val": [],
+  "test": [
+    {
+      "data": "downloads/ABSADatasets/datasets/acos_datasets/501.Laptop14/laptop_quad_test.tsv.jsonl",
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.43026435733819507,
+          "recall": 0.4083044982698962,
+          "f1": 0.4189968930315135
+        }
+      }
+    }
+  ]
+}

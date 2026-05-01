@@ -1,0 +1,52 @@
+name: acos-laptop-split-ours
+model:
+  name: google/flan-t5-base
+  learning_rate: 0.0003
+  lr_scheduler: cosine
+  label_smoothing: 0.05
+trainer:
+  max_epochs: 20
+data:
+  train_file: downloads/ABSADatasets/datasets/acos_datasets/501.Laptop14/laptop_quad_train.tsv.jsonl
+  tasks_partition:
+    aspect: 0.0625
+    sentiment: 0.0625
+    polarity: 0.0625
+    category: 0.0625
+    aspect+sentiment: 0.042
+    aspect+polarity: 0.042
+    aspect+category: 0.042
+    sentiment+polarity: 0.042
+    sentiment+category: 0.042
+    polarity+category: 0.04
+    full: 0.0625
+    aspect+sentiment+category: 0.0625
+    aspect+polarity+category: 0.0625
+    sentiment+polarity+category: 0.0625
+    quad: 0.25
+  shuffle_tasks: true
+eval:
+  val_split: 0
+  data: downloads/ABSADatasets/datasets/acos_datasets/501.Laptop14/laptop_quad_dev.tsv.jsonl
+  tasks:
+  - aspect
+  - sentiment
+  - polarity
+  - category
+  scopes: &id001
+  - keys:
+    - aspect
+    - sentiment
+    - polarity
+    - category
+    metrics:
+    - micro_f1
+test:
+  scopes: *id001
+  datasets:
+  - data: downloads/ABSADatasets/datasets/acos_datasets/501.Laptop14/laptop_quad_test.tsv.jsonl
+    tasks:
+    - aspect
+    - sentiment
+    - polarity
+    - category
