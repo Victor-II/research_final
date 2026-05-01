@@ -58,6 +58,29 @@
 
 Key finding: NL output format is the single biggest improvement for OOD (+7 points over structured baseline). dep-compact adds +2 more OOD on top. Combining split+dep-compact+NL hurts — too many techniques dilute the signal.
 
+### Beam Search (2026-05-01, ASTE, beam=4 at test time only)
+| Config | Rest14 (ID) | | Laptop14 (OOD) | |
+|---|---|---|---|---|
+| | beam=1 | beam=4 | beam=1 | beam=4 |
+| nl-baseline | 0.7166 | 0.7212 (+0.5) | 0.5211 | 0.5226 (+0.2) |
+| nl-split | 0.7161 | 0.7168 (+0.1) | 0.5249 | 0.5213 (-0.4) |
+| nl-dep-compact | 0.7083 | 0.7125 (+0.4) | **0.5414** | 0.5304 (-1.1) |
+| nl-split-dep-compact | 0.7091 | 0.7227 (+1.4) | 0.5116 | 0.5308 (+1.9) |
+
+Beam search gives small ID gains across the board. OOD is mixed: hurts nl-dep-compact (-1.1), helps nl-split-dep-compact (+1.9). nl-split-dep-compact recovers from weakest to competitive OOD with beam=4. Not a universal win — config-dependent.
+
+### Curriculum Learning (2026-05-01, ASTE, 30 epochs, full NL)
+| Config | Rest14 (ID) | Laptop14 (OOD) |
+|---|---|---|
+| cur-overlap | 0.7156 | 0.5094 |
+| cur-overlap-dep | 0.7178 | 0.5135 |
+| cur-fast-ramp | 0.7248 | 0.5034 |
+| cur-fast-ramp-dep | 0.7058 | 0.5227 |
+| cur-sandwich | 0.7281 | 0.5166 |
+| cur-sandwich-dep | 0.7148 | 0.5014 |
+
+Curriculum learning doesn't help OOD. No curriculum config beats nl-dep-compact (0.5414). +dep variants consistently help OOD relative to non-dep counterparts, confirming dep-compact as the strongest OOD lever. Negative result for dissertation.
+
 ### NL Fraction Experiments (2026-05-01, ASTE, 20 epochs)
 | config | Rest14 (ID) | Laptop14 (OOD) |
 |---|---|---|

@@ -328,5 +328,27 @@
         }
       }
     }
+  ],
+  "test": [
+    {
+      "data": "downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/402.Restaurant14/test.txt",
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.7297297297297297,
+          "recall": 0.7062374245472837,
+          "f1": 0.7177914110429447
+        }
+      }
+    },
+    {
+      "data": "downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/401.Laptop14/test.txt",
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.5350701402805611,
+          "recall": 0.49353049907578556,
+          "f1": 0.5134615384615384
+        }
+      }
+    }
   ]
 }

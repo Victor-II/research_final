@@ -1,0 +1,37 @@
+name: nl-dep-mask10-replace
+model:
+  name: google/flan-t5-base
+trainer:
+  max_epochs: 30
+  early_stopping_patience: 10
+data:
+  train_file:
+  - downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/402.Restaurant14/train.txt
+  - downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/403.Restaurant15/train.txt
+  - downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/404.Restaurant16/train.txt
+  tasks_partition:
+    full: 1.0
+  shuffle_tasks: false
+  natural_language_fraction: 1.0
+  syntax_enrichment: dep-compact
+  augmentation:
+    mask_aspects:
+      fraction: 0.10
+      replace: true
+      mask_target: false
+eval:
+  val_split: 0
+  data: downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/402.Restaurant14/dev.txt
+  tasks: &tasks [aspect, sentiment, polarity]
+  scopes: &scopes
+  - keys: *tasks
+    metrics: [micro_f1]
+  output_format: natural-language
+test:
+  scopes: *scopes
+  output_format: natural-language
+  datasets:
+  - data: downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/402.Restaurant14/test.txt
+    tasks: *tasks
+  - data: downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/401.Laptop14/test.txt
+    tasks: *tasks

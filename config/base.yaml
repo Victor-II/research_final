@@ -16,6 +16,10 @@ generation:
   num_beams: 1
   repetition_penalty: 1.0
   length_penalty: 1.0
+  do_sample: false
+  temperature: 1.0
+  num_return_sequences: 1
+  vote_threshold: 1
 
 trainer:
   from_checkpoint: null

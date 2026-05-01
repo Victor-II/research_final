@@ -130,6 +130,10 @@ def _build_model(cfg: dict, train_examples: list[dict], val_examples: list[dict]
         num_beams=g.get("num_beams", 1),
         repetition_penalty=g.get("repetition_penalty", 1.0),
         length_penalty=g.get("length_penalty", 1.0),
+        do_sample=g.get("do_sample", False),
+        temperature=g.get("temperature", 1.0),
+        num_return_sequences=g.get("num_return_sequences", 1),
+        vote_threshold=g.get("vote_threshold", 1),
         label_smoothing=m.get("label_smoothing", 0.0),
         num_workers=cfg["trainer"].get("num_workers", 11),
         train_examples=train_examples,
@@ -248,6 +252,7 @@ def test(cfg: dict, checkpoint: str, output_dir: Path):
         str(ckpt_path),
         test_examples=[to_generative_format(ex, first_tasks, output_format=test_format) for ex in _load_data(first["data"], filter_implicit=fi, syntax_enrichment=se)],
         test_scopes=first.get("scopes", default_scopes),
+        **{k: v for k, v in cfg.get("generation", {}).items() if v is not None},
     )
     model._current_test_data = first["data"]
     model._eval_implicit_split = test_cfg.get("eval_implicit_split", False)

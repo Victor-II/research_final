@@ -29,6 +29,10 @@ class T5ABSAModel(pl.LightningModule):
         length_penalty: float = 1.0,
         label_smoothing: float = 0.0,
         num_workers: int = 11,
+        do_sample: bool = False,
+        temperature: float = 1.0,
+        num_return_sequences: int = 1,
+        vote_threshold: int = 1,
         train_examples: list[dict] = None,
         val_examples: list[dict] = None,
         test_examples: list[dict] = None,
@@ -214,7 +218,8 @@ class T5ABSAModel(pl.LightningModule):
         self._train_losses.clear()
 
     def test_step(self, batch, batch_idx):
-        output_ids = self.model.generate(
+        n_seq = self.hparams.num_return_sequences
+        gen_kwargs = dict(
             input_ids=batch["input_ids"],
             attention_mask=batch["attention_mask"],
             max_new_tokens=self.hparams.max_new_tokens,
@@ -222,13 +227,39 @@ class T5ABSAModel(pl.LightningModule):
             repetition_penalty=self.hparams.repetition_penalty,
             length_penalty=self.hparams.length_penalty,
         )
-        for i, out in enumerate(output_ids):
-            decoded = self.tokenizer.decode(out, skip_special_tokens=True)
-            gold    = batch["raw_target"][i]
-            keys    = batch["keys"][i].split(",")
-            fmt     = batch["output_format"][i]
-            self._test_preds.append(parse_output(decoded, keys, fmt))
-            self._test_golds.append(parse_output(gold, keys, fmt))
+        if self.hparams.do_sample:
+            gen_kwargs["do_sample"] = True
+            gen_kwargs["temperature"] = self.hparams.temperature
+
+        if n_seq <= 1:
+            output_ids = self.model.generate(**gen_kwargs)
+            for i, out in enumerate(output_ids):
+                decoded = self.tokenizer.decode(out, skip_special_tokens=True)
+                gold    = batch["raw_target"][i]
+                keys    = batch["keys"][i].split(",")
+                fmt     = batch["output_format"][i]
+                self._test_preds.append(parse_output(decoded, keys, fmt))
+                self._test_golds.append(parse_output(gold, keys, fmt))
+        else:
+            gen_kwargs["num_return_sequences"] = n_seq
+            if self.hparams.num_beams < n_seq and not self.hparams.do_sample:
+                gen_kwargs["num_beams"] = n_seq
+            output_ids = self.model.generate(**gen_kwargs)
+            bsz = batch["input_ids"].size(0)
+            for i in range(bsz):
+                gold = batch["raw_target"][i]
+                keys = batch["keys"][i].split(",")
+                fmt  = batch["output_format"][i]
+                # collect triplets from all N sequences, count occurrences
+                from collections import Counter
+                counts = Counter()
+                for j in range(n_seq):
+                    decoded = self.tokenizer.decode(output_ids[i * n_seq + j], skip_special_tokens=True)
+                    for triplet in parse_output(decoded, keys, fmt):
+                        counts[frozenset(triplet.items())] += 1
+                voted = [dict(k) for k, c in counts.items() if c >= self.hparams.vote_threshold]
+                self._test_preds.append(voted)
+                self._test_golds.append(parse_output(gold, keys, fmt))
 
     def on_test_epoch_end(self):
         if not self._test_preds:
