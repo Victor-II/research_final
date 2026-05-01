@@ -136,3 +136,4 @@ dmypy.json
 # kiro
 .kiro/*
 !.kiro/steering/
+!.kiro/docs/
