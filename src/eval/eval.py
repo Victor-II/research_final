@@ -46,7 +46,7 @@ def parse_output(raw: str, keys: list[str], output_format: str = "structured") -
 
 def _parse_nl_output(raw: str, keys: list[str]) -> list[dict]:
     """Parse natural-language template output back into structured dicts."""
-    from src.data.data import _NL_TEMPLATES
+    from src.data.data import _NL_TEMPLATES, _NL_TEMPLATES_IMPLICIT_SENTIMENT
     from constants import CANONICAL_KEY_ORDER
     canonical_keys = [k for k in CANONICAL_KEY_ORDER if k in keys]
     keys_set = frozenset(canonical_keys)
@@ -54,38 +54,90 @@ def _parse_nl_output(raw: str, keys: list[str]) -> list[dict]:
     if not template:
         return []
 
-    # build regex from template
-    pattern = template
-    for key in canonical_keys:
-        pattern = pattern.replace("{" + key + "}", f"(?P<{key}>.+?)")
-    pattern = pattern[::-1].replace("?+.", "+.", 1)[::-1]
-    regex = re.compile(pattern)
+    def _build_regex(tmpl, ckeys):
+        p = tmpl
+        for key in ckeys:
+            p = p.replace("{" + key + "}", f"(?P<{key}>.+?)")
+        p = p[::-1].replace("?+.", "+.", 1)[::-1]
+        return re.compile(p)
 
-    # also build implicit variant regex for aspect
-    implicit_regex = None
-    if "aspect" in canonical_keys:
-        implicit_template = template.replace("{aspect}", "the implied aspect is {aspect},")
-        implicit_template = implicit_template.replace(",,", ",")
-        impl_pattern = implicit_template
+    # build regexes for all template variants
+    regexes = []
+
+    # 1. annotated implicit aspect + implicit sentiment
+    impl_sent_tmpl = _NL_TEMPLATES_IMPLICIT_SENTIMENT.get(keys_set)
+    if impl_sent_tmpl and "aspect" in canonical_keys:
+        annotated_impl_sent = impl_sent_tmpl.replace("{aspect}", "the implied aspect (?P<aspect>.+?)")
+        # need to rebuild without the standard {aspect} replacement
+        p = impl_sent_tmpl
         for key in canonical_keys:
-            impl_pattern = impl_pattern.replace("{" + key + "}", f"(?P<{key}>.+?)")
-        impl_pattern = impl_pattern[::-1].replace("?+.", "+.", 1)[::-1]
-        implicit_regex = re.compile(impl_pattern)
+            if key == "aspect":
+                p = p.replace("{aspect}", "the implied aspect (?P<aspect>.+?)")
+            else:
+                p = p.replace("{" + key + "}", f"(?P<{key}>.+?)")
+        p = p[::-1].replace("?+.", "+.", 1)[::-1]
+        regexes.append(("annotated_impl_both", re.compile(p)))
+
+    # 2. unknown aspect + implicit sentiment
+    if impl_sent_tmpl and "aspect" in canonical_keys:
+        p = impl_sent_tmpl.replace("{aspect}", "an unspecified aspect")
+        for key in canonical_keys:
+            if key != "aspect":
+                p = p.replace("{" + key + "}", f"(?P<{key}>.+?)")
+        p = p[::-1].replace("?+.", "+.", 1)[::-1]
+        regexes.append(("unknown_aspect_impl_sent", re.compile(p)))
+
+    # 3. explicit aspect + implicit sentiment
+    if impl_sent_tmpl:
+        regexes.append(("impl_sent", _build_regex(impl_sent_tmpl, canonical_keys)))
+
+    # 4. annotated implicit aspect + explicit sentiment
+    if "aspect" in canonical_keys:
+        annotated_tmpl = template.replace("{aspect}", "the implied aspect {aspect}")
+        regexes.append(("annotated_impl", _build_regex(annotated_tmpl, canonical_keys)))
+
+    # 5. unknown aspect + explicit sentiment
+    if "aspect" in canonical_keys:
+        unknown_tmpl = template.replace("{aspect}", "an unspecified aspect")
+        p = unknown_tmpl
+        for key in canonical_keys:
+            if key != "aspect":
+                p = p.replace("{" + key + "}", f"(?P<{key}>.+?)")
+        p = p[::-1].replace("?+.", "+.", 1)[::-1]
+        regexes.append(("unknown_aspect", re.compile(p)))
+
+    # 6. standard explicit template (last, least specific)
+    regexes.append(("explicit", _build_regex(template, canonical_keys)))
 
     segments = [s.strip() for s in raw.split(" ; ")]
     results = []
     for seg in segments:
-        # try implicit first (more specific)
-        if implicit_regex:
-            m = implicit_regex.match(seg)
-            if m:
-                d = {k: m.group(k).strip() for k in canonical_keys}
-                d["aspect"] = f"IMPLICIT:{d['aspect']}"
-                results.append(d)
+        matched = False
+        for variant, regex in regexes:
+            m = regex.match(seg)
+            if not m:
                 continue
-        m = regex.match(seg)
-        if m:
-            results.append({k: m.group(k).strip() for k in canonical_keys})
+            d = {}
+            for k in canonical_keys:
+                if k in m.groupdict():
+                    d[k] = m.group(k).strip()
+                elif k == "aspect" and "unknown_aspect" in variant:
+                    d[k] = "IMPLICIT"
+                elif k == "sentiment" and "impl_sent" in variant or "impl_both" in variant:
+                    d[k] = "IMPLICIT"
+            # tag implicit aspects
+            if "annotated" in variant and "aspect" in d:
+                d["aspect"] = f"IMPLICIT:{d['aspect']}"
+            elif "unknown_aspect" in variant:
+                d["aspect"] = "IMPLICIT"
+            # tag implicit sentiments
+            if "impl_sent" in variant or "impl_both" in variant:
+                d["sentiment"] = "IMPLICIT"
+            if len(d) == len(canonical_keys):
+                results.append(d)
+                matched = True
+                break
+        # no match = malformed, scores zero (strict parsing)
     return results
 
 
@@ -97,6 +149,29 @@ def project(items: list[dict], keys: list[str]) -> list[frozenset]:
         if subset:
             projected.append(frozenset(subset.items()))
     return projected
+
+
+def _normalize_implicit(items: list[dict], mode: str | None) -> list[dict]:
+    """Normalize IMPLICIT aspect/opinion values based on evaluation mode.
+
+    mode=None/"full": no change, IMPLICIT:term must match exactly
+    mode="collapse":  IMPLICIT:term → IMPLICIT (standard benchmark, NULL = NULL)
+    mode="resolve":   IMPLICIT:term → term (compare only the inferred term)
+    """
+    if not mode or mode == "full":
+        return items
+    out = []
+    for d in items:
+        d = dict(d)
+        for key in ("aspect", "sentiment"):
+            val = d.get(key, "")
+            if isinstance(val, str) and val.startswith("IMPLICIT:"):
+                if mode == "collapse":
+                    d[key] = "IMPLICIT"
+                elif mode == "resolve":
+                    d[key] = val[len("IMPLICIT:"):]
+        out.append(d)
+    return out
 
 
 # ---------------------------------------------------------------------------
@@ -297,14 +372,22 @@ def evaluate(
     preds: list[list[dict]],
     golds: list[list[dict]],
     eval_scopes: list[dict],
+    implicit_mode: str | None = None,
 ) -> dict[str, dict]:
     """
     Run requested metrics for each scope in eval_scopes.
 
     Each scope is a dict with 'keys' (list[str]) and 'metrics' (list[str]).
     Supported metrics: 'micro_f1', 'macro_f1'.
+
+    implicit_mode: None (no change) / "full" (same as None, IMPLICIT:x must match exactly),
+                   "collapse" (IMPLICIT:x → IMPLICIT), "resolve" (IMPLICIT:x → x).
     Returns dict keyed by "+".join(keys).
     """
+    if implicit_mode:
+        preds = [_normalize_implicit(p, implicit_mode) for p in preds]
+        golds = [_normalize_implicit(g, implicit_mode) for g in golds]
+
     results = {}
     for scope in eval_scopes:
         keys    = scope["keys"]

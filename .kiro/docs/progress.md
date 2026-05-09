@@ -81,6 +81,34 @@ Beam search gives small ID gains across the board. OOD is mixed: hurts nl-dep-co
 
 Curriculum learning doesn't help OOD. No curriculum config beats nl-dep-compact (0.5414). +dep variants consistently help OOD relative to non-dep counterparts, confirming dep-compact as the strongest OOD lever. Negative result for dissertation.
 
+### Aspect Masking (2026-05-02, ASTE, 30 epochs, full NL, replace mode)
+| Config | Rest14 (ID) | Laptop14 (OOD) |
+|---|---|---|
+| nl-dep-compact (ref) | 0.7083 | **0.5414** |
+| nl-dep-mask10-replace | 0.7176 | 0.5074 |
+| nl-dep-mask25-replace | 0.7187 | 0.4882 |
+| nl-dep-mask50-replace | 0.7041 | 0.5101 |
+| nl-mask25-replace | 0.7126 | 0.5110 |
+
+Simple masking hurts OOD compared to NL and dep-compact baselines. Masking + dep-compact interfere (nl-dep-mask25 worst at 0.4882, while nl-mask25 without dep gets 0.5110). Replacing training examples with masked versions removes real aspect context the model needs. Negative result.
+
+### Decoding Strategies (2026-05-02, ASTE, nl-dep-compact checkpoint)
+| Strategy | Rest14 (ID) | Laptop14 (OOD) |
+|---|---|---|
+| greedy (baseline) | 0.7083 | **0.5414** |
+| beam=4 | 0.7125 | 0.5304 |
+| sample t=0.7 | 0.6986 | 0.4770 |
+| sample t=0.9 | 0.6718 | 0.4457 |
+| vote5 t=0.8 thresh=2 | 0.7104 | 0.5088 |
+| vote5 t=0.8 thresh=3 | 0.7101 | 0.5198 |
+| diverse beam (12b/4g) vote | 0.6690 | 0.4752 |
+| constrained (logits boost) | 0.6994 | 0.4833 |
+
+Greedy decoding remains optimal. All alternatives hurt OOD. Temperature sampling adds too much noise. Voting can't recover from diverse/noisy candidates. Constrained decoding interferes with the model's learned template adherence. Contrastive search incompatible with T5 in transformers >= 4.50.
+
+### nlpaug Augmentation
+Tested previously on structured output format — synonym, contextual, and other nlpaug methods were not helpful for OOD generalisation.
+
 ### NL Fraction Experiments (2026-05-01, ASTE, 20 epochs)
 | config | Rest14 (ID) | Laptop14 (OOD) |
 |---|---|---|
@@ -123,7 +151,93 @@ Inline syntax hurts across the board. dep-compact (separate Syntax line) helps I
 - Early stopping + cosine is bad — cosine needs full training.
 
 ## In Progress
-- None currently running
+- ACOS quad experiment plan (step-by-step, pick best and continue):
+  - Step 1 DONE: structured vs NL → NL wins (lr=1e-4, batch=8, 30 epochs)
+  - Step 2 DONE: NL + focal loss (gamma=2.0) vs NL + label smoothing (0.05) → ls=0.05 wins
+  - Step 3 DONE: winner + dep-compact vs dep-tree vs pos-compact → none improve over baseline
+  - Step 4 DONE: constrained decoding, structured attention mask → no improvement
+  - Step 5 RUNNING: auxiliary syntax prediction tasks (dep, pos)
+- Hand-annotating implicit aspects using `tools/annotate.py` on SemEval 2015/2016 XML data
+- LLM auto-suggestion pipeline for implicit aspects (`tools/suggest_aspects.py`)
+
+### ACOS Quad Step 2: Focal Loss (2026-05-03)
+| Config | ID Quad F1 | ID Category F1 | ID Aspect F1 | OOD Aspect F1 | OOD a+s+p F1 |
+|---|---|---|---|---|---|
+| nl-baseline_2 (ls=0.05) | **0.5515** | 0.8061 | **0.8114** | **0.6954** | **0.4735** |
+| nl-focal (γ=2.0) | 0.5468 | **0.8126** | 0.7975 | 0.6821 | 0.4735 |
+
+Focal loss is a wash. It removes label smoothing (mutually exclusive), and the hard-example reweighting doesn't help because the "hard" tokens in generative ABSA are mostly template tokens, not the semantically important ones. The token-level focal weighting doesn't address the real difficulty: compositional prediction of which aspect goes with which category and polarity.
+
+### ACOS Quad Step 3: Syntax Enrichment (2026-05-03)
+| Config | ID Quad F1 | ID a+s+p F1 | OOD Aspect F1 | OOD a+s+p F1 |
+|---|---|---|---|---|
+| nl-baseline_2 | **0.5515** | 0.6227 | **0.6954** | **0.4735** |
+| nl-dep-compact | 0.5396 | **0.6227** | 0.6707 | 0.4617 |
+| nl-pos-compact | 0.5520 | — | — | — |
+
+dep-compact hurts on ACOS quad (opposite of ASTE where it was the best OOD lever). Truncation is not the issue — only 2/1530 inputs exceed 384 tokens. The syntax info doubles average input length (52→109 tokens) without adding useful signal for category prediction, which is the conjunction bottleneck for quad F1.
+
+### ACOS Quad Step 4: Constrained Decoding & Structured Attention (2026-05-03)
+| Config | ID Quad F1 |
+|---|---|
+| nl-baseline_2 | **0.5515** |
+| nl-baseline_2 + constrained decoding | 0.5476 |
+| nl-dep-compact + structured attention mask | 0.5463 |
+
+Constrained decoding (FSM-based, polarity + category trie): no improvement. The model already generates valid template outputs — errors are semantic (wrong category) not structural (malformed output). The NL format provides strong implicit structural constraints during training.
+
+Structured attention mask (syntax tokens only attend to corresponding sentence words + dep-linked entries): no improvement. T5 was pretrained with full attention for 12 layers. Restricting attention during fine-tuning fights against pretrained patterns rather than enhancing them. Consistent with Syntax-BERT finding that structured masks help only on a subset of heads, not all.
+
+### Infrastructure (2026-05-03)
+- FSM-based constrained decoding for NL templates (`src/model/constrained.py`): trie-based constraining of polarity and category slots, text-based FSM position tracking
+- Structured attention mask (`src/data/syntax_mask.py`): 2D attention mask from dep-compact syntax, T5 encoder monkey-patch for 3D mask support
+- Auxiliary syntax prediction tasks: dep-prediction and pos-tagging as auxiliary training objectives, configurable fraction and task mix
+
+### ACOS Quad Results (2026-05-03, Rest16 train → Rest16 test + Laptop14 OOD)
+| Config | ID Quad F1 | ID a+p+c F1 | OOD Aspect F1 | OOD Polarity F1 |
+|---|---|---|---|---|
+| structured (lr=1e-4) | 0.5477 | 0.6333 | 0.5283 | 0.7168 |
+| nl-baseline (lr=3e-4) | 0.5490 | 0.6291 | 0.6797 | 0.8754 |
+| nl-baseline_2 (lr=1e-4) | **0.5515** | **0.6459** | **0.6954** | 0.8742 |
+
+Key findings:
+- NL format helps OOD massively (aspect: 52.8→69.5), consistent with ASTE findings
+- ID quad F1 similar across formats (~55), NL slightly better
+- OOD quad F1 near zero (~2.3-2.9) due to category mismatch across domains
+- Implicit annotations are the main drag: explicit quad F1=58.1 vs implicit=43.2
+- Lower lr (1e-4 vs 3e-4) helps with small dataset (1530 sentences)
+- Category shuffling per example implemented to reduce positional bias
+
+### NL Template Overhaul (completed)
+- New quad template: "{aspect}, related to {category}, is described as {sentiment}, expressing a {polarity} sentiment"
+- Unknown aspect: "an unspecified aspect" replaces {aspect}
+- Unknown sentiment: "{aspect}, related to {category}, carries an implied {polarity} opinion"
+- Annotated implicit: "the implied aspect {term}" prefix (no "is" verb)
+- All combinations round-trip through encoder → parser correctly
+- Updated for ASTE triples as well
+- pos-compact syntax mode added (content words with POS tags, separate Syntax line)
+
+### Implicit Evaluation Modes (completed)
+- `implicit_mode` in config: null, "collapse", "resolve", "full"
+- collapse: IMPLICIT:staff → IMPLICIT (standard benchmark)
+- resolve: IMPLICIT:staff → staff (compare inferred terms)
+- full: runs all three modes, reports separate metrics for each
+- Wired through config → pipeline → model → evaluate
+
+### Focal Loss (completed)
+- `focal_gamma` config option: 0 = disabled, 2.0 = typical
+- Mutually exclusive with label_smoothing (focal takes priority)
+- Downweights easy/frequent predictions, focuses on hard/rare ones
+
+### Data Infrastructure (completed)
+- SemEval 2015/2016 XML loaders: `load_semeval_xml` (flat) and `load_semeval_xml_reviews` (review-grouped)
+- Downloaded original XML data to `downloads/semeval_xml/`
+- Downloaded DMASTE dataset to `downloads/DMASTE/` — 8 Amazon domains, ~40% implicit aspects
+- Terminal annotator tools: `tools/annotate.py` (SemEval XML), `tools/annotate_aste.py` (ASTE format)
+- LLM suggestion tool: `tools/suggest_aspects.py` — Gemma infers implicit aspects, annotator shows as defaults
+- SemEval 2015 Rest: 375 NULL targets (91% resolvable from review context)
+- SemEval 2016 Rest: 627 NULL targets (85% resolvable from review context)
+- DMASTE: 4 domains with train data (beauty, electronics, fashion, home), 4 test-only domains
 
 ## Future Work (Prioritized)
 
@@ -231,12 +345,21 @@ Test: `test.output_format: "natural-language"` to evaluate with NL output.
 | BTF-CCL (2025, SOTA) | 75.88 | 63.29 | 67.68 | 73.80 |
 
 ### Generative (T5/BART-based)
-| Method | 14Res | 14Lap |
+| Method | 14Res | 14Lap | 15Res | 16Res |
+|---|---|---|---|---|
+| GAS (2021) | ~70 | ~58 | — | — |
+| Paraphrase (2021) | ~70 | ~58 | — | — |
+| MvP (T5-base, ACL 2023) | 76.08 | 65.84 | 69.91 | 72.36 |
+| **Ours (nl-baseline, per-dataset)** | **72.4** | — | — | — |
+| **Ours (nl-pos-aux, per-dataset)** | — | — | — | — |
+
+Note: "per-dataset" = standard benchmark setup (train and test on same dataset). Results pending for remaining datasets.
+
+### Generative (multi-restaurant train, non-standard)
+| Method | 14Res | 14Lap (OOD) |
 |---|---|---|
-| GAS (2021) | ~70 | ~58 |
-| Paraphrase (2021) | ~70 | ~58 |
-| **Ours (nl-baseline)** | **71.66** | — |
-| **Ours (nl-dep-compact)** | **70.83** | — |
+| Ours (nl-baseline) | 71.66 | 52.11 |
+| Ours (nl-dep-compact) | 70.83 | **54.14** |
 
 ### OOD (Restaurant → Laptop)
 | Method | 14Res→14Lap |
@@ -246,7 +369,7 @@ Test: `test.output_format: "natural-language"` to evaluate with NL output.
 | **Ours (nl-dep-compact)** | **54.14** (from 70.83 ID, drop=16.7) |
 | **Ours (nl-baseline)** | **52.11** (from 71.66 ID, drop=19.6) |
 
-Note: Our OOD numbers are Restaurant14+15+16 → Laptop14 (train on 3 restaurant datasets, test on laptop). Standard benchmarks train and test on same domain. No direct OOD comparison exists for this exact setup.
+Note: OOD numbers are Restaurant14+15+16 → Laptop14 (train on 3 restaurant datasets, test on laptop). No direct OOD comparison exists for this exact setup.
 
 
 ## Dissertation

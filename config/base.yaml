@@ -11,6 +11,8 @@ model:
   lr_scheduler: "cosine"
   max_new_tokens: 64
   label_smoothing: 0.05
+  focal_gamma: 0.0  # 0 = disabled, 2.0 = typical focal loss
+  optimizer: adamw
 
 generation:
   num_beams: 1
@@ -20,6 +22,11 @@ generation:
   temperature: 1.0
   num_return_sequences: 1
   vote_threshold: 1
+  penalty_alpha: 0.0
+  top_k: 0
+  num_beam_groups: 1
+  diversity_penalty: 0.0
+  constrained_decoding: false
 
 trainer:
   from_checkpoint: null
@@ -34,6 +41,7 @@ trainer:
   reload_dataloaders_every_n_epochs: 1
   deterministic: true
   num_workers: 11
+  strategy: auto
 
 data:
   train_file: "downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/402.Restaurant14/train.txt"
@@ -55,6 +63,7 @@ data:
   #   - epoch: 20
   #     tasks_partition: {full: 1.0}
   syntax_enrichment: null  # null, "dep-tree", "dep-compact", "dep-inline", "pos-inline"
+  category_set: null  # null = auto-extract from data, or list of category strings
   augmentation:
     duplicate: null
     mask_aspects: null
@@ -112,5 +121,6 @@ test:
       tasks: ["aspect", "sentiment", "polarity"]
   filter_implicit: false
   eval_implicit_split: false
+  implicit_mode: null  # null, "collapse" (IMPLICIT:x→IMPLICIT), "resolve" (IMPLICIT:x→x), "full" (exact match)
 
 seed: 42

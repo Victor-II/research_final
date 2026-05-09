@@ -1,0 +1,28 @@
+Epoch 0
+--------------------------------------------------------------------------------
+scope                                type        precision     recall         f1
+--------------------------------------------------------------------------------
+aspect+sentiment+polarity+category   micro          0.5581     0.5349     0.5463
+aspect+polarity+category             micro          0.6518     0.6166     0.6337
+category                             micro          0.8089     0.7902     0.7994
+category                             macro          0.4149     0.4113     0.4085
+category                             SERVICE#GENERAL     0.6012     0.6190     0.6100
+category                             RESTAURANT#PRICES     0.5000     0.5500     0.5238
+category                             DRINKS#PRICES     0.0000     0.0000     0.0000
+category                             AMBIENCE#GENERAL     0.5208     0.6250     0.5682
+category                             RESTAURANT#MISCELLANEOUS     0.2857     0.1212     0.1702
+category                             LOCATION#GENERAL     0.3000     0.2308     0.2609
+category                             FOOD#QUALITY     0.6346     0.5806     0.6064
+category                             FOOD#STYLE_OPTIONS     0.2667     0.2222     0.2424
+category                             RESTAURANT#GENERAL     0.6154     0.5517     0.5818
+category                             DRINKS#QUALITY     0.4800     0.5714     0.5217
+category                             DRINKS#STYLE_OPTIONS     0.3750     0.4286     0.4000
+category                             FOOD#PRICES     0.4000     0.4348     0.4167
+aspect                               micro          0.8222     0.7925     0.8071
+polarity                             micro          0.8808     0.8878     0.8843
+polarity                             macro          0.4907     0.4201     0.4416
+polarity                             neutral        0.4286     0.2045     0.2769
+polarity                             positive       0.6054     0.5727     0.5886
+polarity                             negative       0.4381     0.4829     0.4594
+aspect+sentiment+polarity            micro          0.6330     0.6161     0.6244
+--------------------------------------------------------------------------------

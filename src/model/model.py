@@ -8,6 +8,45 @@ from src.data.data import ABSADataset
 from src.model.utils import gather_floats, gather_string_lists
 
 
+def _patch_t5_stack_for_2d_mask(model):
+    """Patch T5 model to accept 3D (batch, seq, seq) encoder attention masks.
+    Intercepts at the top-level forward to route structured mask to encoder
+    while giving the decoder a standard 1D mask."""
+    _orig_model_forward = model.forward
+
+    def _patched_model_forward(input_ids=None, attention_mask=None, **kwargs):
+        if attention_mask is not None and attention_mask.dim() == 3:
+            model.encoder._structured_mask_override = (
+                (1.0 - attention_mask[:, None, :, :].to(dtype=model.encoder.embed_tokens.weight.dtype)) * -1e4
+            )
+            pad_mask = attention_mask[:, 0, :]
+            result = _orig_model_forward(input_ids=input_ids, attention_mask=pad_mask, **kwargs)
+            model.encoder._structured_mask_override = None
+            return result
+        return _orig_model_forward(input_ids=input_ids, attention_mask=attention_mask, **kwargs)
+
+    model.forward = _patched_model_forward
+
+    # patch each encoder attention layer to use the override mask
+    encoder = model.encoder
+    for block in encoder.block:
+        attn = block.layer[0].SelfAttention
+        _orig_attn = attn.forward
+
+        def _make_patched_attn(orig_fn, enc_ref):
+            def _patched_attn(*args, **kw):
+                override = getattr(enc_ref, '_structured_mask_override', None)
+                if override is not None:
+                    if 'mask' in kw:
+                        kw['mask'] = override
+                    elif len(args) >= 2:
+                        args = (args[0], override) + args[2:]
+                return orig_fn(*args, **kw)
+            return _patched_attn
+
+        attn.forward = _make_patched_attn(_orig_attn, encoder)
+
+
 # ---------------------------------------------------------------------------
 # Lightning Module
 # ---------------------------------------------------------------------------
@@ -33,6 +72,14 @@ class T5ABSAModel(pl.LightningModule):
         temperature: float = 1.0,
         num_return_sequences: int = 1,
         vote_threshold: int = 1,
+        penalty_alpha: float = 0.0,
+        top_k: int = 0,
+        num_beam_groups: int = 1,
+        diversity_penalty: float = 0.0,
+        constrained_decoding: bool = False,
+        structured_attention: bool = False,
+        focal_gamma: float = 0.0,
+        optimizer: str = "adamw",
         train_examples: list[dict] = None,
         val_examples: list[dict] = None,
         test_examples: list[dict] = None,
@@ -67,14 +114,39 @@ class T5ABSAModel(pl.LightningModule):
         self.train_loss_history: list[float] = []
         self.val_loss_history: list[float] = []
         self._results_dir: str | None = None  # set by pipeline for incremental saving
+        self._category_set: list[str] | None = None
 
-    def set_test_data(self, examples: list[dict], scopes: list[dict], data_path: str = ""):
+        if self.hparams.structured_attention:
+            _patch_t5_stack_for_2d_mask(self.model)
+
+    def set_test_data(self, examples: list[dict], scopes: list[dict], data_path: str = "", category_set: list[str] = None):
         self._test_examples = examples
         self._test_scopes = scopes
         self._current_test_data = data_path
+        self._category_set = category_set
 
     def on_train_start(self):
         self.model.train()
+        self.model.config.use_cache = False
+
+    def on_test_start(self):
+        if not self._is_fsdp():
+            self.model.gradient_checkpointing_disable()
+        self.model.config.use_cache = True
+
+    def on_validation_start(self):
+        if not self._is_fsdp():
+            self.model.gradient_checkpointing_disable()
+        self.model.config.use_cache = True
+
+    def on_validation_end(self):
+        if not self._is_fsdp():
+            self.model.gradient_checkpointing_enable()
+        self.model.config.use_cache = False
+
+    def _is_fsdp(self):
+        return hasattr(self, "trainer") and self.trainer is not None and \
+               type(self.trainer.strategy).__name__ == "FSDPStrategy"
 
     def train_dataloader(self):
         if self._task_split_cfg is not None:
@@ -106,17 +178,40 @@ class T5ABSAModel(pl.LightningModule):
                     seed=seed,
                     nl_fraction=cfg.get("nl_fraction", 0.0),
                     infer_implicit=cfg.get("infer_implicit", False),
+                    category_set=cfg.get("category_set"),
+                    bare_prompt=cfg.get("bare_prompt", False),
                 ).values()
                 for ex in part
             ]
+
+            # mix in auxiliary syntax prediction examples
+            aux_frac = cfg.get("syntax_auxiliary_fraction", 0.0)
+            if aux_frac > 0 and cfg.get("syntax_enrichment"):
+                import random as _rnd
+                from src.data.data import to_syntax_auxiliary, enrich_syntax_auxiliary
+                aux_canonical = cfg.get("_aux_canonical")
+                if aux_canonical is None:
+                    aux_canonical = enrich_syntax_auxiliary(list(cfg["canonical"]))
+                    cfg["_aux_canonical"] = aux_canonical
+                aux_tasks = cfg.get("syntax_auxiliary_tasks", ["dep"])
+                n_aux = int(len(examples) * aux_frac)
+                rng = _rnd.Random(seed)
+                for _ in range(n_aux):
+                    src = rng.choice(aux_canonical)
+                    task = rng.choice(aux_tasks)
+                    aux_ex = to_syntax_auxiliary(src, task=task)
+                    if aux_ex:
+                        examples.append(aux_ex)
         else:
             examples = self._train_examples
-        ds = ABSADataset(examples, self.tokenizer, self.hparams.max_length)
+        ds = ABSADataset(examples, self.tokenizer, self.hparams.max_length,
+                         structured_attention=self.hparams.structured_attention)
         return DataLoader(ds, batch_size=self.hparams.batch_size, shuffle=True,
                           num_workers=self.hparams.num_workers, persistent_workers=True)
 
     def val_dataloader(self):
-        ds = ABSADataset(self._val_examples, self.tokenizer, self.hparams.max_length)
+        ds = ABSADataset(self._val_examples, self.tokenizer, self.hparams.max_length,
+                         structured_attention=self.hparams.structured_attention)
         return DataLoader(ds, batch_size=self.hparams.val_batch_size,
                           num_workers=self.hparams.num_workers, persistent_workers=True)
 
@@ -134,9 +229,19 @@ class T5ABSAModel(pl.LightningModule):
             attention_mask=batch["attention_mask"],
             labels=batch["labels"],
         )
-        if self.hparams.label_smoothing > 0:
-            logits = out.logits
-            labels = batch["labels"]
+        logits = out.logits
+        labels = batch["labels"]
+
+        if self.hparams.focal_gamma > 0:
+            # focal loss: (1 - p_t)^gamma * CE
+            ce = torch.nn.functional.cross_entropy(
+                logits.view(-1, logits.size(-1)), labels.view(-1),
+                ignore_index=-100, reduction="none",
+            )
+            p_t = torch.exp(-ce)  # probability of correct token
+            focal_weight = (1 - p_t) ** self.hparams.focal_gamma
+            loss = (focal_weight * ce).mean()
+        elif self.hparams.label_smoothing > 0:
             loss_fn = torch.nn.CrossEntropyLoss(
                 ignore_index=-100,
                 label_smoothing=self.hparams.label_smoothing,
@@ -144,6 +249,7 @@ class T5ABSAModel(pl.LightningModule):
             loss = loss_fn(logits.view(-1, logits.size(-1)), labels.view(-1))
         else:
             loss = out.loss
+
         self._train_losses.append(loss.item())
         self.log("train_loss", loss, prog_bar=True, sync_dist=True, batch_size=self.hparams.batch_size)
         return loss
@@ -157,9 +263,14 @@ class T5ABSAModel(pl.LightningModule):
         self._val_losses.append(loss.item())
         self.log("val_loss", loss, prog_bar=True, sync_dist=True, batch_size=self.hparams.batch_size)
 
+        # for generate, use 1D padding mask (generate rejects 3D)
+        gen_mask = batch["attention_mask"]
+        if gen_mask.dim() == 3:
+            gen_mask = gen_mask[:, 0, :]
+
         output_ids = self.model.generate(
             input_ids=batch["input_ids"],
-            attention_mask=batch["attention_mask"],
+            attention_mask=gen_mask,
             max_new_tokens=self.hparams.max_new_tokens,
             num_beams=self.hparams.num_beams,
             repetition_penalty=self.hparams.repetition_penalty,
@@ -189,7 +300,8 @@ class T5ABSAModel(pl.LightningModule):
         val_f1 = torch.tensor(0.0, device=self.device)
 
         if self.global_rank == 0:
-            metrics = evaluate(all_preds, all_golds, self._eval_scopes)
+            metrics = evaluate(all_preds, all_golds, self._eval_scopes,
+                               implicit_mode=getattr(self, "_implicit_mode", None))
             val_f1.fill_(metrics[first_scope]["micro"]["f1"])
             self.val_metrics_history.append({"epoch": self.current_epoch, **metrics})
             self.train_loss_history.append(sum(self._train_losses) / len(self._train_losses) if self._train_losses else 0.0)
@@ -217,19 +329,46 @@ class T5ABSAModel(pl.LightningModule):
         self._val_losses.clear()
         self._train_losses.clear()
 
-    def test_step(self, batch, batch_idx):
-        n_seq = self.hparams.num_return_sequences
-        gen_kwargs = dict(
+    def _build_gen_kwargs(self, batch):
+        kwargs = dict(
             input_ids=batch["input_ids"],
             attention_mask=batch["attention_mask"],
             max_new_tokens=self.hparams.max_new_tokens,
-            num_beams=self.hparams.num_beams,
             repetition_penalty=self.hparams.repetition_penalty,
             length_penalty=self.hparams.length_penalty,
         )
-        if self.hparams.do_sample:
-            gen_kwargs["do_sample"] = True
-            gen_kwargs["temperature"] = self.hparams.temperature
+        # contrastive search: penalty_alpha > 0 and top_k > 0
+        # NOTE: incompatible with T5 in transformers >= 4.50 (community impl bug)
+        if self.hparams.penalty_alpha > 0 and self.hparams.top_k > 0:
+            raise ValueError("Contrastive search is incompatible with T5 in transformers >= 4.50. "
+                             "Use beam search or diverse beam search instead.")
+        elif self.hparams.do_sample:
+            kwargs["do_sample"] = True
+            kwargs["temperature"] = self.hparams.temperature
+            kwargs["num_beams"] = self.hparams.num_beams
+        else:
+            kwargs["num_beams"] = self.hparams.num_beams
+            # diverse beam search
+            if self.hparams.num_beam_groups > 1:
+                kwargs["num_beam_groups"] = self.hparams.num_beam_groups
+                kwargs["diversity_penalty"] = self.hparams.diversity_penalty
+
+        # constrained decoding for NL templates
+        if self.hparams.constrained_decoding:
+            keys = batch["keys"][0].split(",")
+            fmt = batch["output_format"][0]
+            if fmt == "natural-language":
+                from src.model.constrained import build_logits_processor
+                cat_set = getattr(self, "_category_set", None)
+                processors = build_logits_processor(self.tokenizer, keys, category_set=cat_set)
+                if processors:
+                    kwargs["logits_processor"] = processors
+
+        return kwargs
+
+    def test_step(self, batch, batch_idx):
+        n_seq = self.hparams.num_return_sequences
+        gen_kwargs = self._build_gen_kwargs(batch)
 
         if n_seq <= 1:
             output_ids = self.model.generate(**gen_kwargs)
@@ -265,26 +404,37 @@ class T5ABSAModel(pl.LightningModule):
         if not self._test_preds:
             return
         if self.global_rank == 0:
-            metrics = evaluate(self._test_preds, self._test_golds, self._test_scopes)
+            implicit_mode = getattr(self, "_implicit_mode", None)
+
+            if implicit_mode == "full":
+                # Run all three modes: exact match, collapse (implicit flag only), resolve (term only)
+                metrics = evaluate(self._test_preds, self._test_golds, self._test_scopes, implicit_mode=None)
+                metrics["_collapse"] = evaluate(self._test_preds, self._test_golds, self._test_scopes, implicit_mode="collapse")
+                metrics["_resolve"] = evaluate(self._test_preds, self._test_golds, self._test_scopes, implicit_mode="resolve")
+            else:
+                metrics = evaluate(self._test_preds, self._test_golds, self._test_scopes, implicit_mode=implicit_mode)
+
             entry = {"data": getattr(self, "_current_test_data", ""), **metrics}
 
             if getattr(self, "_eval_implicit_split", False):
                 explicit_preds, explicit_golds = [], []
                 implicit_preds, implicit_golds = [], []
                 for pred_triplets, gold_triplets in zip(self._test_preds, self._test_golds):
-                    ep = [t for t in pred_triplets if t.get("aspect") != "IMPLICIT"]
-                    ip = [t for t in pred_triplets if t.get("aspect") == "IMPLICIT"]
-                    eg = [t for t in gold_triplets if t.get("aspect") != "IMPLICIT"]
-                    ig = [t for t in gold_triplets if t.get("aspect") == "IMPLICIT"]
+                    ep = [t for t in pred_triplets if not t.get("aspect", "").startswith("IMPLICIT")]
+                    ip = [t for t in pred_triplets if t.get("aspect", "").startswith("IMPLICIT")]
+                    eg = [t for t in gold_triplets if not t.get("aspect", "").startswith("IMPLICIT")]
+                    ig = [t for t in gold_triplets if t.get("aspect", "").startswith("IMPLICIT")]
                     explicit_preds.append(ep)
                     explicit_golds.append(eg)
                     implicit_preds.append(ip)
                     implicit_golds.append(ig)
                 if any(g for g in explicit_golds):
-                    explicit_metrics = evaluate(explicit_preds, explicit_golds, self._test_scopes)
+                    explicit_metrics = evaluate(explicit_preds, explicit_golds, self._test_scopes,
+                                                implicit_mode=implicit_mode)
                     entry["explicit"] = explicit_metrics
                 if any(g for g in implicit_golds):
-                    implicit_metrics = evaluate(implicit_preds, implicit_golds, self._test_scopes)
+                    implicit_metrics = evaluate(implicit_preds, implicit_golds, self._test_scopes,
+                                                implicit_mode=implicit_mode)
                     entry["implicit"] = implicit_metrics
 
             self.test_metrics_history.append(entry)
@@ -308,7 +458,11 @@ class T5ABSAModel(pl.LightningModule):
             {"params": [p for n, p in self.model.named_parameters() if any(nd in n for nd in no_decay)],
              "weight_decay": 0.0},
         ]
-        optimizer = torch.optim.AdamW(params, lr=self.hparams.learning_rate)
+        if self.hparams.optimizer == "adamw8bit":
+            import bitsandbytes as bnb
+            optimizer = bnb.optim.AdamW8bit(params, lr=self.hparams.learning_rate)
+        else:
+            optimizer = torch.optim.AdamW(params, lr=self.hparams.learning_rate)
         total_steps = self.trainer.estimated_stepping_batches
         warmup_steps = int(total_steps * self.hparams.warmup_ratio)
         schedulers = {

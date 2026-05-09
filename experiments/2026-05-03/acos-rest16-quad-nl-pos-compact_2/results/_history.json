@@ -1,0 +1,3218 @@
+{
+  "train_loss": [
+    2.6916003165145717,
+    1.3082714242239792,
+    1.0860653923203547,
+    1.0205358012268941,
+    0.9737043405572573,
+    0.9441639215995868,
+    0.9270249934246143,
+    0.9087564355383316,
+    0.8920363001525402,
+    0.8862107532719771,
+    0.8726148338367542,
+    0.8590353888769945,
+    0.8582947763303915,
+    0.8533043997983137,
+    0.8442605957388878,
+    0.8409564439207315,
+    0.8392975299308697,
+    0.8340090891967217,
+    0.8291234696904818,
+    0.8287078024198612,
+    0.8269131872802973,
+    0.8254117500036955,
+    0.8218470625579357,
+    0.8215994536876678,
+    0.8176734627534946,
+    0.8195111441115538,
+    0.8180691332866749,
+    0.8167250690360864,
+    0.8171483514209589,
+    0.8186237855503956
+  ],
+  "val_loss": [
+    0.4146929879983266,
+    0.2090615207950274,
+    0.1649812733133634,
+    0.14593846847613653,
+    0.14180093755324683,
+    0.13224528481562933,
+    0.1273217797279358,
+    0.1255409729977449,
+    0.12450116127729416,
+    0.12385985255241394,
+    0.12393417085210483,
+    0.1228308913608392,
+    0.12386721124251683,
+    0.12525775283575058,
+    0.12324987724423409,
+    0.126544501632452,
+    0.12474345788359642,
+    0.12560243159532547,
+    0.12569428607821465,
+    0.12604322781165442,
+    0.1278075302640597,
+    0.12638022378087044,
+    0.12959468737244606,
+    0.12667837118109068,
+    0.12869016329447427,
+    0.12869265799721083,
+    0.1287043628593286,
+    0.12851311887303987,
+    0.1281171813607216,
+    0.1283185842136542
+  ],
+  "val": [
+    {
+      "epoch": 0,
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.1927710843373494,
+          "recall": 0.12260536398467432,
+          "f1": 0.14988290398126464
+        }
+      },
+      "aspect+polarity+category": {
+        "micro": {
+          "precision": 0.22289156626506024,
+          "recall": 0.1522633744855967,
+          "f1": 0.18092909535452323
+        }
+      },
+      "category": {
+        "micro": {
+          "precision": 0.45180722891566266,
+          "recall": 0.3232758620689655,
+          "f1": 0.3768844221105528
+        },
+        "macro": {
+          "macro": {
+            "precision": 0.06603146853146853,
+            "recall": 0.040940112980481565,
+            "f1": 0.04660001185770413
+          },
+          "per_class": {
+            "FOOD#QUALITY": {
+              "precision": 0.5,
+              "recall": 0.18604651162790697,
+              "f1": 0.2711864406779661
+            },
+            "FOOD#PRICES": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "AMBIENCE#GENERAL": {
+              "precision": 0.09090909090909091,
+              "recall": 0.04,
+              "f1": 0.05555555555555555
+            },
+            "SERVICE#GENERAL": {
+              "precision": 0.08,
+              "recall": 0.13636363636363635,
+              "f1": 0.10084033613445377
+            },
+            "LOCATION#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#STYLE_OPTIONS": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#QUALITY": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "FOOD#STYLE_OPTIONS": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "FOOD#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#PRICES": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "RESTAURANT#MISCELLANEOUS": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "RESTAURANT#GENERAL": {
+              "precision": 0.1875,
+              "recall": 0.16981132075471697,
+              "f1": 0.17821782178217824
+            },
+            "RESTAURANT#PRICES": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            }
+          }
+        }
+      },
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.29518072289156627,
+          "recall": 0.1952191235059761,
+          "f1": 0.23501199040767387
+        }
+      }
+    },
+    {
+      "epoch": 1,
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.2981132075471698,
+          "recall": 0.30268199233716475,
+          "f1": 0.3003802281368821
+        }
+      },
+      "aspect+polarity+category": {
+        "micro": {
+          "precision": 0.38392857142857145,
+          "recall": 0.35390946502057613,
+          "f1": 0.36830835117773025
+        }
+      },
+      "category": {
+        "micro": {
+          "precision": 0.6149732620320856,
+          "recall": 0.4956896551724138,
+          "f1": 0.548926014319809
+        },
+        "macro": {
+          "macro": {
+            "precision": 0.16023684213775213,
+            "recall": 0.13208854331276448,
+            "f1": 0.1321395263340111
+          },
+          "per_class": {
+            "FOOD#QUALITY": {
+              "precision": 0.3492063492063492,
+              "recall": 0.5116279069767442,
+              "f1": 0.41509433962264153
+            },
+            "FOOD#PRICES": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "AMBIENCE#GENERAL": {
+              "precision": 0.2,
+              "recall": 0.04,
+              "f1": 0.06666666666666667
+            },
+            "SERVICE#GENERAL": {
+              "precision": 0.18604651162790697,
+              "recall": 0.36363636363636365,
+              "f1": 0.24615384615384617
+            },
+            "LOCATION#GENERAL": {
+              "precision": 1.0,
+              "recall": 0.5,
+              "f1": 0.6666666666666666
+            },
+            "DRINKS#STYLE_OPTIONS": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#QUALITY": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "FOOD#STYLE_OPTIONS": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "FOOD#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#PRICES": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "RESTAURANT#MISCELLANEOUS": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "RESTAURANT#GENERAL": {
+              "precision": 0.34782608695652173,
+              "recall": 0.3018867924528302,
+              "f1": 0.32323232323232326
+            },
+            "RESTAURANT#PRICES": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            }
+          }
+        }
+      },
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.43018867924528303,
+          "recall": 0.4541832669322709,
+          "f1": 0.4418604651162791
+        }
+      }
+    },
+    {
+      "epoch": 2,
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.42105263157894735,
+          "recall": 0.367816091954023,
+          "f1": 0.3926380368098159
+        }
+      },
+      "aspect+polarity+category": {
+        "micro": {
+          "precision": 0.5308056872037915,
+          "recall": 0.4609053497942387,
+          "f1": 0.4933920704845815
+        }
+      },
+      "category": {
+        "micro": {
+          "precision": 0.7021276595744681,
+          "recall": 0.5689655172413793,
+          "f1": 0.6285714285714287
+        },
+        "macro": {
+          "macro": {
+            "precision": 0.26643578692759023,
+            "recall": 0.1818561429794427,
+            "f1": 0.20340497366006224
+          },
+          "per_class": {
+            "FOOD#QUALITY": {
+              "precision": 0.38524590163934425,
+              "recall": 0.5465116279069767,
+              "f1": 0.45192307692307687
+            },
+            "FOOD#PRICES": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "AMBIENCE#GENERAL": {
+              "precision": 0.4166666666666667,
+              "recall": 0.2,
+              "f1": 0.2702702702702703
+            },
+            "SERVICE#GENERAL": {
+              "precision": 0.5405405405405406,
+              "recall": 0.45454545454545453,
+              "f1": 0.49382716049382713
+            },
+            "LOCATION#GENERAL": {
+              "precision": 0.6666666666666666,
+              "recall": 0.5,
+              "f1": 0.5714285714285715
+            },
+            "DRINKS#STYLE_OPTIONS": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#QUALITY": {
+              "precision": 1.0,
+              "recall": 0.2857142857142857,
+              "f1": 0.4444444444444445
+            },
+            "FOOD#STYLE_OPTIONS": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "FOOD#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#PRICES": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "RESTAURANT#MISCELLANEOUS": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "RESTAURANT#GENERAL": {
+              "precision": 0.45454545454545453,
+              "recall": 0.37735849056603776,
+              "f1": 0.41237113402061865
+            },
+            "RESTAURANT#PRICES": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            }
+          }
+        }
+      },
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.5482456140350878,
+          "recall": 0.49800796812749004,
+          "f1": 0.5219206680584552
+        }
+      }
+    },
+    {
+      "epoch": 3,
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.42016806722689076,
+          "recall": 0.3831417624521073,
+          "f1": 0.40080160320641284
+        }
+      },
+      "aspect+polarity+category": {
+        "micro": {
+          "precision": 0.576036866359447,
+          "recall": 0.51440329218107,
+          "f1": 0.5434782608695652
+        }
+      },
+      "category": {
+        "micro": {
+          "precision": 0.7309644670050761,
+          "recall": 0.6206896551724138,
+          "f1": 0.6713286713286714
+        },
+        "macro": {
+          "macro": {
+            "precision": 0.28904968925571317,
+            "recall": 0.2005372702476695,
+            "f1": 0.21640565911820972
+          },
+          "per_class": {
+            "FOOD#QUALITY": {
+              "precision": 0.42201834862385323,
+              "recall": 0.5348837209302325,
+              "f1": 0.4717948717948718
+            },
+            "FOOD#PRICES": {
+              "precision": 0.2,
+              "recall": 0.14285714285714285,
+              "f1": 0.16666666666666666
+            },
+            "AMBIENCE#GENERAL": {
+              "precision": 0.5294117647058824,
+              "recall": 0.36,
+              "f1": 0.42857142857142855
+            },
+            "SERVICE#GENERAL": {
+              "precision": 0.5625,
+              "recall": 0.4090909090909091,
+              "f1": 0.47368421052631576
+            },
+            "LOCATION#GENERAL": {
+              "precision": 0.3333333333333333,
+              "recall": 0.25,
+              "f1": 0.28571428571428575
+            },
+            "DRINKS#STYLE_OPTIONS": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#QUALITY": {
+              "precision": 1.0,
+              "recall": 0.14285714285714285,
+              "f1": 0.25
+            },
+            "FOOD#STYLE_OPTIONS": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "FOOD#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#PRICES": {
+              "precision": 0.3333333333333333,
+              "recall": 0.3333333333333333,
+              "f1": 0.3333333333333333
+            },
+            "RESTAURANT#MISCELLANEOUS": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "RESTAURANT#GENERAL": {
+              "precision": 0.3770491803278688,
+              "recall": 0.4339622641509434,
+              "f1": 0.40350877192982454
+            },
+            "RESTAURANT#PRICES": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            }
+          }
+        }
+      },
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.5504201680672269,
+          "recall": 0.5219123505976095,
+          "f1": 0.5357873210633947
+        }
+      }
+    },
+    {
+      "epoch": 4,
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.4534412955465587,
+          "recall": 0.42911877394636017,
+          "f1": 0.44094488188976383
+        }
+      },
+      "aspect+polarity+category": {
+        "micro": {
+          "precision": 0.583710407239819,
+          "recall": 0.5308641975308642,
+          "f1": 0.5560344827586208
+        }
+      },
+      "category": {
+        "micro": {
+          "precision": 0.729064039408867,
+          "recall": 0.6379310344827587,
+          "f1": 0.6804597701149425
+        },
+        "macro": {
+          "macro": {
+            "precision": 0.25655590655590654,
+            "recall": 0.22274428876666702,
+            "f1": 0.23113228631293722
+          },
+          "per_class": {
+            "FOOD#QUALITY": {
+              "precision": 0.45045045045045046,
+              "recall": 0.5813953488372093,
+              "f1": 0.5076142131979695
+            },
+            "FOOD#PRICES": {
+              "precision": 0.14285714285714285,
+              "recall": 0.14285714285714285,
+              "f1": 0.14285714285714285
+            },
+            "AMBIENCE#GENERAL": {
+              "precision": 0.5,
+              "recall": 0.52,
+              "f1": 0.5098039215686274
+            },
+            "SERVICE#GENERAL": {
+              "precision": 0.5555555555555556,
+              "recall": 0.45454545454545453,
+              "f1": 0.5
+            },
+            "LOCATION#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#STYLE_OPTIONS": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#QUALITY": {
+              "precision": 0.6666666666666666,
+              "recall": 0.2857142857142857,
+              "f1": 0.4
+            },
+            "FOOD#STYLE_OPTIONS": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "FOOD#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#PRICES": {
+              "precision": 0.3333333333333333,
+              "recall": 0.3333333333333333,
+              "f1": 0.3333333333333333
+            },
+            "RESTAURANT#MISCELLANEOUS": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "RESTAURANT#GENERAL": {
+              "precision": 0.43636363636363634,
+              "recall": 0.4528301886792453,
+              "f1": 0.4444444444444444
+            },
+            "RESTAURANT#PRICES": {
+              "precision": 0.25,
+              "recall": 0.125,
+              "f1": 0.16666666666666666
+            }
+          }
+        }
+      },
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.5650406504065041,
+          "recall": 0.5537848605577689,
+          "f1": 0.5593561368209257
+        }
+      }
+    },
+    {
+      "epoch": 5,
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.50390625,
+          "recall": 0.4942528735632184,
+          "f1": 0.49903288201160545
+        }
+      },
+      "aspect+polarity+category": {
+        "micro": {
+          "precision": 0.6043478260869565,
+          "recall": 0.5720164609053497,
+          "f1": 0.5877378435517969
+        }
+      },
+      "category": {
+        "micro": {
+          "precision": 0.775609756097561,
+          "recall": 0.6853448275862069,
+          "f1": 0.7276887871853547
+        },
+        "macro": {
+          "macro": {
+            "precision": 0.3193810523094411,
+            "recall": 0.29167292192961347,
+            "f1": 0.2870436515541411
+          },
+          "per_class": {
+            "FOOD#QUALITY": {
+              "precision": 0.5555555555555556,
+              "recall": 0.6395348837209303,
+              "f1": 0.5945945945945946
+            },
+            "FOOD#PRICES": {
+              "precision": 0.2222222222222222,
+              "recall": 0.2857142857142857,
+              "f1": 0.25
+            },
+            "AMBIENCE#GENERAL": {
+              "precision": 0.4782608695652174,
+              "recall": 0.44,
+              "f1": 0.4583333333333333
+            },
+            "SERVICE#GENERAL": {
+              "precision": 0.6944444444444444,
+              "recall": 0.5681818181818182,
+              "f1": 0.625
+            },
+            "LOCATION#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#STYLE_OPTIONS": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#QUALITY": {
+              "precision": 0.75,
+              "recall": 0.42857142857142855,
+              "f1": 0.5454545454545454
+            },
+            "FOOD#STYLE_OPTIONS": {
+              "precision": 0.5,
+              "recall": 0.09090909090909091,
+              "f1": 0.15384615384615385
+            },
+            "FOOD#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#PRICES": {
+              "precision": 0.4,
+              "recall": 0.6666666666666666,
+              "f1": 0.5
+            },
+            "RESTAURANT#MISCELLANEOUS": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "RESTAURANT#GENERAL": {
+              "precision": 0.4264705882352941,
+              "recall": 0.5471698113207547,
+              "f1": 0.4793388429752066
+            },
+            "RESTAURANT#PRICES": {
+              "precision": 0.125,
+              "recall": 0.125,
+              "f1": 0.125
+            }
+          }
+        }
+      },
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.6235294117647059,
+          "recall": 0.6334661354581673,
+          "f1": 0.6284584980237155
+        }
+      }
+    },
+    {
+      "epoch": 6,
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.5137254901960784,
+          "recall": 0.5019157088122606,
+          "f1": 0.5077519379844961
+        }
+      },
+      "aspect+polarity+category": {
+        "micro": {
+          "precision": 0.6194690265486725,
+          "recall": 0.5761316872427984,
+          "f1": 0.5970149253731343
+        }
+      },
+      "category": {
+        "micro": {
+          "precision": 0.8090452261306532,
+          "recall": 0.6939655172413793,
+          "f1": 0.7470997679814385
+        },
+        "macro": {
+          "macro": {
+            "precision": 0.33322680903326063,
+            "recall": 0.3169020324417428,
+            "f1": 0.3033406350738635
+          },
+          "per_class": {
+            "FOOD#QUALITY": {
+              "precision": 0.5555555555555556,
+              "recall": 0.6395348837209303,
+              "f1": 0.5945945945945946
+            },
+            "FOOD#PRICES": {
+              "precision": 0.4,
+              "recall": 0.5714285714285714,
+              "f1": 0.47058823529411764
+            },
+            "AMBIENCE#GENERAL": {
+              "precision": 0.43333333333333335,
+              "recall": 0.52,
+              "f1": 0.4727272727272728
+            },
+            "SERVICE#GENERAL": {
+              "precision": 0.7575757575757576,
+              "recall": 0.5681818181818182,
+              "f1": 0.6493506493506495
+            },
+            "LOCATION#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#STYLE_OPTIONS": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#QUALITY": {
+              "precision": 0.75,
+              "recall": 0.42857142857142855,
+              "f1": 0.5454545454545454
+            },
+            "FOOD#STYLE_OPTIONS": {
+              "precision": 0.5,
+              "recall": 0.09090909090909091,
+              "f1": 0.15384615384615385
+            },
+            "FOOD#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#PRICES": {
+              "precision": 0.3333333333333333,
+              "recall": 0.6666666666666666,
+              "f1": 0.4444444444444444
+            },
+            "RESTAURANT#MISCELLANEOUS": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "RESTAURANT#GENERAL": {
+              "precision": 0.43548387096774194,
+              "recall": 0.5094339622641509,
+              "f1": 0.46956521739130436
+            },
+            "RESTAURANT#PRICES": {
+              "precision": 0.16666666666666666,
+              "recall": 0.125,
+              "f1": 0.14285714285714288
+            }
+          }
+        }
+      },
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.6324110671936759,
+          "recall": 0.6374501992031872,
+          "f1": 0.6349206349206349
+        }
+      }
+    },
+    {
+      "epoch": 7,
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.5440613026819924,
+          "recall": 0.5440613026819924,
+          "f1": 0.5440613026819924
+        }
+      },
+      "aspect+polarity+category": {
+        "micro": {
+          "precision": 0.6351931330472103,
+          "recall": 0.6090534979423868,
+          "f1": 0.6218487394957983
+        }
+      },
+      "category": {
+        "micro": {
+          "precision": 0.7761904761904762,
+          "recall": 0.7025862068965517,
+          "f1": 0.7375565610859729
+        },
+        "macro": {
+          "macro": {
+            "precision": 0.42065571296340526,
+            "recall": 0.3964085351535988,
+            "f1": 0.3868884897923834
+          },
+          "per_class": {
+            "FOOD#QUALITY": {
+              "precision": 0.5714285714285714,
+              "recall": 0.6511627906976745,
+              "f1": 0.6086956521739131
+            },
+            "FOOD#PRICES": {
+              "precision": 0.5,
+              "recall": 0.42857142857142855,
+              "f1": 0.4615384615384615
+            },
+            "AMBIENCE#GENERAL": {
+              "precision": 0.45454545454545453,
+              "recall": 0.6,
+              "f1": 0.5172413793103449
+            },
+            "SERVICE#GENERAL": {
+              "precision": 0.7297297297297297,
+              "recall": 0.6136363636363636,
+              "f1": 0.6666666666666666
+            },
+            "LOCATION#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#STYLE_OPTIONS": {
+              "precision": 0.2,
+              "recall": 0.5,
+              "f1": 0.28571428571428575
+            },
+            "DRINKS#QUALITY": {
+              "precision": 1.0,
+              "recall": 0.7142857142857143,
+              "f1": 0.8333333333333333
+            },
+            "FOOD#STYLE_OPTIONS": {
+              "precision": 0.6666666666666666,
+              "recall": 0.18181818181818182,
+              "f1": 0.28571428571428575
+            },
+            "FOOD#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#PRICES": {
+              "precision": 0.5,
+              "recall": 0.6666666666666666,
+              "f1": 0.5714285714285715
+            },
+            "RESTAURANT#MISCELLANEOUS": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "RESTAURANT#GENERAL": {
+              "precision": 0.4461538461538462,
+              "recall": 0.5471698113207547,
+              "f1": 0.4915254237288135
+            },
+            "RESTAURANT#PRICES": {
+              "precision": 0.4,
+              "recall": 0.25,
+              "f1": 0.3076923076923077
+            }
+          }
+        }
+      },
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.6395348837209303,
+          "recall": 0.6573705179282868,
+          "f1": 0.6483300589390962
+        }
+      }
+    },
+    {
+      "epoch": 8,
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.5657370517928287,
+          "recall": 0.5440613026819924,
+          "f1": 0.5546875000000001
+        }
+      },
+      "aspect+polarity+category": {
+        "micro": {
+          "precision": 0.6447368421052632,
+          "recall": 0.6049382716049383,
+          "f1": 0.6242038216560509
+        }
+      },
+      "category": {
+        "micro": {
+          "precision": 0.7884615384615384,
+          "recall": 0.7068965517241379,
+          "f1": 0.7454545454545455
+        },
+        "macro": {
+          "macro": {
+            "precision": 0.441136976807521,
+            "recall": 0.41962500714146167,
+            "f1": 0.41324017811776415
+          },
+          "per_class": {
+            "FOOD#QUALITY": {
+              "precision": 0.5876288659793815,
+              "recall": 0.6627906976744186,
+              "f1": 0.6229508196721312
+            },
+            "FOOD#PRICES": {
+              "precision": 0.42857142857142855,
+              "recall": 0.42857142857142855,
+              "f1": 0.42857142857142855
+            },
+            "AMBIENCE#GENERAL": {
+              "precision": 0.46875,
+              "recall": 0.6,
+              "f1": 0.5263157894736842
+            },
+            "SERVICE#GENERAL": {
+              "precision": 0.6086956521739131,
+              "recall": 0.6363636363636364,
+              "f1": 0.6222222222222223
+            },
+            "LOCATION#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#STYLE_OPTIONS": {
+              "precision": 0.6666666666666666,
+              "recall": 1.0,
+              "f1": 0.8
+            },
+            "DRINKS#QUALITY": {
+              "precision": 1.0,
+              "recall": 0.42857142857142855,
+              "f1": 0.6
+            },
+            "FOOD#STYLE_OPTIONS": {
+              "precision": 0.5,
+              "recall": 0.2727272727272727,
+              "f1": 0.3529411764705882
+            },
+            "FOOD#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#PRICES": {
+              "precision": 0.5,
+              "recall": 0.6666666666666666,
+              "f1": 0.5714285714285715
+            },
+            "RESTAURANT#MISCELLANEOUS": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "RESTAURANT#GENERAL": {
+              "precision": 0.574468085106383,
+              "recall": 0.5094339622641509,
+              "f1": 0.54
+            },
+            "RESTAURANT#PRICES": {
+              "precision": 0.4,
+              "recall": 0.25,
+              "f1": 0.3076923076923077
+            }
+          }
+        }
+      },
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.6613545816733067,
+          "recall": 0.6613545816733067,
+          "f1": 0.6613545816733067
+        }
+      }
+    },
+    {
+      "epoch": 9,
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.5598455598455598,
+          "recall": 0.5555555555555556,
+          "f1": 0.5576923076923077
+        }
+      },
+      "aspect+polarity+category": {
+        "micro": {
+          "precision": 0.6455696202531646,
+          "recall": 0.6296296296296297,
+          "f1": 0.6375
+        }
+      },
+      "category": {
+        "micro": {
+          "precision": 0.7767441860465116,
+          "recall": 0.7198275862068966,
+          "f1": 0.7472035794183446
+        },
+        "macro": {
+          "macro": {
+            "precision": 0.44730641763608797,
+            "recall": 0.4143135349366152,
+            "f1": 0.4138592920102259
+          },
+          "per_class": {
+            "FOOD#QUALITY": {
+              "precision": 0.6,
+              "recall": 0.6976744186046512,
+              "f1": 0.6451612903225806
+            },
+            "FOOD#PRICES": {
+              "precision": 0.4444444444444444,
+              "recall": 0.5714285714285714,
+              "f1": 0.5
+            },
+            "AMBIENCE#GENERAL": {
+              "precision": 0.42857142857142855,
+              "recall": 0.6,
+              "f1": 0.5
+            },
+            "SERVICE#GENERAL": {
+              "precision": 0.6923076923076923,
+              "recall": 0.6136363636363636,
+              "f1": 0.6506024096385543
+            },
+            "LOCATION#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#STYLE_OPTIONS": {
+              "precision": 0.3333333333333333,
+              "recall": 0.5,
+              "f1": 0.4
+            },
+            "DRINKS#QUALITY": {
+              "precision": 1.0,
+              "recall": 0.7142857142857143,
+              "f1": 0.8333333333333333
+            },
+            "FOOD#STYLE_OPTIONS": {
+              "precision": 0.2857142857142857,
+              "recall": 0.18181818181818182,
+              "f1": 0.2222222222222222
+            },
+            "FOOD#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#PRICES": {
+              "precision": 0.6666666666666666,
+              "recall": 0.6666666666666666,
+              "f1": 0.6666666666666666
+            },
+            "RESTAURANT#MISCELLANEOUS": {
+              "precision": 0.5,
+              "recall": 0.1,
+              "f1": 0.16666666666666669
+            },
+            "RESTAURANT#GENERAL": {
+              "precision": 0.5306122448979592,
+              "recall": 0.49056603773584906,
+              "f1": 0.5098039215686275
+            },
+            "RESTAURANT#PRICES": {
+              "precision": 0.3333333333333333,
+              "recall": 0.25,
+              "f1": 0.28571428571428575
+            }
+          }
+        }
+      },
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.65625,
+          "recall": 0.6693227091633466,
+          "f1": 0.6627218934911243
+        }
+      }
+    },
+    {
+      "epoch": 10,
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.5783132530120482,
+          "recall": 0.5517241379310345,
+          "f1": 0.5647058823529413
+        }
+      },
+      "aspect+polarity+category": {
+        "micro": {
+          "precision": 0.6637554585152838,
+          "recall": 0.6255144032921811,
+          "f1": 0.6440677966101696
+        }
+      },
+      "category": {
+        "micro": {
+          "precision": 0.8019323671497585,
+          "recall": 0.7155172413793104,
+          "f1": 0.7562642369020501
+        },
+        "macro": {
+          "macro": {
+            "precision": 0.4701166787672947,
+            "recall": 0.3765876189044245,
+            "f1": 0.3847374721809111
+          },
+          "per_class": {
+            "FOOD#QUALITY": {
+              "precision": 0.6595744680851063,
+              "recall": 0.7209302325581395,
+              "f1": 0.6888888888888888
+            },
+            "FOOD#PRICES": {
+              "precision": 0.3333333333333333,
+              "recall": 0.42857142857142855,
+              "f1": 0.375
+            },
+            "AMBIENCE#GENERAL": {
+              "precision": 0.5,
+              "recall": 0.52,
+              "f1": 0.5098039215686274
+            },
+            "SERVICE#GENERAL": {
+              "precision": 0.675,
+              "recall": 0.6136363636363636,
+              "f1": 0.6428571428571429
+            },
+            "LOCATION#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#STYLE_OPTIONS": {
+              "precision": 0.3333333333333333,
+              "recall": 0.5,
+              "f1": 0.4
+            },
+            "DRINKS#QUALITY": {
+              "precision": 1.0,
+              "recall": 0.2857142857142857,
+              "f1": 0.4444444444444445
+            },
+            "FOOD#STYLE_OPTIONS": {
+              "precision": 0.6666666666666666,
+              "recall": 0.18181818181818182,
+              "f1": 0.28571428571428575
+            },
+            "FOOD#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#PRICES": {
+              "precision": 0.5,
+              "recall": 0.6666666666666666,
+              "f1": 0.5714285714285715
+            },
+            "RESTAURANT#MISCELLANEOUS": {
+              "precision": 0.6666666666666666,
+              "recall": 0.2,
+              "f1": 0.30769230769230765
+            },
+            "RESTAURANT#GENERAL": {
+              "precision": 0.49122807017543857,
+              "recall": 0.5283018867924528,
+              "f1": 0.509090909090909
+            },
+            "RESTAURANT#PRICES": {
+              "precision": 0.2857142857142857,
+              "recall": 0.25,
+              "f1": 0.26666666666666666
+            }
+          }
+        }
+      },
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.6842105263157895,
+          "recall": 0.6733067729083665,
+          "f1": 0.678714859437751
+        }
+      }
+    },
+    {
+      "epoch": 11,
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.5945945945945946,
+          "recall": 0.5900383141762452,
+          "f1": 0.5923076923076923
+        }
+      },
+      "aspect+polarity+category": {
+        "micro": {
+          "precision": 0.673728813559322,
+          "recall": 0.654320987654321,
+          "f1": 0.6638830897703549
+        }
+      },
+      "category": {
+        "micro": {
+          "precision": 0.8075117370892019,
+          "recall": 0.7413793103448276,
+          "f1": 0.7730337078651686
+        },
+        "macro": {
+          "macro": {
+            "precision": 0.4553846127826147,
+            "recall": 0.4554594447529946,
+            "f1": 0.4324105464488431
+          },
+          "per_class": {
+            "FOOD#QUALITY": {
+              "precision": 0.6736842105263158,
+              "recall": 0.7441860465116279,
+              "f1": 0.707182320441989
+            },
+            "FOOD#PRICES": {
+              "precision": 0.36363636363636365,
+              "recall": 0.5714285714285714,
+              "f1": 0.4444444444444444
+            },
+            "AMBIENCE#GENERAL": {
+              "precision": 0.4166666666666667,
+              "recall": 0.6,
+              "f1": 0.49180327868852464
+            },
+            "SERVICE#GENERAL": {
+              "precision": 0.7073170731707317,
+              "recall": 0.6590909090909091,
+              "f1": 0.6823529411764706
+            },
+            "LOCATION#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#STYLE_OPTIONS": {
+              "precision": 0.5,
+              "recall": 1.0,
+              "f1": 0.6666666666666666
+            },
+            "DRINKS#QUALITY": {
+              "precision": 0.75,
+              "recall": 0.42857142857142855,
+              "f1": 0.5454545454545454
+            },
+            "FOOD#STYLE_OPTIONS": {
+              "precision": 0.5,
+              "recall": 0.2727272727272727,
+              "f1": 0.3529411764705882
+            },
+            "FOOD#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#PRICES": {
+              "precision": 0.5,
+              "recall": 0.6666666666666666,
+              "f1": 0.5714285714285715
+            },
+            "RESTAURANT#MISCELLANEOUS": {
+              "precision": 0.5,
+              "recall": 0.2,
+              "f1": 0.28571428571428575
+            },
+            "RESTAURANT#GENERAL": {
+              "precision": 0.6086956521739131,
+              "recall": 0.5283018867924528,
+              "f1": 0.5656565656565657
+            },
+            "RESTAURANT#PRICES": {
+              "precision": 0.4,
+              "recall": 0.25,
+              "f1": 0.3076923076923077
+            }
+          }
+        }
+      },
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.6848249027237354,
+          "recall": 0.701195219123506,
+          "f1": 0.6929133858267716
+        }
+      }
+    },
+    {
+      "epoch": 12,
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.601593625498008,
+          "recall": 0.578544061302682,
+          "f1": 0.5898437500000001
+        }
+      },
+      "aspect+polarity+category": {
+        "micro": {
+          "precision": 0.6885964912280702,
+          "recall": 0.6460905349794238,
+          "f1": 0.6666666666666665
+        }
+      },
+      "category": {
+        "micro": {
+          "precision": 0.8106796116504854,
+          "recall": 0.7198275862068966,
+          "f1": 0.7625570776255708
+        },
+        "macro": {
+          "macro": {
+            "precision": 0.4492427076350231,
+            "recall": 0.4181632131215282,
+            "f1": 0.4122229967110283
+          },
+          "per_class": {
+            "FOOD#QUALITY": {
+              "precision": 0.6739130434782609,
+              "recall": 0.7209302325581395,
+              "f1": 0.6966292134831461
+            },
+            "FOOD#PRICES": {
+              "precision": 0.4,
+              "recall": 0.5714285714285714,
+              "f1": 0.47058823529411764
+            },
+            "AMBIENCE#GENERAL": {
+              "precision": 0.4722222222222222,
+              "recall": 0.68,
+              "f1": 0.5573770491803278
+            },
+            "SERVICE#GENERAL": {
+              "precision": 0.6511627906976745,
+              "recall": 0.6363636363636364,
+              "f1": 0.6436781609195402
+            },
+            "LOCATION#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#STYLE_OPTIONS": {
+              "precision": 0.25,
+              "recall": 0.5,
+              "f1": 0.3333333333333333
+            },
+            "DRINKS#QUALITY": {
+              "precision": 0.75,
+              "recall": 0.42857142857142855,
+              "f1": 0.5454545454545454
+            },
+            "FOOD#STYLE_OPTIONS": {
+              "precision": 0.5,
+              "recall": 0.2727272727272727,
+              "f1": 0.3529411764705882
+            },
+            "FOOD#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#PRICES": {
+              "precision": 0.5,
+              "recall": 0.6666666666666666,
+              "f1": 0.5714285714285715
+            },
+            "RESTAURANT#MISCELLANEOUS": {
+              "precision": 0.5,
+              "recall": 0.2,
+              "f1": 0.28571428571428575
+            },
+            "RESTAURANT#GENERAL": {
+              "precision": 0.6428571428571429,
+              "recall": 0.5094339622641509,
+              "f1": 0.568421052631579
+            },
+            "RESTAURANT#PRICES": {
+              "precision": 0.5,
+              "recall": 0.25,
+              "f1": 0.3333333333333333
+            }
+          }
+        }
+      },
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.701195219123506,
+          "recall": 0.701195219123506,
+          "f1": 0.701195219123506
+        }
+      }
+    },
+    {
+      "epoch": 13,
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.6115384615384616,
+          "recall": 0.6091954022988506,
+          "f1": 0.6103646833013436
+        }
+      },
+      "aspect+polarity+category": {
+        "micro": {
+          "precision": 0.6864406779661016,
+          "recall": 0.6666666666666666,
+          "f1": 0.6764091858037579
+        }
+      },
+      "category": {
+        "micro": {
+          "precision": 0.8084112149532711,
+          "recall": 0.7456896551724138,
+          "f1": 0.7757847533632288
+        },
+        "macro": {
+          "macro": {
+            "precision": 0.4858719398872192,
+            "recall": 0.46411931274809726,
+            "f1": 0.45167078808464345
+          },
+          "per_class": {
+            "FOOD#QUALITY": {
+              "precision": 0.6804123711340206,
+              "recall": 0.7674418604651163,
+              "f1": 0.7213114754098361
+            },
+            "FOOD#PRICES": {
+              "precision": 0.5714285714285714,
+              "recall": 0.5714285714285714,
+              "f1": 0.5714285714285714
+            },
+            "AMBIENCE#GENERAL": {
+              "precision": 0.4411764705882353,
+              "recall": 0.6,
+              "f1": 0.5084745762711865
+            },
+            "SERVICE#GENERAL": {
+              "precision": 0.6739130434782609,
+              "recall": 0.7045454545454546,
+              "f1": 0.688888888888889
+            },
+            "LOCATION#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#STYLE_OPTIONS": {
+              "precision": 0.5,
+              "recall": 1.0,
+              "f1": 0.6666666666666666
+            },
+            "DRINKS#QUALITY": {
+              "precision": 0.75,
+              "recall": 0.42857142857142855,
+              "f1": 0.5454545454545454
+            },
+            "FOOD#STYLE_OPTIONS": {
+              "precision": 0.42857142857142855,
+              "recall": 0.2727272727272727,
+              "f1": 0.33333333333333326
+            },
+            "FOOD#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#PRICES": {
+              "precision": 0.6666666666666666,
+              "recall": 0.6666666666666666,
+              "f1": 0.6666666666666666
+            },
+            "RESTAURANT#MISCELLANEOUS": {
+              "precision": 0.5,
+              "recall": 0.1,
+              "f1": 0.16666666666666669
+            },
+            "RESTAURANT#GENERAL": {
+              "precision": 0.6041666666666666,
+              "recall": 0.5471698113207547,
+              "f1": 0.5742574257425742
+            },
+            "RESTAURANT#PRICES": {
+              "precision": 0.5,
+              "recall": 0.375,
+              "f1": 0.42857142857142855
+            }
+          }
+        }
+      },
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.694980694980695,
+          "recall": 0.7171314741035857,
+          "f1": 0.7058823529411764
+        }
+      }
+    },
+    {
+      "epoch": 14,
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.6076923076923076,
+          "recall": 0.6053639846743295,
+          "f1": 0.6065259117082534
+        }
+      },
+      "aspect+polarity+category": {
+        "micro": {
+          "precision": 0.6958333333333333,
+          "recall": 0.6872427983539094,
+          "f1": 0.691511387163561
+        }
+      },
+      "category": {
+        "micro": {
+          "precision": 0.8211009174311926,
+          "recall": 0.771551724137931,
+          "f1": 0.7955555555555555
+        },
+        "macro": {
+          "macro": {
+            "precision": 0.46815727506110283,
+            "recall": 0.48252269304485185,
+            "f1": 0.46284863528625897
+          },
+          "per_class": {
+            "FOOD#QUALITY": {
+              "precision": 0.7,
+              "recall": 0.7325581395348837,
+              "f1": 0.7159090909090908
+            },
+            "FOOD#PRICES": {
+              "precision": 0.5,
+              "recall": 0.5714285714285714,
+              "f1": 0.5333333333333333
+            },
+            "AMBIENCE#GENERAL": {
+              "precision": 0.47058823529411764,
+              "recall": 0.64,
+              "f1": 0.5423728813559322
+            },
+            "SERVICE#GENERAL": {
+              "precision": 0.6744186046511628,
+              "recall": 0.6590909090909091,
+              "f1": 0.6666666666666666
+            },
+            "LOCATION#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#STYLE_OPTIONS": {
+              "precision": 0.5,
+              "recall": 1.0,
+              "f1": 0.6666666666666666
+            },
+            "DRINKS#QUALITY": {
+              "precision": 0.8333333333333334,
+              "recall": 0.7142857142857143,
+              "f1": 0.7692307692307692
+            },
+            "FOOD#STYLE_OPTIONS": {
+              "precision": 0.375,
+              "recall": 0.2727272727272727,
+              "f1": 0.3157894736842105
+            },
+            "FOOD#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#PRICES": {
+              "precision": 0.6666666666666666,
+              "recall": 0.6666666666666666,
+              "f1": 0.6666666666666666
+            },
+            "RESTAURANT#MISCELLANEOUS": {
+              "precision": 0.4,
+              "recall": 0.2,
+              "f1": 0.26666666666666666
+            },
+            "RESTAURANT#GENERAL": {
+              "precision": 0.5660377358490566,
+              "recall": 0.5660377358490566,
+              "f1": 0.5660377358490566
+            },
+            "RESTAURANT#PRICES": {
+              "precision": 0.4,
+              "recall": 0.25,
+              "f1": 0.3076923076923077
+            }
+          }
+        }
+      },
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.6875,
+          "recall": 0.701195219123506,
+          "f1": 0.6942800788954635
+        }
+      }
+    },
+    {
+      "epoch": 15,
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.5962264150943396,
+          "recall": 0.6053639846743295,
+          "f1": 0.6007604562737642
+        }
+      },
+      "aspect+polarity+category": {
+        "micro": {
+          "precision": 0.6721311475409836,
+          "recall": 0.6748971193415638,
+          "f1": 0.6735112936344969
+        }
+      },
+      "category": {
+        "micro": {
+          "precision": 0.7963800904977375,
+          "recall": 0.7586206896551724,
+          "f1": 0.7770419426048565
+        },
+        "macro": {
+          "macro": {
+            "precision": 0.47725627290844685,
+            "recall": 0.49937053366408346,
+            "f1": 0.47804508697808945
+          },
+          "per_class": {
+            "FOOD#QUALITY": {
+              "precision": 0.6666666666666666,
+              "recall": 0.7441860465116279,
+              "f1": 0.7032967032967034
+            },
+            "FOOD#PRICES": {
+              "precision": 0.5,
+              "recall": 0.5714285714285714,
+              "f1": 0.5333333333333333
+            },
+            "AMBIENCE#GENERAL": {
+              "precision": 0.43243243243243246,
+              "recall": 0.64,
+              "f1": 0.5161290322580645
+            },
+            "SERVICE#GENERAL": {
+              "precision": 0.7,
+              "recall": 0.6363636363636364,
+              "f1": 0.6666666666666666
+            },
+            "LOCATION#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#STYLE_OPTIONS": {
+              "precision": 0.6666666666666666,
+              "recall": 1.0,
+              "f1": 0.8
+            },
+            "DRINKS#QUALITY": {
+              "precision": 0.8571428571428571,
+              "recall": 0.8571428571428571,
+              "f1": 0.8571428571428571
+            },
+            "FOOD#STYLE_OPTIONS": {
+              "precision": 0.2727272727272727,
+              "recall": 0.2727272727272727,
+              "f1": 0.2727272727272727
+            },
+            "FOOD#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#PRICES": {
+              "precision": 0.5,
+              "recall": 0.6666666666666666,
+              "f1": 0.5714285714285715
+            },
+            "RESTAURANT#MISCELLANEOUS": {
+              "precision": 0.4,
+              "recall": 0.2,
+              "f1": 0.26666666666666666
+            },
+            "RESTAURANT#GENERAL": {
+              "precision": 0.6086956521739131,
+              "recall": 0.5283018867924528,
+              "f1": 0.5656565656565657
+            },
+            "RESTAURANT#PRICES": {
+              "precision": 0.6,
+              "recall": 0.375,
+              "f1": 0.4615384615384615
+            }
+          }
+        }
+      },
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.6819923371647509,
+          "recall": 0.7091633466135459,
+          "f1": 0.6953125
+        }
+      }
+    },
+    {
+      "epoch": 16,
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.6023166023166023,
+          "recall": 0.5977011494252874,
+          "f1": 0.6
+        }
+      },
+      "aspect+polarity+category": {
+        "micro": {
+          "precision": 0.680672268907563,
+          "recall": 0.6666666666666666,
+          "f1": 0.6735966735966735
+        }
+      },
+      "category": {
+        "micro": {
+          "precision": 0.783410138248848,
+          "recall": 0.7327586206896551,
+          "f1": 0.7572383073496659
+        },
+        "macro": {
+          "macro": {
+            "precision": 0.4750023958098492,
+            "recall": 0.477652563174722,
+            "f1": 0.4626904527422713
+          },
+          "per_class": {
+            "FOOD#QUALITY": {
+              "precision": 0.7159090909090909,
+              "recall": 0.7325581395348837,
+              "f1": 0.7241379310344829
+            },
+            "FOOD#PRICES": {
+              "precision": 0.4444444444444444,
+              "recall": 0.5714285714285714,
+              "f1": 0.5
+            },
+            "AMBIENCE#GENERAL": {
+              "precision": 0.45714285714285713,
+              "recall": 0.64,
+              "f1": 0.5333333333333333
+            },
+            "SERVICE#GENERAL": {
+              "precision": 0.5869565217391305,
+              "recall": 0.6136363636363636,
+              "f1": 0.6
+            },
+            "LOCATION#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#STYLE_OPTIONS": {
+              "precision": 0.6666666666666666,
+              "recall": 1.0,
+              "f1": 0.8
+            },
+            "DRINKS#QUALITY": {
+              "precision": 0.6666666666666666,
+              "recall": 0.5714285714285714,
+              "f1": 0.6153846153846153
+            },
+            "FOOD#STYLE_OPTIONS": {
+              "precision": 0.375,
+              "recall": 0.2727272727272727,
+              "f1": 0.3157894736842105
+            },
+            "FOOD#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#PRICES": {
+              "precision": 0.5,
+              "recall": 0.6666666666666666,
+              "f1": 0.5714285714285715
+            },
+            "RESTAURANT#MISCELLANEOUS": {
+              "precision": 0.4,
+              "recall": 0.2,
+              "f1": 0.26666666666666666
+            },
+            "RESTAURANT#GENERAL": {
+              "precision": 0.6122448979591837,
+              "recall": 0.5660377358490566,
+              "f1": 0.588235294117647
+            },
+            "RESTAURANT#PRICES": {
+              "precision": 0.75,
+              "recall": 0.375,
+              "f1": 0.5
+            }
+          }
+        }
+      },
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.6848249027237354,
+          "recall": 0.701195219123506,
+          "f1": 0.6929133858267716
+        }
+      }
+    },
+    {
+      "epoch": 17,
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.62890625,
+          "recall": 0.6168582375478927,
+          "f1": 0.6228239845261123
+        }
+      },
+      "aspect+polarity+category": {
+        "micro": {
+          "precision": 0.6932773109243697,
+          "recall": 0.6790123456790124,
+          "f1": 0.686070686070686
+        }
+      },
+      "category": {
+        "micro": {
+          "precision": 0.8110599078341014,
+          "recall": 0.7586206896551724,
+          "f1": 0.7839643652561247
+        },
+        "macro": {
+          "macro": {
+            "precision": 0.4910207359470862,
+            "recall": 0.4825037584910336,
+            "f1": 0.47205466521354195
+          },
+          "per_class": {
+            "FOOD#QUALITY": {
+              "precision": 0.7252747252747253,
+              "recall": 0.7674418604651163,
+              "f1": 0.7457627118644067
+            },
+            "FOOD#PRICES": {
+              "precision": 0.6666666666666666,
+              "recall": 0.5714285714285714,
+              "f1": 0.6153846153846153
+            },
+            "AMBIENCE#GENERAL": {
+              "precision": 0.45454545454545453,
+              "recall": 0.6,
+              "f1": 0.5172413793103449
+            },
+            "SERVICE#GENERAL": {
+              "precision": 0.6818181818181818,
+              "recall": 0.6818181818181818,
+              "f1": 0.6818181818181818
+            },
+            "LOCATION#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#STYLE_OPTIONS": {
+              "precision": 0.5,
+              "recall": 1.0,
+              "f1": 0.6666666666666666
+            },
+            "DRINKS#QUALITY": {
+              "precision": 0.8,
+              "recall": 0.5714285714285714,
+              "f1": 0.6666666666666666
+            },
+            "FOOD#STYLE_OPTIONS": {
+              "precision": 0.375,
+              "recall": 0.2727272727272727,
+              "f1": 0.3157894736842105
+            },
+            "FOOD#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#PRICES": {
+              "precision": 0.6666666666666666,
+              "recall": 0.6666666666666666,
+              "f1": 0.6666666666666666
+            },
+            "RESTAURANT#MISCELLANEOUS": {
+              "precision": 0.5,
+              "recall": 0.2,
+              "f1": 0.28571428571428575
+            },
+            "RESTAURANT#GENERAL": {
+              "precision": 0.6382978723404256,
+              "recall": 0.5660377358490566,
+              "f1": 0.6
+            },
+            "RESTAURANT#PRICES": {
+              "precision": 0.375,
+              "recall": 0.375,
+              "f1": 0.375
+            }
+          }
+        }
+      },
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.7114624505928854,
+          "recall": 0.7171314741035857,
+          "f1": 0.7142857142857143
+        }
+      }
+    },
+    {
+      "epoch": 18,
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.6212121212121212,
+          "recall": 0.6283524904214559,
+          "f1": 0.6247619047619047
+        }
+      },
+      "aspect+polarity+category": {
+        "micro": {
+          "precision": 0.689795918367347,
+          "recall": 0.6954732510288066,
+          "f1": 0.6926229508196722
+        }
+      },
+      "category": {
+        "micro": {
+          "precision": 0.8090909090909091,
+          "recall": 0.7672413793103449,
+          "f1": 0.7876106194690267
+        },
+        "macro": {
+          "macro": {
+            "precision": 0.4945323528920281,
+            "recall": 0.506408033242171,
+            "f1": 0.4923392971710487
+          },
+          "per_class": {
+            "FOOD#QUALITY": {
+              "precision": 0.6907216494845361,
+              "recall": 0.7790697674418605,
+              "f1": 0.73224043715847
+            },
+            "FOOD#PRICES": {
+              "precision": 0.5,
+              "recall": 0.5714285714285714,
+              "f1": 0.5333333333333333
+            },
+            "AMBIENCE#GENERAL": {
+              "precision": 0.45714285714285713,
+              "recall": 0.64,
+              "f1": 0.5333333333333333
+            },
+            "SERVICE#GENERAL": {
+              "precision": 0.6829268292682927,
+              "recall": 0.6363636363636364,
+              "f1": 0.6588235294117647
+            },
+            "LOCATION#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#STYLE_OPTIONS": {
+              "precision": 0.6666666666666666,
+              "recall": 1.0,
+              "f1": 0.8
+            },
+            "DRINKS#QUALITY": {
+              "precision": 0.8571428571428571,
+              "recall": 0.8571428571428571,
+              "f1": 0.8571428571428571
+            },
+            "FOOD#STYLE_OPTIONS": {
+              "precision": 0.375,
+              "recall": 0.2727272727272727,
+              "f1": 0.3157894736842105
+            },
+            "FOOD#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#PRICES": {
+              "precision": 0.6666666666666666,
+              "recall": 0.6666666666666666,
+              "f1": 0.6666666666666666
+            },
+            "RESTAURANT#MISCELLANEOUS": {
+              "precision": 0.4,
+              "recall": 0.2,
+              "f1": 0.26666666666666666
+            },
+            "RESTAURANT#GENERAL": {
+              "precision": 0.6326530612244898,
+              "recall": 0.5849056603773585,
+              "f1": 0.6078431372549019
+            },
+            "RESTAURANT#PRICES": {
+              "precision": 0.5,
+              "recall": 0.375,
+              "f1": 0.42857142857142855
+            }
+          }
+        }
+      },
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.6988416988416989,
+          "recall": 0.7211155378486056,
+          "f1": 0.7098039215686275
+        }
+      }
+    },
+    {
+      "epoch": 19,
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.6106870229007634,
+          "recall": 0.6130268199233716,
+          "f1": 0.6118546845124283
+        }
+      },
+      "aspect+polarity+category": {
+        "micro": {
+          "precision": 0.6844262295081968,
+          "recall": 0.6872427983539094,
+          "f1": 0.6858316221765913
+        }
+      },
+      "category": {
+        "micro": {
+          "precision": 0.7901785714285714,
+          "recall": 0.7629310344827587,
+          "f1": 0.7763157894736843
+        },
+        "macro": {
+          "macro": {
+            "precision": 0.488936818429906,
+            "recall": 0.48349489986392136,
+            "f1": 0.4761184561946544
+          },
+          "per_class": {
+            "FOOD#QUALITY": {
+              "precision": 0.6881720430107527,
+              "recall": 0.7441860465116279,
+              "f1": 0.7150837988826816
+            },
+            "FOOD#PRICES": {
+              "precision": 0.5714285714285714,
+              "recall": 0.5714285714285714,
+              "f1": 0.5714285714285714
+            },
+            "AMBIENCE#GENERAL": {
+              "precision": 0.48484848484848486,
+              "recall": 0.64,
+              "f1": 0.5517241379310344
+            },
+            "SERVICE#GENERAL": {
+              "precision": 0.6444444444444445,
+              "recall": 0.6590909090909091,
+              "f1": 0.651685393258427
+            },
+            "LOCATION#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#STYLE_OPTIONS": {
+              "precision": 0.6666666666666666,
+              "recall": 1.0,
+              "f1": 0.8
+            },
+            "DRINKS#QUALITY": {
+              "precision": 0.8,
+              "recall": 0.5714285714285714,
+              "f1": 0.6666666666666666
+            },
+            "FOOD#STYLE_OPTIONS": {
+              "precision": 0.2727272727272727,
+              "recall": 0.2727272727272727,
+              "f1": 0.2727272727272727
+            },
+            "FOOD#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#PRICES": {
+              "precision": 0.6666666666666666,
+              "recall": 0.6666666666666666,
+              "f1": 0.6666666666666666
+            },
+            "RESTAURANT#MISCELLANEOUS": {
+              "precision": 0.5,
+              "recall": 0.2,
+              "f1": 0.28571428571428575
+            },
+            "RESTAURANT#GENERAL": {
+              "precision": 0.6326530612244898,
+              "recall": 0.5849056603773585,
+              "f1": 0.6078431372549019
+            },
+            "RESTAURANT#PRICES": {
+              "precision": 0.42857142857142855,
+              "recall": 0.375,
+              "f1": 0.39999999999999997
+            }
+          }
+        }
+      },
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.6976744186046512,
+          "recall": 0.7171314741035857,
+          "f1": 0.7072691552062869
+        }
+      }
+    },
+    {
+      "epoch": 20,
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.6168582375478927,
+          "recall": 0.6168582375478927,
+          "f1": 0.6168582375478927
+        }
+      },
+      "aspect+polarity+category": {
+        "micro": {
+          "precision": 0.6775510204081633,
+          "recall": 0.6831275720164609,
+          "f1": 0.6803278688524591
+        }
+      },
+      "category": {
+        "micro": {
+          "precision": 0.7873303167420814,
+          "recall": 0.75,
+          "f1": 0.7682119205298014
+        },
+        "macro": {
+          "macro": {
+            "precision": 0.4822467642247862,
+            "recall": 0.4732629992502744,
+            "f1": 0.4686819334945221
+          },
+          "per_class": {
+            "FOOD#QUALITY": {
+              "precision": 0.7252747252747253,
+              "recall": 0.7674418604651163,
+              "f1": 0.7457627118644067
+            },
+            "FOOD#PRICES": {
+              "precision": 0.6666666666666666,
+              "recall": 0.5714285714285714,
+              "f1": 0.6153846153846153
+            },
+            "AMBIENCE#GENERAL": {
+              "precision": 0.45454545454545453,
+              "recall": 0.6,
+              "f1": 0.5172413793103449
+            },
+            "SERVICE#GENERAL": {
+              "precision": 0.62,
+              "recall": 0.7045454545454546,
+              "f1": 0.6595744680851063
+            },
+            "LOCATION#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#STYLE_OPTIONS": {
+              "precision": 0.6666666666666666,
+              "recall": 1.0,
+              "f1": 0.8
+            },
+            "DRINKS#QUALITY": {
+              "precision": 0.6,
+              "recall": 0.42857142857142855,
+              "f1": 0.5
+            },
+            "FOOD#STYLE_OPTIONS": {
+              "precision": 0.42857142857142855,
+              "recall": 0.2727272727272727,
+              "f1": 0.33333333333333326
+            },
+            "FOOD#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#PRICES": {
+              "precision": 0.6666666666666666,
+              "recall": 0.6666666666666666,
+              "f1": 0.6666666666666666
+            },
+            "RESTAURANT#MISCELLANEOUS": {
+              "precision": 0.4,
+              "recall": 0.2,
+              "f1": 0.26666666666666666
+            },
+            "RESTAURANT#GENERAL": {
+              "precision": 0.6122448979591837,
+              "recall": 0.5660377358490566,
+              "f1": 0.588235294117647
+            },
+            "RESTAURANT#PRICES": {
+              "precision": 0.42857142857142855,
+              "recall": 0.375,
+              "f1": 0.39999999999999997
+            }
+          }
+        }
+      },
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.7027027027027027,
+          "recall": 0.7250996015936255,
+          "f1": 0.7137254901960784
+        }
+      }
+    },
+    {
+      "epoch": 21,
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.6197718631178707,
+          "recall": 0.6245210727969349,
+          "f1": 0.6221374045801527
+        }
+      },
+      "aspect+polarity+category": {
+        "micro": {
+          "precision": 0.6979591836734694,
+          "recall": 0.7037037037037037,
+          "f1": 0.7008196721311476
+        }
+      },
+      "category": {
+        "micro": {
+          "precision": 0.793859649122807,
+          "recall": 0.7801724137931034,
+          "f1": 0.7869565217391303
+        },
+        "macro": {
+          "macro": {
+            "precision": 0.4708369992580519,
+            "recall": 0.47830179985291876,
+            "f1": 0.4687911251559632
+          },
+          "per_class": {
+            "FOOD#QUALITY": {
+              "precision": 0.7444444444444445,
+              "recall": 0.7790697674418605,
+              "f1": 0.7613636363636365
+            },
+            "FOOD#PRICES": {
+              "precision": 0.5714285714285714,
+              "recall": 0.5714285714285714,
+              "f1": 0.5714285714285714
+            },
+            "AMBIENCE#GENERAL": {
+              "precision": 0.52,
+              "recall": 0.52,
+              "f1": 0.52
+            },
+            "SERVICE#GENERAL": {
+              "precision": 0.6666666666666666,
+              "recall": 0.6818181818181818,
+              "f1": 0.6741573033707865
+            },
+            "LOCATION#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#STYLE_OPTIONS": {
+              "precision": 0.6666666666666666,
+              "recall": 1.0,
+              "f1": 0.8
+            },
+            "DRINKS#QUALITY": {
+              "precision": 0.6,
+              "recall": 0.42857142857142855,
+              "f1": 0.5
+            },
+            "FOOD#STYLE_OPTIONS": {
+              "precision": 0.2727272727272727,
+              "recall": 0.2727272727272727,
+              "f1": 0.2727272727272727
+            },
+            "FOOD#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#PRICES": {
+              "precision": 0.6666666666666666,
+              "recall": 0.6666666666666666,
+              "f1": 0.6666666666666666
+            },
+            "RESTAURANT#MISCELLANEOUS": {
+              "precision": 0.5,
+              "recall": 0.3,
+              "f1": 0.37499999999999994
+            },
+            "RESTAURANT#GENERAL": {
+              "precision": 0.5789473684210527,
+              "recall": 0.6226415094339622,
+              "f1": 0.6
+            },
+            "RESTAURANT#PRICES": {
+              "precision": 0.3333333333333333,
+              "recall": 0.375,
+              "f1": 0.35294117647058826
+            }
+          }
+        }
+      },
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.7038461538461539,
+          "recall": 0.7290836653386454,
+          "f1": 0.716242661448141
+        }
+      }
+    },
+    {
+      "epoch": 22,
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.6206896551724138,
+          "recall": 0.6206896551724138,
+          "f1": 0.6206896551724138
+        }
+      },
+      "aspect+polarity+category": {
+        "micro": {
+          "precision": 0.6954732510288066,
+          "recall": 0.6954732510288066,
+          "f1": 0.6954732510288066
+        }
+      },
+      "category": {
+        "micro": {
+          "precision": 0.8035714285714286,
+          "recall": 0.7758620689655172,
+          "f1": 0.7894736842105263
+        },
+        "macro": {
+          "macro": {
+            "precision": 0.4652964191560588,
+            "recall": 0.4801015095771568,
+            "f1": 0.4642040541091677
+          },
+          "per_class": {
+            "FOOD#QUALITY": {
+              "precision": 0.7282608695652174,
+              "recall": 0.7790697674418605,
+              "f1": 0.7528089887640451
+            },
+            "FOOD#PRICES": {
+              "precision": 0.5714285714285714,
+              "recall": 0.5714285714285714,
+              "f1": 0.5714285714285714
+            },
+            "AMBIENCE#GENERAL": {
+              "precision": 0.4838709677419355,
+              "recall": 0.6,
+              "f1": 0.5357142857142857
+            },
+            "SERVICE#GENERAL": {
+              "precision": 0.7142857142857143,
+              "recall": 0.6818181818181818,
+              "f1": 0.6976744186046512
+            },
+            "LOCATION#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#STYLE_OPTIONS": {
+              "precision": 0.6666666666666666,
+              "recall": 1.0,
+              "f1": 0.8
+            },
+            "DRINKS#QUALITY": {
+              "precision": 0.5,
+              "recall": 0.42857142857142855,
+              "f1": 0.4615384615384615
+            },
+            "FOOD#STYLE_OPTIONS": {
+              "precision": 0.23076923076923078,
+              "recall": 0.2727272727272727,
+              "f1": 0.24999999999999994
+            },
+            "FOOD#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#PRICES": {
+              "precision": 0.5,
+              "recall": 0.6666666666666666,
+              "f1": 0.5714285714285715
+            },
+            "RESTAURANT#MISCELLANEOUS": {
+              "precision": 0.6,
+              "recall": 0.3,
+              "f1": 0.4
+            },
+            "RESTAURANT#GENERAL": {
+              "precision": 0.625,
+              "recall": 0.5660377358490566,
+              "f1": 0.594059405940594
+            },
+            "RESTAURANT#PRICES": {
+              "precision": 0.42857142857142855,
+              "recall": 0.375,
+              "f1": 0.39999999999999997
+            }
+          }
+        }
+      },
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.7093023255813954,
+          "recall": 0.7290836653386454,
+          "f1": 0.7190569744597249
+        }
+      }
+    },
+    {
+      "epoch": 23,
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.6074074074074074,
+          "recall": 0.6283524904214559,
+          "f1": 0.6177024482109228
+        }
+      },
+      "aspect+polarity+category": {
+        "micro": {
+          "precision": 0.6892430278884463,
+          "recall": 0.7119341563786008,
+          "f1": 0.7004048582995952
+        }
+      },
+      "category": {
+        "micro": {
+          "precision": 0.7947598253275109,
+          "recall": 0.7844827586206896,
+          "f1": 0.7895878524945771
+        },
+        "macro": {
+          "macro": {
+            "precision": 0.4650808838993562,
+            "recall": 0.4972493244652086,
+            "f1": 0.47646246043604157
+          },
+          "per_class": {
+            "FOOD#QUALITY": {
+              "precision": 0.6989247311827957,
+              "recall": 0.7558139534883721,
+              "f1": 0.7262569832402235
+            },
+            "FOOD#PRICES": {
+              "precision": 0.5714285714285714,
+              "recall": 0.5714285714285714,
+              "f1": 0.5714285714285714
+            },
+            "AMBIENCE#GENERAL": {
+              "precision": 0.46875,
+              "recall": 0.6,
+              "f1": 0.5263157894736842
+            },
+            "SERVICE#GENERAL": {
+              "precision": 0.6888888888888889,
+              "recall": 0.7045454545454546,
+              "f1": 0.6966292134831461
+            },
+            "LOCATION#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#STYLE_OPTIONS": {
+              "precision": 0.6666666666666666,
+              "recall": 1.0,
+              "f1": 0.8
+            },
+            "DRINKS#QUALITY": {
+              "precision": 0.7142857142857143,
+              "recall": 0.7142857142857143,
+              "f1": 0.7142857142857143
+            },
+            "FOOD#STYLE_OPTIONS": {
+              "precision": 0.3,
+              "recall": 0.2727272727272727,
+              "f1": 0.28571428571428564
+            },
+            "FOOD#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#PRICES": {
+              "precision": 0.6666666666666666,
+              "recall": 0.6666666666666666,
+              "f1": 0.6666666666666666
+            },
+            "RESTAURANT#MISCELLANEOUS": {
+              "precision": 0.3333333333333333,
+              "recall": 0.2,
+              "f1": 0.25
+            },
+            "RESTAURANT#GENERAL": {
+              "precision": 0.6037735849056604,
+              "recall": 0.6037735849056604,
+              "f1": 0.6037735849056604
+            },
+            "RESTAURANT#PRICES": {
+              "precision": 0.3333333333333333,
+              "recall": 0.375,
+              "f1": 0.35294117647058826
+            }
+          }
+        }
+      },
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.6943396226415094,
+          "recall": 0.7330677290836654,
+          "f1": 0.7131782945736432
+        }
+      }
+    },
+    {
+      "epoch": 24,
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.6127819548872181,
+          "recall": 0.6245210727969349,
+          "f1": 0.618595825426945
+        }
+      },
+      "aspect+polarity+category": {
+        "micro": {
+          "precision": 0.6882591093117408,
+          "recall": 0.6995884773662552,
+          "f1": 0.6938775510204082
+        }
+      },
+      "category": {
+        "micro": {
+          "precision": 0.788546255506608,
+          "recall": 0.771551724137931,
+          "f1": 0.7799564270152505
+        },
+        "macro": {
+          "macro": {
+            "precision": 0.46539550854169903,
+            "recall": 0.49464727535153163,
+            "f1": 0.4740021853989465
+          },
+          "per_class": {
+            "FOOD#QUALITY": {
+              "precision": 0.7415730337078652,
+              "recall": 0.7674418604651163,
+              "f1": 0.7542857142857143
+            },
+            "FOOD#PRICES": {
+              "precision": 0.5,
+              "recall": 0.5714285714285714,
+              "f1": 0.5333333333333333
+            },
+            "AMBIENCE#GENERAL": {
+              "precision": 0.46875,
+              "recall": 0.6,
+              "f1": 0.5263157894736842
+            },
+            "SERVICE#GENERAL": {
+              "precision": 0.6170212765957447,
+              "recall": 0.6590909090909091,
+              "f1": 0.6373626373626374
+            },
+            "LOCATION#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#STYLE_OPTIONS": {
+              "precision": 0.6666666666666666,
+              "recall": 1.0,
+              "f1": 0.8
+            },
+            "DRINKS#QUALITY": {
+              "precision": 0.7142857142857143,
+              "recall": 0.7142857142857143,
+              "f1": 0.7142857142857143
+            },
+            "FOOD#STYLE_OPTIONS": {
+              "precision": 0.2727272727272727,
+              "recall": 0.2727272727272727,
+              "f1": 0.2727272727272727
+            },
+            "FOOD#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#PRICES": {
+              "precision": 0.6666666666666666,
+              "recall": 0.6666666666666666,
+              "f1": 0.6666666666666666
+            },
+            "RESTAURANT#MISCELLANEOUS": {
+              "precision": 0.4,
+              "recall": 0.2,
+              "f1": 0.26666666666666666
+            },
+            "RESTAURANT#GENERAL": {
+              "precision": 0.6274509803921569,
+              "recall": 0.6037735849056604,
+              "f1": 0.6153846153846154
+            },
+            "RESTAURANT#PRICES": {
+              "precision": 0.375,
+              "recall": 0.375,
+              "f1": 0.375
+            }
+          }
+        }
+      },
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.6973180076628352,
+          "recall": 0.7250996015936255,
+          "f1": 0.7109375000000001
+        }
+      }
+    },
+    {
+      "epoch": 25,
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.6150943396226415,
+          "recall": 0.6245210727969349,
+          "f1": 0.6197718631178708
+        }
+      },
+      "aspect+polarity+category": {
+        "micro": {
+          "precision": 0.6869918699186992,
+          "recall": 0.6954732510288066,
+          "f1": 0.6912065439672802
+        }
+      },
+      "category": {
+        "micro": {
+          "precision": 0.7955555555555556,
+          "recall": 0.771551724137931,
+          "f1": 0.7833698030634574
+        },
+        "macro": {
+          "macro": {
+            "precision": 0.45957589353967543,
+            "recall": 0.49712661698401056,
+            "f1": 0.47061288793440903
+          },
+          "per_class": {
+            "FOOD#QUALITY": {
+              "precision": 0.6989247311827957,
+              "recall": 0.7558139534883721,
+              "f1": 0.7262569832402235
+            },
+            "FOOD#PRICES": {
+              "precision": 0.5714285714285714,
+              "recall": 0.5714285714285714,
+              "f1": 0.5714285714285714
+            },
+            "AMBIENCE#GENERAL": {
+              "precision": 0.47058823529411764,
+              "recall": 0.64,
+              "f1": 0.5423728813559322
+            },
+            "SERVICE#GENERAL": {
+              "precision": 0.6666666666666666,
+              "recall": 0.6818181818181818,
+              "f1": 0.6741573033707865
+            },
+            "LOCATION#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#STYLE_OPTIONS": {
+              "precision": 0.6666666666666666,
+              "recall": 1.0,
+              "f1": 0.8
+            },
+            "DRINKS#QUALITY": {
+              "precision": 0.625,
+              "recall": 0.7142857142857143,
+              "f1": 0.6666666666666666
+            },
+            "FOOD#STYLE_OPTIONS": {
+              "precision": 0.2727272727272727,
+              "recall": 0.2727272727272727,
+              "f1": 0.2727272727272727
+            },
+            "FOOD#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#PRICES": {
+              "precision": 0.5,
+              "recall": 0.6666666666666666,
+              "f1": 0.5714285714285715
+            },
+            "RESTAURANT#MISCELLANEOUS": {
+              "precision": 0.4,
+              "recall": 0.2,
+              "f1": 0.26666666666666666
+            },
+            "RESTAURANT#GENERAL": {
+              "precision": 0.6739130434782609,
+              "recall": 0.5849056603773585,
+              "f1": 0.6262626262626263
+            },
+            "RESTAURANT#PRICES": {
+              "precision": 0.42857142857142855,
+              "recall": 0.375,
+              "f1": 0.39999999999999997
+            }
+          }
+        }
+      },
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.7076923076923077,
+          "recall": 0.7330677290836654,
+          "f1": 0.7201565557729943
+        }
+      }
+    },
+    {
+      "epoch": 26,
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.6119402985074627,
+          "recall": 0.6283524904214559,
+          "f1": 0.6200378071833649
+        }
+      },
+      "aspect+polarity+category": {
+        "micro": {
+          "precision": 0.6867469879518072,
+          "recall": 0.7037037037037037,
+          "f1": 0.6951219512195121
+        }
+      },
+      "category": {
+        "micro": {
+          "precision": 0.793859649122807,
+          "recall": 0.7801724137931034,
+          "f1": 0.7869565217391303
+        },
+        "macro": {
+          "macro": {
+            "precision": 0.4655605531181568,
+            "recall": 0.49802107136683704,
+            "f1": 0.4768618575179463
+          },
+          "per_class": {
+            "FOOD#QUALITY": {
+              "precision": 0.7096774193548387,
+              "recall": 0.7674418604651163,
+              "f1": 0.7374301675977655
+            },
+            "FOOD#PRICES": {
+              "precision": 0.5714285714285714,
+              "recall": 0.5714285714285714,
+              "f1": 0.5714285714285714
+            },
+            "AMBIENCE#GENERAL": {
+              "precision": 0.48484848484848486,
+              "recall": 0.64,
+              "f1": 0.5517241379310344
+            },
+            "SERVICE#GENERAL": {
+              "precision": 0.6666666666666666,
+              "recall": 0.6818181818181818,
+              "f1": 0.6741573033707865
+            },
+            "LOCATION#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#STYLE_OPTIONS": {
+              "precision": 0.6666666666666666,
+              "recall": 1.0,
+              "f1": 0.8
+            },
+            "DRINKS#QUALITY": {
+              "precision": 0.7142857142857143,
+              "recall": 0.7142857142857143,
+              "f1": 0.7142857142857143
+            },
+            "FOOD#STYLE_OPTIONS": {
+              "precision": 0.2727272727272727,
+              "recall": 0.2727272727272727,
+              "f1": 0.2727272727272727
+            },
+            "FOOD#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#PRICES": {
+              "precision": 0.6666666666666666,
+              "recall": 0.6666666666666666,
+              "f1": 0.6666666666666666
+            },
+            "RESTAURANT#MISCELLANEOUS": {
+              "precision": 0.3333333333333333,
+              "recall": 0.2,
+              "f1": 0.25
+            },
+            "RESTAURANT#GENERAL": {
+              "precision": 0.6326530612244898,
+              "recall": 0.5849056603773585,
+              "f1": 0.6078431372549019
+            },
+            "RESTAURANT#PRICES": {
+              "precision": 0.3333333333333333,
+              "recall": 0.375,
+              "f1": 0.35294117647058826
+            }
+          }
+        }
+      },
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.6996197718631179,
+          "recall": 0.7330677290836654,
+          "f1": 0.7159533073929961
+        }
+      }
+    },
+    {
+      "epoch": 27,
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.6098484848484849,
+          "recall": 0.6168582375478927,
+          "f1": 0.6133333333333334
+        }
+      },
+      "aspect+polarity+category": {
+        "micro": {
+          "precision": 0.689795918367347,
+          "recall": 0.6954732510288066,
+          "f1": 0.6926229508196722
+        }
+      },
+      "category": {
+        "micro": {
+          "precision": 0.7991071428571429,
+          "recall": 0.771551724137931,
+          "f1": 0.7850877192982456
+        },
+        "macro": {
+          "macro": {
+            "precision": 0.465974146820921,
+            "recall": 0.4830606829180765,
+            "f1": 0.4681851101205915
+          },
+          "per_class": {
+            "FOOD#QUALITY": {
+              "precision": 0.6989247311827957,
+              "recall": 0.7558139534883721,
+              "f1": 0.7262569832402235
+            },
+            "FOOD#PRICES": {
+              "precision": 0.5714285714285714,
+              "recall": 0.5714285714285714,
+              "f1": 0.5714285714285714
+            },
+            "AMBIENCE#GENERAL": {
+              "precision": 0.46875,
+              "recall": 0.6,
+              "f1": 0.5263157894736842
+            },
+            "SERVICE#GENERAL": {
+              "precision": 0.6666666666666666,
+              "recall": 0.6818181818181818,
+              "f1": 0.6741573033707865
+            },
+            "LOCATION#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#STYLE_OPTIONS": {
+              "precision": 0.6666666666666666,
+              "recall": 1.0,
+              "f1": 0.8
+            },
+            "DRINKS#QUALITY": {
+              "precision": 0.6666666666666666,
+              "recall": 0.5714285714285714,
+              "f1": 0.6153846153846153
+            },
+            "FOOD#STYLE_OPTIONS": {
+              "precision": 0.2727272727272727,
+              "recall": 0.2727272727272727,
+              "f1": 0.2727272727272727
+            },
+            "FOOD#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#PRICES": {
+              "precision": 0.6666666666666666,
+              "recall": 0.6666666666666666,
+              "f1": 0.6666666666666666
+            },
+            "RESTAURANT#MISCELLANEOUS": {
+              "precision": 0.4,
+              "recall": 0.2,
+              "f1": 0.26666666666666666
+            },
+            "RESTAURANT#GENERAL": {
+              "precision": 0.6458333333333334,
+              "recall": 0.5849056603773585,
+              "f1": 0.6138613861386139
+            },
+            "RESTAURANT#PRICES": {
+              "precision": 0.3333333333333333,
+              "recall": 0.375,
+              "f1": 0.35294117647058826
+            }
+          }
+        }
+      },
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.7011494252873564,
+          "recall": 0.7290836653386454,
+          "f1": 0.7148437500000001
+        }
+      }
+    },
+    {
+      "epoch": 28,
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.6075471698113207,
+          "recall": 0.6168582375478927,
+          "f1": 0.6121673003802282
+        }
+      },
+      "aspect+polarity+category": {
+        "micro": {
+          "precision": 0.6869918699186992,
+          "recall": 0.6954732510288066,
+          "f1": 0.6912065439672802
+        }
+      },
+      "category": {
+        "micro": {
+          "precision": 0.7920353982300885,
+          "recall": 0.771551724137931,
+          "f1": 0.7816593886462883
+        },
+        "macro": {
+          "macro": {
+            "precision": 0.4655514796018767,
+            "recall": 0.4830606829180765,
+            "f1": 0.46813476291589057
+          },
+          "per_class": {
+            "FOOD#QUALITY": {
+              "precision": 0.6914893617021277,
+              "recall": 0.7558139534883721,
+              "f1": 0.7222222222222223
+            },
+            "FOOD#PRICES": {
+              "precision": 0.5714285714285714,
+              "recall": 0.5714285714285714,
+              "f1": 0.5714285714285714
+            },
+            "AMBIENCE#GENERAL": {
+              "precision": 0.4838709677419355,
+              "recall": 0.6,
+              "f1": 0.5357142857142857
+            },
+            "SERVICE#GENERAL": {
+              "precision": 0.6666666666666666,
+              "recall": 0.6818181818181818,
+              "f1": 0.6741573033707865
+            },
+            "LOCATION#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#STYLE_OPTIONS": {
+              "precision": 0.6666666666666666,
+              "recall": 1.0,
+              "f1": 0.8
+            },
+            "DRINKS#QUALITY": {
+              "precision": 0.6666666666666666,
+              "recall": 0.5714285714285714,
+              "f1": 0.6153846153846153
+            },
+            "FOOD#STYLE_OPTIONS": {
+              "precision": 0.2727272727272727,
+              "recall": 0.2727272727272727,
+              "f1": 0.2727272727272727
+            },
+            "FOOD#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#PRICES": {
+              "precision": 0.6666666666666666,
+              "recall": 0.6666666666666666,
+              "f1": 0.6666666666666666
+            },
+            "RESTAURANT#MISCELLANEOUS": {
+              "precision": 0.4,
+              "recall": 0.2,
+              "f1": 0.26666666666666666
+            },
+            "RESTAURANT#GENERAL": {
+              "precision": 0.6326530612244898,
+              "recall": 0.5849056603773585,
+              "f1": 0.6078431372549019
+            },
+            "RESTAURANT#PRICES": {
+              "precision": 0.3333333333333333,
+              "recall": 0.375,
+              "f1": 0.35294117647058826
+            }
+          }
+        }
+      },
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.6984732824427481,
+          "recall": 0.7290836653386454,
+          "f1": 0.7134502923976609
+        }
+      }
+    },
+    {
+      "epoch": 29,
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.6113207547169811,
+          "recall": 0.6206896551724138,
+          "f1": 0.6159695817490495
+        }
+      },
+      "aspect+polarity+category": {
+        "micro": {
+          "precision": 0.6910569105691057,
+          "recall": 0.6995884773662552,
+          "f1": 0.6952965235173824
+        }
+      },
+      "category": {
+        "micro": {
+          "precision": 0.7929515418502202,
+          "recall": 0.7758620689655172,
+          "f1": 0.784313725490196
+        },
+        "macro": {
+          "macro": {
+            "precision": 0.46668858023696735,
+            "recall": 0.48451206172794586,
+            "f1": 0.46948482807466524
+          },
+          "per_class": {
+            "FOOD#QUALITY": {
+              "precision": 0.6989247311827957,
+              "recall": 0.7558139534883721,
+              "f1": 0.7262569832402235
+            },
+            "FOOD#PRICES": {
+              "precision": 0.5714285714285714,
+              "recall": 0.5714285714285714,
+              "f1": 0.5714285714285714
+            },
+            "AMBIENCE#GENERAL": {
+              "precision": 0.4838709677419355,
+              "recall": 0.6,
+              "f1": 0.5357142857142857
+            },
+            "SERVICE#GENERAL": {
+              "precision": 0.6666666666666666,
+              "recall": 0.6818181818181818,
+              "f1": 0.6741573033707865
+            },
+            "LOCATION#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#STYLE_OPTIONS": {
+              "precision": 0.6666666666666666,
+              "recall": 1.0,
+              "f1": 0.8
+            },
+            "DRINKS#QUALITY": {
+              "precision": 0.6666666666666666,
+              "recall": 0.5714285714285714,
+              "f1": 0.6153846153846153
+            },
+            "FOOD#STYLE_OPTIONS": {
+              "precision": 0.2727272727272727,
+              "recall": 0.2727272727272727,
+              "f1": 0.2727272727272727
+            },
+            "FOOD#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DRINKS#PRICES": {
+              "precision": 0.6666666666666666,
+              "recall": 0.6666666666666666,
+              "f1": 0.6666666666666666
+            },
+            "RESTAURANT#MISCELLANEOUS": {
+              "precision": 0.4,
+              "recall": 0.2,
+              "f1": 0.26666666666666666
+            },
+            "RESTAURANT#GENERAL": {
+              "precision": 0.64,
+              "recall": 0.6037735849056604,
+              "f1": 0.6213592233009708
+            },
+            "RESTAURANT#PRICES": {
+              "precision": 0.3333333333333333,
+              "recall": 0.375,
+              "f1": 0.35294117647058826
+            }
+          }
+        }
+      },
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.6984732824427481,
+          "recall": 0.7290836653386454,
+          "f1": 0.7134502923976609
+        }
+      }
+    }
+  ]
+}

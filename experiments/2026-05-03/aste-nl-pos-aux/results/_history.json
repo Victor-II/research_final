@@ -1,0 +1,44 @@
+{
+  "train_loss": [
+    2.184463369085434,
+    1.0389182345664247,
+    0.9266554412055523
+  ],
+  "val_loss": [
+    3.082162117958069,
+    3.420708990097046,
+    4.215794467926026
+  ],
+  "val": [
+    {
+      "epoch": 0,
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        }
+      }
+    },
+    {
+      "epoch": 1,
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        }
+      }
+    },
+    {
+      "epoch": 2,
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        }
+      }
+    }
+  ]
+}

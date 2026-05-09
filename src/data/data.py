@@ -137,6 +137,76 @@ def filter_implicit_aspects(examples: list[dict]) -> list[dict]:
     return filtered
 
 
+def _parse_semeval_xml_opinion(opinion_el, tokens: list[str]) -> dict:
+    """Parse a single <Opinion> element into canonical annotation format."""
+    target = opinion_el.get("target")
+    aspect_text = "IMPLICIT" if target == "NULL" else target
+    aspect_idx = find_span_indices(tokens, aspect_text) if aspect_text != "IMPLICIT" else None
+    polarity = opinion_el.get("polarity", "").lower()
+    category = opinion_el.get("category") or "NONE"
+    return {
+        "aspect": aspect_text,
+        "aspect_idx": aspect_idx,
+        "sentiment": None,  # SemEval XML doesn't have opinion terms
+        "sentiment_idx": None,
+        "polarity": polarity,
+        "category": category,
+    }
+
+
+def load_semeval_xml(file_path: str) -> list[dict]:
+    """Load SemEval ABSA XML into flat sentence-level canonical format."""
+    import xml.etree.ElementTree as ET
+    tree = ET.parse(file_path)
+    examples = []
+    for sentence in tree.findall(".//sentence"):
+        text = sentence.find("text").text or ""
+        tokens = text.split()
+        opinions = sentence.findall(".//Opinion")
+        if not opinions:
+            continue
+        annotations = [_parse_semeval_xml_opinion(op, tokens) for op in opinions]
+        examples.append({"sentence": text, "tokens": tokens, "annotations": annotations})
+    return examples
+
+
+def load_semeval_xml_reviews(file_path: str) -> list[dict]:
+    """Load SemEval ABSA XML preserving review-level grouping.
+
+    Returns list of review dicts:
+    {
+        "review_id": str,
+        "sentences": [
+            {
+                "sentence_id": str,
+                "sentence": str,
+                "tokens": list[str],
+                "annotations": [canonical annotation dicts],
+            }, ...
+        ]
+    }
+    """
+    import xml.etree.ElementTree as ET
+    tree = ET.parse(file_path)
+    reviews = []
+    for review in tree.findall(".//Review"):
+        rid = review.get("rid")
+        sents = []
+        for sentence in review.findall(".//sentence"):
+            text = sentence.find("text").text or ""
+            tokens = text.split()
+            opinions = sentence.findall(".//Opinion")
+            annotations = [_parse_semeval_xml_opinion(op, tokens) for op in opinions]
+            sents.append({
+                "sentence_id": sentence.get("id"),
+                "sentence": text,
+                "tokens": tokens,
+                "annotations": annotations,
+            })
+        reviews.append({"review_id": rid, "sentences": sents})
+    return reviews
+
+
 def enrich_syntax(examples: list[dict], mode: str) -> list[dict]:
     """Add syntactic annotations to canonical examples. Caches results in '_syntax' field.
     mode: 'dep-tree', 'dep-compact', 'dep-inline', 'pos-inline'
@@ -158,6 +228,108 @@ def enrich_syntax(examples: list[dict], mode: str) -> list[dict]:
             ex["_syntax_tokens"] = [f"{t.text}/{t.dep_}" for t in non_punct]
         elif mode == "pos-inline":
             ex["_syntax_tokens"] = [f"{t.text}/{t.pos_}" for t in non_punct]
+        elif mode == "pos-compact":
+            ex["_syntax"] = " ".join(
+                f"{t.text}/{t.pos_}" for t in non_punct if t.pos_ in CONTENT_POS
+            )
+        elif mode == "dep-nl":
+            DEP_NL = {
+                "nsubj": "is the subject of", "dobj": "is the object of",
+                "amod": "modifies", "advmod": "modifies",
+                "acomp": "describes", "attr": "is an attribute of",
+                "nsubjpass": "is the passive subject of", "pobj": "is the object of",
+                "conj": "is coordinated with", "ROOT": "is the main verb",
+                "compound": "is part of", "neg": "negates",
+                "xcomp": "complements", "ccomp": "complements",
+                "prep": "is a preposition in", "det": "determines",
+                "aux": "is auxiliary to", "relcl": "is modified by a clause about",
+            }
+            parts = []
+            for t in non_punct:
+                if t.pos_ in CONTENT_POS:
+                    rel = DEP_NL.get(t.dep_, f"is related to")
+                    if t.dep_ == "ROOT":
+                        parts.append(f'"{t.text}" is the root')
+                    else:
+                        parts.append(f'"{t.text}" {rel} "{t.head.text}"')
+            ex["_syntax"] = "; ".join(parts)
+        elif mode == "pos-nl":
+            POS_NL = {
+                "NOUN": "noun", "VERB": "verb", "ADJ": "adjective",
+                "ADV": "adverb", "PROPN": "proper noun",
+            }
+            parts = []
+            for t in non_punct:
+                if t.pos_ in CONTENT_POS:
+                    pos_label = POS_NL.get(t.pos_, t.pos_.lower())
+                    parts.append(f'"{t.text}" is a {pos_label}')
+            ex["_syntax"] = "; ".join(parts)
+    return examples
+
+
+# ---------------------------------------------------------------------------
+# Auxiliary syntax prediction tasks
+# ---------------------------------------------------------------------------
+
+def to_syntax_auxiliary(canonical: dict, task: str = "dep") -> dict | None:
+    """Generate an auxiliary syntax prediction example.
+    task: 'dep', 'pos', 'dep-nl', 'pos-nl'.
+    Returns a generative format dict or None if syntax info unavailable."""
+    sentence = canonical["sentence"]
+
+    task_map = {
+        "dep": ("dependency-prediction", "_syntax_dep", "_syntax"),
+        "pos": ("pos-tagging", "_syntax_pos", None),
+        "dep-nl": ("describe-dependencies", "_syntax_dep_nl", None),
+        "pos-nl": ("describe-word-types", "_syntax_pos_nl", None),
+    }
+    if task not in task_map:
+        return None
+
+    task_name, primary_field, fallback_field = task_map[task]
+    target = canonical.get(primary_field)
+    if not target and fallback_field:
+        target = canonical.get(fallback_field)
+    if not target:
+        return None
+
+    return {
+        "input": f"Task: {task_name}\nInput: {sentence}\nOutput:",
+        "target": target,
+        "_keys": [],
+        "_format": "auxiliary",
+    }
+
+
+def enrich_syntax_auxiliary(examples: list[dict]) -> list[dict]:
+    """Add dep and pos strings in both compact and NL formats for auxiliary tasks."""
+    import spacy
+    nlp = spacy.load("en_core_web_sm")
+    CONTENT_POS = {"NOUN", "VERB", "ADJ", "ADV", "PROPN"}
+    DEP_NL = {
+        "nsubj": "is the subject of", "dobj": "is the object of",
+        "amod": "modifies", "advmod": "modifies",
+        "acomp": "describes", "attr": "is an attribute of",
+        "nsubjpass": "is the passive subject of", "pobj": "is the object of",
+        "conj": "is coordinated with", "ROOT": "is the root",
+        "compound": "is part of", "neg": "negates",
+        "xcomp": "complements", "ccomp": "complements",
+    }
+    POS_NL = {"NOUN": "noun", "VERB": "verb", "ADJ": "adjective", "ADV": "adverb", "PROPN": "proper noun"}
+    sentences = [ex["sentence"] for ex in examples]
+    docs = list(nlp.pipe(sentences, batch_size=256))
+    for ex, doc in zip(examples, docs):
+        non_punct = [t for t in doc if not t.is_punct]
+        content = [t for t in non_punct if t.pos_ in CONTENT_POS]
+        ex["_syntax_dep"] = " ".join(f"{t.text}->{t.head.text}:{t.dep_}" for t in content)
+        ex["_syntax_pos"] = " ".join(f"{t.text}/{t.pos_}" for t in content)
+        # NL versions
+        dep_parts = []
+        for t in content:
+            rel = DEP_NL.get(t.dep_, "is related to")
+            dep_parts.append(f'"{t.text}" {rel} "{t.head.text}"' if t.dep_ != "ROOT" else f'"{t.text}" is the root')
+        ex["_syntax_dep_nl"] = "; ".join(dep_parts)
+        ex["_syntax_pos_nl"] = "; ".join(f'"{t.text}" is a {POS_NL.get(t.pos_, t.pos_.lower())}' for t in content)
     return examples
 
 
@@ -181,17 +353,27 @@ _NL_TEMPLATES = {
     # pairs
     frozenset(["aspect", "sentiment"]): "{aspect} is described as {sentiment}",
     frozenset(["aspect", "polarity"]): "the opinion about {aspect} is {polarity}",
-    frozenset(["aspect", "category"]): "{aspect} falls under the category {category}",
+    frozenset(["aspect", "category"]): "{aspect}, related to {category}, is being discussed",
     frozenset(["sentiment", "polarity"]): "the opinion {sentiment} conveys a {polarity} sentiment",
     frozenset(["sentiment", "category"]): "the opinion {sentiment} is about the category {category}",
     frozenset(["polarity", "category"]): "the sentiment toward {category} is {polarity}",
     # triples
     frozenset(["aspect", "sentiment", "polarity"]): "{aspect} is described as {sentiment}, expressing a {polarity} sentiment",
-    frozenset(["aspect", "sentiment", "category"]): "{aspect} is described as {sentiment}, under the category {category}",
-    frozenset(["aspect", "polarity", "category"]): "the {polarity} opinion about {aspect} falls under {category}",
+    frozenset(["aspect", "sentiment", "category"]): "{aspect}, related to {category}, is described as {sentiment}",
+    frozenset(["aspect", "polarity", "category"]): "{aspect}, related to {category}, expresses a {polarity} sentiment",
     frozenset(["sentiment", "polarity", "category"]): "the opinion {sentiment} conveys a {polarity} sentiment about {category}",
     # quad
-    frozenset(["aspect", "sentiment", "polarity", "category"]): "{aspect} is described as {sentiment}, expressing a {polarity} sentiment about {category}",
+    frozenset(["aspect", "sentiment", "polarity", "category"]): "{aspect}, related to {category}, is described as {sentiment}, expressing a {polarity} sentiment",
+}
+
+# Template for quads/triples when sentiment is IMPLICIT
+_NL_TEMPLATES_IMPLICIT_SENTIMENT = {
+    frozenset(["aspect", "sentiment", "polarity", "category"]): "{aspect}, related to {category}, carries an implied {polarity} opinion",
+    frozenset(["aspect", "sentiment", "polarity"]): "{aspect} carries an implied {polarity} opinion",
+    frozenset(["aspect", "sentiment", "category"]): "{aspect}, related to {category}, carries an implied opinion",
+    frozenset(["aspect", "sentiment"]): "{aspect} carries an implied opinion",
+    frozenset(["sentiment", "polarity"]): "an implied opinion conveys a {polarity} sentiment",
+    frozenset(["sentiment", "polarity", "category"]): "an implied opinion conveys a {polarity} sentiment about {category}",
 }
 
 
@@ -199,21 +381,41 @@ def _encode_target_nl(items: list[dict], keys_set: frozenset) -> str:
     template = _NL_TEMPLATES.get(keys_set)
     if not template:
         raise ValueError(f"No natural-language template for keys: {keys_set}")
+    implicit_sent_template = _NL_TEMPLATES_IMPLICIT_SENTIMENT.get(keys_set)
     parts = []
     for d in items:
         d_resolved = dict(d)
-        # handle implicit aspect inference
-        if "aspect" in d_resolved and d_resolved["aspect"].startswith("IMPLIED:"):
-            original_term = d_resolved["aspect"][len("IMPLIED:"):]
-            d_resolved["aspect"] = original_term
-            # use implicit template: replace "{aspect} is" with "the implied aspect is {aspect},"
-            implicit_template = template.replace("{aspect} is", "the implied aspect is {aspect},")
-            if implicit_template == template:
-                # fallback for templates that don't start with "{aspect} is"
-                implicit_template = template.replace("{aspect}", "the implied aspect {aspect}")
-            parts.append(implicit_template.format(**d_resolved))
+        aspect_implicit = False
+        sentiment_implicit = False
+
+        # detect implicit aspect
+        if "aspect" in d_resolved:
+            val = d_resolved["aspect"]
+            if val.startswith("IMPLIED:"):
+                # annotated implicit: we know the original term
+                d_resolved["aspect"] = val[len("IMPLIED:"):]
+                aspect_implicit = "annotated"
+            elif val == "IMPLICIT":
+                # genuinely unknown
+                d_resolved["aspect"] = "an unspecified aspect"
+                aspect_implicit = "unknown"
+
+        # detect implicit sentiment
+        if "sentiment" in d_resolved and d_resolved["sentiment"] == "IMPLICIT":
+            sentiment_implicit = True
+
+        # choose template
+        if sentiment_implicit and implicit_sent_template:
+            tmpl = implicit_sent_template
         else:
-            parts.append(template.format(**d_resolved))
+            tmpl = template
+
+        # apply aspect prefix for annotated implicit
+        if aspect_implicit == "annotated":
+            # "the implied aspect {term}" replaces "{aspect}" — no "is" verb
+            tmpl = tmpl.replace("{aspect}", "the implied aspect {aspect}")
+
+        parts.append(tmpl.format(**d_resolved))
     return " ; ".join(parts)
 
 
@@ -226,7 +428,7 @@ def _decode_target(raw: str, keys: list[str]) -> list[dict]:
     return results
 
 
-def to_generative_format(canonical: dict, tasks: list[Task], output_format: str = "structured", infer_implicit: bool = False) -> dict:
+def to_generative_format(canonical: dict, tasks: list[Task], output_format: str = "structured", infer_implicit: bool = False, category_set: list[str] = None, bare_prompt: bool = False) -> dict:
     if output_format == "natural-language":
         keys = [k for k in CANONICAL_KEY_ORDER if k in {TASK_TO_KEY[t] for t in tasks}]
         task_list = [t for t in [Task.ASPECT, Task.SENTIMENT, Task.POLARITY, Task.CATEGORY] if TASK_TO_KEY[t] in keys]
@@ -247,7 +449,13 @@ def to_generative_format(canonical: dict, tasks: list[Task], output_format: str 
     if "_syntax" in canonical:
         input_text += f"\nSyntax: {canonical['_syntax']}"
 
+    if category_set and "category" in keys:
+        input_text += f"\nCategories: {', '.join(category_set)}"
+
     input_text += f"\nOutput: {'natural language' if output_format == 'natural-language' else 'structured'}"
+
+    if bare_prompt:
+        input_text = input_sentence
 
     annotations = []
     for ann in canonical["annotations"]:
@@ -338,6 +546,8 @@ def split_by_task(
     examples: list[dict] = None,
     nl_fraction: float = 0.0,
     infer_implicit: bool = False,
+    category_set: list[str] = None,
+    bare_prompt: bool = False,
 ) -> dict[tuple[Task, ...], list[dict]]:
     if not tasks_partition:
         raise ValueError("tasks_partition must not be empty")
@@ -367,10 +577,24 @@ def split_by_task(
         for idx in indices[start:end]:
             fmt = "natural-language" if idx in nl_indices else "structured"
             ordered = list(rng.choice(perms) if shuffle_tasks and fmt == "structured" else task_group)
-            partitions[task_group].append(to_generative_format(canonical[idx], ordered, output_format=fmt, infer_implicit=infer_implicit))
+            # shuffle category order per example to prevent positional bias
+            cats = list(category_set) if category_set else None
+            if cats:
+                rng.shuffle(cats)
+            partitions[task_group].append(to_generative_format(canonical[idx], ordered, output_format=fmt, infer_implicit=infer_implicit, category_set=cats, bare_prompt=bare_prompt))
         start = end
 
     return partitions
+
+
+def extract_categories(examples: list[dict]) -> list[str]:
+    cats = set()
+    for ex in examples:
+        for ann in ex["annotations"]:
+            c = ann.get("category")
+            if c and c not in ("NONE", "IMPLICIT"):
+                cats.add(c)
+    return sorted(cats)
 
 
 # ---------------------------------------------------------------------------
@@ -378,10 +602,11 @@ def split_by_task(
 # ---------------------------------------------------------------------------
 
 class ABSADataset(Dataset):
-    def __init__(self, examples: list[dict], tokenizer: AutoTokenizer, max_length: int = 256):
+    def __init__(self, examples: list[dict], tokenizer: AutoTokenizer, max_length: int = 256, structured_attention: bool = False):
         self.examples = examples
         self.tokenizer = tokenizer
         self.max_length = max_length
+        self.structured_attention = structured_attention
 
     def __len__(self):
         return len(self.examples)
@@ -404,7 +629,7 @@ class ABSADataset(Dataset):
         )
         labels = targets["input_ids"].squeeze()
         labels[labels == self.tokenizer.pad_token_id] = -100
-        return {
+        result = {
             "input_ids":      inputs["input_ids"].squeeze(),
             "attention_mask": inputs["attention_mask"].squeeze(),
             "labels":         labels,
@@ -413,3 +638,9 @@ class ABSADataset(Dataset):
             "keys":           ",".join(ex.get("_keys", ["aspect", "sentiment", "polarity"])),
             "output_format":  ex.get("_format", "structured"),
         }
+        if self.structured_attention:
+            from src.data.syntax_mask import build_syntax_attention_mask
+            mask_2d = build_syntax_attention_mask(ex["input"], self.tokenizer, self.max_length)
+            if mask_2d is not None:
+                result["attention_mask"] = mask_2d
+        return result

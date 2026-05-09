@@ -6,7 +6,7 @@ import torch
 import pytorch_lightning as pl
 from pytorch_lightning.callbacks import ModelCheckpoint, EarlyStopping
 
-from src.data.data import split_by_task, load_aste_file, load_silviolima_domain, load_acos_jsonl, to_generative_format, filter_implicit_aspects, enrich_syntax
+from src.data.data import split_by_task, load_aste_file, load_silviolima_domain, load_acos_jsonl, to_generative_format, filter_implicit_aspects, enrich_syntax, extract_categories
 from src.model.model import T5ABSAModel
 from src.eval.eval import save_results, save_metrics_table
 from src.augment.registry import apply_augmentations
@@ -72,8 +72,16 @@ def _prepare_data(cfg: dict):
 
     augmented_train = apply_augmentations(canonical_train, cfg)
 
+    # category set extraction (auto from training data if not specified)
+    category_set = data_cfg.get("category_set", None)
+    if category_set is None:
+        cats = extract_categories(canonical_all)
+        category_set = cats if cats else None
+
     # curriculum config
     curriculum = data_cfg.get("curriculum", None)
+
+    bare_prompt = data_cfg.get("bare_prompt", False)
 
     train_examples = [
         ex
@@ -84,9 +92,26 @@ def _prepare_data(cfg: dict):
             examples=augmented_train,
             nl_fraction=nl_fraction,
             infer_implicit=data_cfg.get("infer_implicit", False),
+            category_set=category_set,
+            bare_prompt=bare_prompt,
         ).values()
         for ex in part
     ]
+
+    # mix in auxiliary syntax prediction examples
+    syntax_aux_fraction = data_cfg.get("syntax_auxiliary_fraction", 0.0)
+    syntax_aux_tasks = data_cfg.get("syntax_auxiliary_tasks", ["dep"])
+    if syntax_aux_fraction > 0 and se:
+        from src.data.data import to_syntax_auxiliary, enrich_syntax_auxiliary
+        aux_canonical = enrich_syntax_auxiliary(list(canonical_train))
+        n_aux = int(len(train_examples) * syntax_aux_fraction)
+        rng_aux = _random.Random(cfg["seed"])
+        for _ in range(n_aux):
+            src_ex = rng_aux.choice(aux_canonical)
+            task = rng_aux.choice(syntax_aux_tasks)
+            aux_ex = to_syntax_auxiliary(src_ex, task=task)
+            if aux_ex:
+                train_examples.append(aux_ex)
 
     # pass config so model can re-split (and re-augment) each epoch
     task_split_cfg = None
@@ -101,14 +126,19 @@ def _prepare_data(cfg: dict):
             "nl_fraction": nl_fraction,
             "infer_implicit": data_cfg.get("infer_implicit", False),
             "curriculum": curriculum,
+            "category_set": category_set,
+            "syntax_auxiliary_fraction": syntax_aux_fraction,
+            "syntax_auxiliary_tasks": syntax_aux_tasks,
+            "syntax_enrichment": se,
+            "bare_prompt": bare_prompt,
         }
 
     val_tasks = _resolve_tasks(cfg["eval"].get("tasks", ["aspect", "sentiment", "polarity"]))
     val_format = cfg["eval"].get("output_format", "structured")
     if canonical_val is not None:
-        val_examples = [to_generative_format(ex, val_tasks, output_format=val_format) for ex in canonical_val]
+        val_examples = [to_generative_format(ex, val_tasks, output_format=val_format, category_set=category_set, bare_prompt=bare_prompt) for ex in canonical_val]
     else:
-        val_examples = [to_generative_format(ex, val_tasks, output_format=val_format) for ex in _load_data(cfg["eval"]["data"], filter_implicit=fi, syntax_enrichment=se)]
+        val_examples = [to_generative_format(ex, val_tasks, output_format=val_format, category_set=category_set, bare_prompt=bare_prompt) for ex in _load_data(cfg["eval"]["data"], filter_implicit=fi, syntax_enrichment=se)]
 
     print(f"Train: {len(train_examples)} | Val: {len(val_examples)}")
     return train_examples, val_examples, task_split_cfg
@@ -134,6 +164,14 @@ def _build_model(cfg: dict, train_examples: list[dict], val_examples: list[dict]
         temperature=g.get("temperature", 1.0),
         num_return_sequences=g.get("num_return_sequences", 1),
         vote_threshold=g.get("vote_threshold", 1),
+        penalty_alpha=g.get("penalty_alpha", 0.0),
+        top_k=g.get("top_k", 0),
+        num_beam_groups=g.get("num_beam_groups", 1),
+        diversity_penalty=g.get("diversity_penalty", 0.0),
+        constrained_decoding=g.get("constrained_decoding", False),
+        structured_attention=cfg.get("data", {}).get("structured_attention", False),
+        focal_gamma=m.get("focal_gamma", 0.0),
+        optimizer=cfg.get("model", {}).get("optimizer", "adamw"),
         label_smoothing=m.get("label_smoothing", 0.0),
         num_workers=cfg["trainer"].get("num_workers", 11),
         train_examples=train_examples,
@@ -185,11 +223,23 @@ def run(cfg: dict, output_dir: Path):
     if es_patience > 0:
         callbacks.append(EarlyStopping(monitor="val_f1", mode="max", patience=es_patience))
     resume_from = t.get("from_checkpoint") or None
+
+    strategy = t.get("strategy", "auto")
+    if strategy == "fsdp":
+        from pytorch_lightning.strategies import FSDPStrategy
+        from transformers.models.t5.modeling_t5 import T5Block
+        strategy = FSDPStrategy(
+            auto_wrap_policy={T5Block},
+            activation_checkpointing_policy={T5Block},
+            state_dict_type="full",
+            limit_all_gathers=True,
+        )
+
     trainer = pl.Trainer(
         max_epochs=t["max_epochs"],
         precision=t["precision"],
         accumulate_grad_batches=t["accumulate_grad_batches"],
-        gradient_clip_val=t.get("gradient_clip_val", 1.0),
+        gradient_clip_val=t.get("gradient_clip_val", 1.0) if strategy == "auto" else None,
         log_every_n_steps=t["log_every_n_steps"],
         limit_train_batches=t["limit_train_batches"],
         num_sanity_val_steps=t["num_sanity_val_steps"],
@@ -198,6 +248,7 @@ def run(cfg: dict, output_dir: Path):
         enable_model_summary=False,
         logger=False,
         callbacks=callbacks,
+        strategy=strategy,
     )
 
     trainer.fit(model, ckpt_path=resume_from)
@@ -218,6 +269,7 @@ def run(cfg: dict, output_dir: Path):
     # test phase (after training)
     if "test" in cfg:
         model._eval_implicit_split = cfg["test"].get("eval_implicit_split", False)
+        model._implicit_mode = cfg["test"].get("implicit_mode", None)
         _run_test(cfg, model, ckpt_dir / "best.ckpt", results_dir, checkpoint_cb=checkpoint_cb)
 
     save_results(
@@ -247,15 +299,28 @@ def test(cfg: dict, checkpoint: str, output_dir: Path):
     fi = cfg.get("data", {}).get("filter_implicit", False)
     se = cfg.get("data", {}).get("syntax_enrichment", None)
     test_format = test_cfg.get("output_format", "structured")
+    bp = cfg.get("data", {}).get("bare_prompt", False)
 
+    def _test_category_set(ds_cfg):
+        cs = ds_cfg.get("category_set") or test_cfg.get("category_set")
+        if cs:
+            return cs
+        # auto-extract from test data
+        test_data = _load_data(ds_cfg["data"], filter_implicit=fi, syntax_enrichment=se)
+        cats = extract_categories(test_data)
+        return cats if cats else None
+
+    first_cats = _test_category_set(first)
     model = T5ABSAModel.load_from_checkpoint(
         str(ckpt_path),
-        test_examples=[to_generative_format(ex, first_tasks, output_format=test_format) for ex in _load_data(first["data"], filter_implicit=fi, syntax_enrichment=se)],
+        test_examples=[to_generative_format(ex, first_tasks, output_format=test_format, category_set=first_cats, bare_prompt=bp) for ex in _load_data(first["data"], filter_implicit=fi, syntax_enrichment=se)],
         test_scopes=first.get("scopes", default_scopes),
         **{k: v for k, v in cfg.get("generation", {}).items() if v is not None},
     )
     model._current_test_data = first["data"]
+    model._category_set = first_cats
     model._eval_implicit_split = test_cfg.get("eval_implicit_split", False)
+    model._implicit_mode = test_cfg.get("implicit_mode", None)
 
     output_dir.mkdir(parents=True, exist_ok=True)
     results_dir = output_dir / "results"
@@ -269,10 +334,12 @@ def test(cfg: dict, checkpoint: str, output_dir: Path):
     for ds in test_cfg["datasets"][1:]:
         scopes = ds.get("scopes", default_scopes)
         ds_tasks = _resolve_tasks(ds.get("tasks", ["aspect", "sentiment", "polarity"]))
+        ds_cats = _test_category_set(ds)
         model.set_test_data(
-            [to_generative_format(ex, ds_tasks, output_format=test_format) for ex in _load_data(ds["data"], filter_implicit=fi, syntax_enrichment=se)],
+            [to_generative_format(ex, ds_tasks, output_format=test_format, category_set=ds_cats, bare_prompt=bp) for ex in _load_data(ds["data"], filter_implicit=fi, syntax_enrichment=se)],
             scopes,
             ds["data"],
+            category_set=ds_cats,
         )
         trainer.test(model)
 
@@ -291,6 +358,7 @@ def _run_test(cfg: dict, model: T5ABSAModel, ckpt_path: Path, results_dir: Path,
     fi = cfg.get("data", {}).get("filter_implicit", False)
     se = cfg.get("data", {}).get("syntax_enrichment", None)
     test_format = test_cfg.get("output_format", "structured")
+    bare_prompt = cfg.get("data", {}).get("bare_prompt", False)
 
     callbacks = [checkpoint_cb] if checkpoint_cb else []
     test_trainer = pl.Trainer(
@@ -303,10 +371,16 @@ def _run_test(cfg: dict, model: T5ABSAModel, ckpt_path: Path, results_dir: Path,
     for ds in test_cfg["datasets"]:
         scopes = ds.get("scopes", default_scopes)
         ds_tasks = _resolve_tasks(ds.get("tasks", ["aspect", "sentiment", "polarity"]))
+        test_data = _load_data(ds["data"], filter_implicit=fi, syntax_enrichment=se)
+        ds_cats = ds.get("category_set") or test_cfg.get("category_set")
+        if not ds_cats:
+            cats = extract_categories(test_data)
+            ds_cats = cats if cats else None
         model.set_test_data(
-            [to_generative_format(ex, ds_tasks, output_format=test_format) for ex in _load_data(ds["data"], filter_implicit=fi, syntax_enrichment=se)],
+            [to_generative_format(ex, ds_tasks, output_format=test_format, category_set=ds_cats, bare_prompt=bare_prompt) for ex in test_data],
             scopes,
             ds["data"],
+            category_set=ds_cats,
         )
         test_trainer.test(model, ckpt_path=ckpt)
         ckpt = None  # only load checkpoint on first call

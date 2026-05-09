@@ -1,0 +1,27 @@
+Epoch 0
+--------------------------------------------------------------------------------
+scope                                type        precision     recall         f1
+--------------------------------------------------------------------------------
+aspect+sentiment+polarity+category   micro          0.5567     0.5415     0.5490
+aspect+polarity+category             micro          0.6434     0.6155     0.6291
+category                             micro          0.8022     0.7793     0.7906
+category                             macro          0.4150     0.4106     0.4079
+category                             FOOD#QUALITY     0.6106     0.6070     0.6088
+category                             FOOD#STYLE_OPTIONS     0.3409     0.2778     0.3061
+category                             RESTAURANT#MISCELLANEOUS     0.1111     0.0909     0.1000
+category                             SERVICE#GENERAL     0.6497     0.6845     0.6667
+category                             DRINKS#PRICES     0.2500     0.2500     0.2500
+category                             RESTAURANT#GENERAL     0.6939     0.4690     0.5597
+category                             LOCATION#GENERAL     0.2308     0.2308     0.2308
+category                             AMBIENCE#GENERAL     0.4766     0.6375     0.5455
+category                             FOOD#PRICES     0.3448     0.4348     0.3846
+category                             DRINKS#QUALITY     0.5385     0.6667     0.5957
+category                             DRINKS#STYLE_OPTIONS     0.5455     0.4286     0.4800
+category                             RESTAURANT#PRICES     0.1875     0.1500     0.1667
+aspect                               micro          0.8284     0.8037     0.8159
+polarity                             micro          0.8931     0.8974     0.8953
+polarity                             macro          0.4861     0.4234     0.4435
+polarity                             negative       0.4115     0.4537     0.4316
+polarity                             positive       0.6121     0.5892     0.6005
+polarity                             neutral        0.4348     0.2273     0.2985
+--------------------------------------------------------------------------------

@@ -1,0 +1,27 @@
+{
+  "train_loss": [],
+  "val_loss": [],
+  "val": [],
+  "test": [
+    {
+      "data": "downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/402.Restaurant14/test.txt",
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.6783867631851086,
+          "recall": 0.6599597585513078,
+          "f1": 0.6690464048954616
+        }
+      }
+    },
+    {
+      "data": "downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/401.Laptop14/test.txt",
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.5020576131687243,
+          "recall": 0.4510166358595194,
+          "f1": 0.47517039922103216
+        }
+      }
+    }
+  ]
+}

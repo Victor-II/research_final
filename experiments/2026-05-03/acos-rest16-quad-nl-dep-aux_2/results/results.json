@@ -1,0 +1,1581 @@
+{
+  "train_loss": [],
+  "val_loss": [],
+  "val": [],
+  "test": [
+    {
+      "data": "downloads/ABSADatasets/datasets/acos_datasets/504.Restaurant16/rest16_quad_test.tsv.jsonl",
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.5604026845637584,
+          "recall": 0.5469432314410481,
+          "f1": 0.5535911602209945
+        }
+      },
+      "aspect+polarity+category": {
+        "micro": {
+          "precision": 0.6468446601941747,
+          "recall": 0.6248534583821805,
+          "f1": 0.6356589147286822
+        }
+      },
+      "category": {
+        "micro": {
+          "precision": 0.8093922651933702,
+          "recall": 0.7983651226158038,
+          "f1": 0.803840877914952
+        },
+        "macro": {
+          "macro": {
+            "precision": 0.43897235025162473,
+            "recall": 0.43599967907652776,
+            "f1": 0.43489653629412706
+          },
+          "per_class": {
+            "RESTAURANT#MISCELLANEOUS": {
+              "precision": 0.2727272727272727,
+              "recall": 0.18181818181818182,
+              "f1": 0.21818181818181817
+            },
+            "AMBIENCE#GENERAL": {
+              "precision": 0.5346534653465347,
+              "recall": 0.675,
+              "f1": 0.5966850828729282
+            },
+            "FOOD#PRICES": {
+              "precision": 0.32142857142857145,
+              "recall": 0.391304347826087,
+              "f1": 0.35294117647058826
+            },
+            "LOCATION#GENERAL": {
+              "precision": 0.38461538461538464,
+              "recall": 0.38461538461538464,
+              "f1": 0.38461538461538464
+            },
+            "DRINKS#STYLE_OPTIONS": {
+              "precision": 0.4,
+              "recall": 0.42857142857142855,
+              "f1": 0.4137931034482759
+            },
+            "DRINKS#PRICES": {
+              "precision": 0.2,
+              "recall": 0.25,
+              "f1": 0.22222222222222224
+            },
+            "RESTAURANT#GENERAL": {
+              "precision": 0.6201550387596899,
+              "recall": 0.5517241379310345,
+              "f1": 0.583941605839416
+            },
+            "SERVICE#GENERAL": {
+              "precision": 0.6069364161849711,
+              "recall": 0.625,
+              "f1": 0.6158357771260997
+            },
+            "FOOD#QUALITY": {
+              "precision": 0.6332288401253918,
+              "recall": 0.592375366568915,
+              "f1": 0.6121212121212122
+            },
+            "RESTAURANT#PRICES": {
+              "precision": 0.3888888888888889,
+              "recall": 0.35,
+              "f1": 0.36842105263157887
+            },
+            "DRINKS#QUALITY": {
+              "precision": 0.5789473684210527,
+              "recall": 0.5238095238095238,
+              "f1": 0.5500000000000002
+            },
+            "FOOD#STYLE_OPTIONS": {
+              "precision": 0.32608695652173914,
+              "recall": 0.2777777777777778,
+              "f1": 0.3
+            }
+          }
+        }
+      },
+      "aspect": {
+        "micro": {
+          "precision": 0.8165829145728644,
+          "recall": 0.8074534161490683,
+          "f1": 0.8119925046845721
+        }
+      },
+      "polarity": {
+        "micro": {
+          "precision": 0.8835725677830941,
+          "recall": 0.8878205128205128,
+          "f1": 0.885691446842526
+        },
+        "macro": {
+          "macro": {
+            "precision": 0.4783086260608014,
+            "recall": 0.41623068731709534,
+            "f1": 0.43299264786005937
+          },
+          "per_class": {
+            "neutral": {
+              "precision": 0.4,
+              "recall": 0.18181818181818182,
+              "f1": 0.25000000000000006
+            },
+            "positive": {
+              "precision": 0.616822429906542,
+              "recall": 0.5937031484257871,
+              "f1": 0.6050420168067226
+            },
+            "negative": {
+              "precision": 0.41810344827586204,
+              "recall": 0.47317073170731705,
+              "f1": 0.44393592677345534
+            }
+          }
+        }
+      },
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.6300448430493274,
+          "recall": 0.6272321428571429,
+          "f1": 0.6286353467561522
+        }
+      },
+      "explicit": {
+        "aspect+sentiment+polarity+category": {
+          "micro": {
+            "precision": 0.5884016973125884,
+            "recall": 0.5917496443812233,
+            "f1": 0.5900709219858156
+          }
+        },
+        "aspect+polarity+category": {
+          "micro": {
+            "precision": 0.6646058732612056,
+            "recall": 0.6677018633540373,
+            "f1": 0.6661502711076686
+          }
+        },
+        "category": {
+          "micro": {
+            "precision": 0.8137432188065099,
+            "recall": 0.8426966292134831,
+            "f1": 0.8279668813247469
+          },
+          "macro": {
+            "macro": {
+              "precision": 0.4696549645476991,
+              "recall": 0.4786266373899628,
+              "f1": 0.47149536448116475
+            },
+            "per_class": {
+              "RESTAURANT#MISCELLANEOUS": {
+                "precision": 0.38461538461538464,
+                "recall": 0.2777777777777778,
+                "f1": 0.3225806451612903
+              },
+              "AMBIENCE#GENERAL": {
+                "precision": 0.5543478260869565,
+                "recall": 0.7083333333333334,
+                "f1": 0.6219512195121951
+              },
+              "FOOD#PRICES": {
+                "precision": 0.36,
+                "recall": 0.4090909090909091,
+                "f1": 0.3829787234042554
+              },
+              "LOCATION#GENERAL": {
+                "precision": 0.45454545454545453,
+                "recall": 0.5,
+                "f1": 0.47619047619047616
+              },
+              "DRINKS#STYLE_OPTIONS": {
+                "precision": 0.4,
+                "recall": 0.46153846153846156,
+                "f1": 0.42857142857142855
+              },
+              "DRINKS#PRICES": {
+                "precision": 0.2,
+                "recall": 0.25,
+                "f1": 0.22222222222222224
+              },
+              "RESTAURANT#GENERAL": {
+                "precision": 0.625,
+                "recall": 0.5833333333333334,
+                "f1": 0.603448275862069
+              },
+              "SERVICE#GENERAL": {
+                "precision": 0.6615384615384615,
+                "recall": 0.7107438016528925,
+                "f1": 0.6852589641434262
+              },
+              "FOOD#QUALITY": {
+                "precision": 0.6597222222222222,
+                "recall": 0.6188925081433225,
+                "f1": 0.638655462184874
+              },
+              "RESTAURANT#PRICES": {
+                "precision": 0.4,
+                "recall": 0.4,
+                "f1": 0.4000000000000001
+              },
+              "DRINKS#QUALITY": {
+                "precision": 0.5789473684210527,
+                "recall": 0.5238095238095238,
+                "f1": 0.5500000000000002
+              },
+              "FOOD#STYLE_OPTIONS": {
+                "precision": 0.35714285714285715,
+                "recall": 0.3,
+                "f1": 0.32608695652173914
+              }
+            }
+          }
+        },
+        "aspect": {
+          "micro": {
+            "precision": 0.8044871794871795,
+            "recall": 0.8256578947368421,
+            "f1": 0.814935064935065
+          }
+        },
+        "polarity": {
+          "micro": {
+            "precision": 0.8333333333333334,
+            "recall": 0.8783783783783784,
+            "f1": 0.855263157894737
+          },
+          "macro": {
+            "macro": {
+              "precision": 0.4777528236174853,
+              "recall": 0.4309013637836853,
+              "f1": 0.4427573926849054
+            },
+            "per_class": {
+              "neutral": {
+                "precision": 0.375,
+                "recall": 0.18181818181818182,
+                "f1": 0.24489795918367344
+              },
+              "positive": {
+                "precision": 0.6437847866419295,
+                "recall": 0.651031894934334,
+                "f1": 0.6473880597014926
+              },
+              "negative": {
+                "precision": 0.4144736842105263,
+                "recall": 0.45985401459854014,
+                "f1": 0.43598615916955014
+              }
+            }
+          }
+        },
+        "aspect+sentiment+polarity": {
+          "micro": {
+            "precision": 0.6430594900849859,
+            "recall": 0.660844250363901,
+            "f1": 0.6518305814788228
+          }
+        }
+      },
+      "implicit": {
+        "aspect+sentiment+polarity+category": {
+          "micro": {
+            "precision": 0.45454545454545453,
+            "recall": 0.39906103286384975,
+            "f1": 0.42499999999999993
+          }
+        },
+        "aspect+polarity+category": {
+          "micro": {
+            "precision": 0.5819209039548022,
+            "recall": 0.49282296650717705,
+            "f1": 0.5336787564766841
+          }
+        },
+        "category": {
+          "micro": {
+            "precision": 0.6818181818181818,
+            "recall": 0.5769230769230769,
+            "f1": 0.6249999999999999
+          },
+          "macro": {
+            "macro": {
+              "precision": 0.227445542453404,
+              "recall": 0.20616082603254066,
+              "f1": 0.21544906115643273
+            },
+            "per_class": {
+              "RESTAURANT#MISCELLANEOUS": {
+                "precision": 0.1111111111111111,
+                "recall": 0.06666666666666667,
+                "f1": 0.08333333333333334
+              },
+              "AMBIENCE#GENERAL": {
+                "precision": 0.3333333333333333,
+                "recall": 0.375,
+                "f1": 0.35294117647058826
+              },
+              "FOOD#PRICES": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "LOCATION#GENERAL": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "DRINKS#STYLE_OPTIONS": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "RESTAURANT#GENERAL": {
+                "precision": 0.6164383561643836,
+                "recall": 0.5294117647058824,
+                "f1": 0.5696202531645569
+              },
+              "SERVICE#GENERAL": {
+                "precision": 0.4418604651162791,
+                "recall": 0.40425531914893614,
+                "f1": 0.4222222222222222
+              },
+              "FOOD#QUALITY": {
+                "precision": 0.3870967741935484,
+                "recall": 0.35294117647058826,
+                "f1": 0.36923076923076925
+              },
+              "RESTAURANT#PRICES": {
+                "precision": 0.38461538461538464,
+                "recall": 0.3333333333333333,
+                "f1": 0.3571428571428571
+              },
+              "FOOD#STYLE_OPTIONS": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              }
+            }
+          }
+        },
+        "aspect": {
+          "micro": {
+            "precision": 0.8604651162790697,
+            "recall": 0.751269035532995,
+            "f1": 0.8021680216802168
+          }
+        },
+        "polarity": {
+          "micro": {
+            "precision": 0.7528735632183908,
+            "recall": 0.6485148514851485,
+            "f1": 0.6968085106382979
+          },
+          "macro": {
+            "macro": {
+              "precision": 0.4669093851132686,
+              "recall": 0.3491632745364089,
+              "f1": 0.3798760786102558
+            },
+            "per_class": {
+              "neutral": {
+                "precision": 0.5,
+                "recall": 0.18181818181818182,
+                "f1": 0.26666666666666666
+              },
+              "positive": {
+                "precision": 0.47572815533980584,
+                "recall": 0.3656716417910448,
+                "f1": 0.41350210970464135
+              },
+              "negative": {
+                "precision": 0.425,
+                "recall": 0.5,
+                "f1": 0.45945945945945943
+              }
+            }
+          }
+        },
+        "aspect+sentiment+polarity": {
+          "micro": {
+            "precision": 0.5806451612903226,
+            "recall": 0.5167464114832536,
+            "f1": 0.5468354430379747
+          }
+        }
+      }
+    },
+    {
+      "data": "downloads/ABSADatasets/datasets/acos_datasets/501.Laptop14/laptop_quad_test.tsv.jsonl",
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.015477214101461736,
+          "recall": 0.015570934256055362,
+          "f1": 0.015523932729624839
+        }
+      },
+      "aspect+polarity+category": {
+        "micro": {
+          "precision": 0.022155085599194362,
+          "recall": 0.021153846153846155,
+          "f1": 0.02164289227742253
+        }
+      },
+      "category": {
+        "micro": {
+          "precision": 0.03587962962962963,
+          "recall": 0.03137651821862348,
+          "f1": 0.033477321814254855
+        },
+        "macro": {
+          "macro": {
+            "precision": 0.006014343354731362,
+            "recall": 0.017110223040014312,
+            "f1": 0.0071389519671527886
+          },
+          "per_class": {
+            "HARD_DISC#OPERATION_PERFORMANCE": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "LAPTOP#USABILITY": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "MEMORY#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "MULTIMEDIA_DEVICES#DESIGN_FEATURES": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "LAPTOP#DESIGN_FEATURES": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "LAPTOP#PRICE": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "PORTS#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "BATTERY#QUALITY": {
+              "precision": 0.09090909090909091,
+              "recall": 0.375,
+              "f1": 0.14634146341463414
+            },
+            "GRAPHICS#OPERATION_PERFORMANCE": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "OPTICAL_DRIVES#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "PORTS#DESIGN_FEATURES": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "POWER_SUPPLY#QUALITY": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "SUPPORT#OPERATION_PERFORMANCE": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "MOUSE#USABILITY": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "FANS&COOLING#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "PORTS#OPERATION_PERFORMANCE": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DISPLAY#QUALITY": {
+              "precision": 0.061224489795918366,
+              "recall": 0.17647058823529413,
+              "f1": 0.09090909090909091
+            },
+            "PORTS#QUALITY": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "SOFTWARE#USABILITY": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "SUPPORT#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "LAPTOP#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "PORTS#USABILITY": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "GRAPHICS#DESIGN_FEATURES": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "KEYBOARD#QUALITY": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "OS#USABILITY": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "LAPTOP#OPERATION_PERFORMANCE": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "SHIPPING#OPERATION_PERFORMANCE": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "SHIPPING#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "HARDWARE#QUALITY": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "MULTIMEDIA_DEVICES#QUALITY": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "HARD_DISC#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "HARDWARE#DESIGN_FEATURES": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "GRAPHICS#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "HARDWARE#OPERATION_PERFORMANCE": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "LAPTOP#QUALITY": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "LAPTOP#CONNECTIVITY": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "OS#DESIGN_FEATURES": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "Out_Of_Scope#DESIGN_FEATURES": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "KEYBOARD#MISCELLANEOUS": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "CPU#GENERAL": {
+              "precision": 0.02564102564102564,
+              "recall": 0.25,
+              "f1": 0.04651162790697674
+            },
+            "CPU#OPERATION_PERFORMANCE": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "HARDWARE#USABILITY": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "LAPTOP#PORTABILITY": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "HARD_DISC#DESIGN_FEATURES": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DISPLAY#USABILITY": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "SOFTWARE#QUALITY": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "KEYBOARD#OPERATION_PERFORMANCE": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "POWER_SUPPLY#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "CPU#QUALITY": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "KEYBOARD#USABILITY": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "OS#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "MOTHERBOARD#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "OS#OPERATION_PERFORMANCE": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "HARDWARE#GENERAL": {
+              "precision": 0.004,
+              "recall": 0.3,
+              "f1": 0.007894736842105263
+            },
+            "MEMORY#OPERATION_PERFORMANCE": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "SHIPPING#QUALITY": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "OS#QUALITY": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "MULTIMEDIA_DEVICES#OPERATION_PERFORMANCE": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "SOFTWARE#OPERATION_PERFORMANCE": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "KEYBOARD#GENERAL": {
+              "precision": 0.18518518518518517,
+              "recall": 0.16129032258064516,
+              "f1": 0.17241379310344826
+            },
+            "POWER_SUPPLY#DESIGN_FEATURES": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "BATTERY#GENERAL": {
+              "precision": 0.1111111111111111,
+              "recall": 0.09090909090909091,
+              "f1": 0.09999999999999999
+            },
+            "POWER_SUPPLY#OPERATION_PERFORMANCE": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DISPLAY#GENERAL": {
+              "precision": 0.00909090909090909,
+              "recall": 0.03225806451612903,
+              "f1": 0.014184397163120567
+            },
+            "MEMORY#DESIGN_FEATURES": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "BATTERY#OPERATION_PERFORMANCE": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "SUPPORT#QUALITY": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "MULTIMEDIA_DEVICES#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "HARD_DISC#QUALITY": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DISPLAY#OPERATION_PERFORMANCE": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "WARRANTY#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "FANS&COOLING#QUALITY": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "KEYBOARD#DESIGN_FEATURES": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "FANS&COOLING#OPERATION_PERFORMANCE": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "BATTERY#DESIGN_FEATURES": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "SOFTWARE#DESIGN_FEATURES": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "PORTS#CONNECTIVITY": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "SOFTWARE#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "MEMORY#USABILITY": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "DISPLAY#DESIGN_FEATURES": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "COMPANY#GENERAL": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            }
+          }
+        }
+      },
+      "aspect": {
+        "micro": {
+          "precision": 0.675365344467641,
+          "recall": 0.6515609264853978,
+          "f1": 0.6632496155817529
+        }
+      },
+      "polarity": {
+        "micro": {
+          "precision": 0.8747099767981439,
+          "recall": 0.8849765258215962,
+          "f1": 0.8798133022170362
+        },
+        "macro": {
+          "macro": {
+            "precision": 0.01007979212656365,
+            "recall": 0.010483679701165101,
+            "f1": 0.010276468204086823
+          },
+          "per_class": {
+            "neutral": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "positive": {
+              "precision": 0.017218543046357615,
+              "recall": 0.018258426966292134,
+              "f1": 0.017723244717109746
+            },
+            "negative": {
+              "precision": 0.013020833333333334,
+              "recall": 0.013192612137203167,
+              "f1": 0.013106159895150722
+            }
+          }
+        }
+      },
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.4702329594477998,
+          "recall": 0.473501303214596,
+          "f1": 0.47186147186147187
+        }
+      },
+      "explicit": {
+        "aspect+sentiment+polarity+category": {
+          "micro": {
+            "precision": 0.02295918367346939,
+            "recall": 0.019522776572668113,
+            "f1": 0.021101992966002348
+          }
+        },
+        "aspect+polarity+category": {
+          "micro": {
+            "precision": 0.03313253012048193,
+            "recall": 0.026347305389221556,
+            "f1": 0.029352901934623084
+          }
+        },
+        "category": {
+          "micro": {
+            "precision": 0.046762589928057555,
+            "recall": 0.03286978508217446,
+            "f1": 0.03860430586488493
+          },
+          "macro": {
+            "macro": {
+              "precision": 0.007480118101531301,
+              "recall": 0.01748862044817927,
+              "f1": 0.008438065595213474
+            },
+            "per_class": {
+              "HARD_DISC#OPERATION_PERFORMANCE": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "LAPTOP#USABILITY": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "MEMORY#GENERAL": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "MULTIMEDIA_DEVICES#DESIGN_FEATURES": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "LAPTOP#DESIGN_FEATURES": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "LAPTOP#PRICE": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "PORTS#GENERAL": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "BATTERY#QUALITY": {
+                "precision": 0.1111111111111111,
+                "recall": 0.375,
+                "f1": 0.17142857142857143
+              },
+              "GRAPHICS#OPERATION_PERFORMANCE": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "OPTICAL_DRIVES#GENERAL": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "PORTS#DESIGN_FEATURES": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "POWER_SUPPLY#QUALITY": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "SUPPORT#OPERATION_PERFORMANCE": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "MOUSE#USABILITY": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "FANS&COOLING#GENERAL": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "PORTS#OPERATION_PERFORMANCE": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "DISPLAY#QUALITY": {
+                "precision": 0.07317073170731707,
+                "recall": 0.17647058823529413,
+                "f1": 0.10344827586206896
+              },
+              "PORTS#QUALITY": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "SOFTWARE#USABILITY": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "SUPPORT#GENERAL": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "LAPTOP#GENERAL": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "PORTS#USABILITY": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "GRAPHICS#DESIGN_FEATURES": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "KEYBOARD#QUALITY": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "OS#USABILITY": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "LAPTOP#OPERATION_PERFORMANCE": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "SHIPPING#OPERATION_PERFORMANCE": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "SHIPPING#GENERAL": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "HARDWARE#QUALITY": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "MULTIMEDIA_DEVICES#QUALITY": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "HARD_DISC#GENERAL": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "HARDWARE#DESIGN_FEATURES": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "GRAPHICS#GENERAL": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "HARDWARE#OPERATION_PERFORMANCE": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "LAPTOP#QUALITY": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "LAPTOP#CONNECTIVITY": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "Out_Of_Scope#DESIGN_FEATURES": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "KEYBOARD#MISCELLANEOUS": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "CPU#GENERAL": {
+                "precision": 0.038461538461538464,
+                "recall": 0.25,
+                "f1": 0.06666666666666668
+              },
+              "CPU#OPERATION_PERFORMANCE": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "HARDWARE#USABILITY": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "LAPTOP#PORTABILITY": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "HARD_DISC#DESIGN_FEATURES": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "DISPLAY#USABILITY": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "SOFTWARE#QUALITY": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "KEYBOARD#OPERATION_PERFORMANCE": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "POWER_SUPPLY#GENERAL": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "CPU#QUALITY": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "KEYBOARD#USABILITY": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "OS#GENERAL": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "MOTHERBOARD#GENERAL": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "OS#OPERATION_PERFORMANCE": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "HARDWARE#GENERAL": {
+                "precision": 0.00641025641025641,
+                "recall": 0.3,
+                "f1": 0.012552301255230127
+              },
+              "MEMORY#OPERATION_PERFORMANCE": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "SHIPPING#QUALITY": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "OS#QUALITY": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "MULTIMEDIA_DEVICES#OPERATION_PERFORMANCE": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "SOFTWARE#OPERATION_PERFORMANCE": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "KEYBOARD#GENERAL": {
+                "precision": 0.23809523809523808,
+                "recall": 0.16666666666666666,
+                "f1": 0.19607843137254902
+              },
+              "POWER_SUPPLY#DESIGN_FEATURES": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "BATTERY#GENERAL": {
+                "precision": 0.11764705882352941,
+                "recall": 0.09523809523809523,
+                "f1": 0.10526315789473684
+              },
+              "POWER_SUPPLY#OPERATION_PERFORMANCE": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "DISPLAY#GENERAL": {
+                "precision": 0.013513513513513514,
+                "recall": 0.03571428571428571,
+                "f1": 0.0196078431372549
+              },
+              "MEMORY#DESIGN_FEATURES": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "BATTERY#OPERATION_PERFORMANCE": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "SUPPORT#QUALITY": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "MULTIMEDIA_DEVICES#GENERAL": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "HARD_DISC#QUALITY": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "DISPLAY#OPERATION_PERFORMANCE": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "WARRANTY#GENERAL": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "FANS&COOLING#QUALITY": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "KEYBOARD#DESIGN_FEATURES": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "FANS&COOLING#OPERATION_PERFORMANCE": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "BATTERY#DESIGN_FEATURES": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "SOFTWARE#DESIGN_FEATURES": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "PORTS#CONNECTIVITY": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "SOFTWARE#GENERAL": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "MEMORY#USABILITY": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "DISPLAY#DESIGN_FEATURES": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "COMPANY#GENERAL": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              }
+            }
+          }
+        },
+        "aspect": {
+          "micro": {
+            "precision": 0.7710280373831776,
+            "recall": 0.6156716417910447,
+            "f1": 0.6846473029045642
+          }
+        },
+        "polarity": {
+          "micro": {
+            "precision": 0.8524590163934426,
+            "recall": 0.6862170087976539,
+            "f1": 0.760357432981316
+          },
+          "macro": {
+            "macro": {
+              "precision": 0.015163504196405492,
+              "recall": 0.013073685972802472,
+              "f1": 0.0139970189377304
+            },
+            "per_class": {
+              "neutral": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "positive": {
+                "precision": 0.02448210922787194,
+                "recall": 0.023297491039426525,
+                "f1": 0.023875114784205693
+              },
+              "negative": {
+                "precision": 0.02100840336134454,
+                "recall": 0.01592356687898089,
+                "f1": 0.018115942028985508
+              }
+            }
+          }
+        },
+        "aspect+sentiment+polarity": {
+          "micro": {
+            "precision": 0.5390524967989757,
+            "recall": 0.45760869565217394,
+            "f1": 0.4950029394473839
+          }
+        }
+      },
+      "implicit": {
+        "aspect+sentiment+polarity+category": {
+          "micro": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          }
+        },
+        "aspect+polarity+category": {
+          "micro": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          }
+        },
+        "category": {
+          "micro": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "macro": {
+            "macro": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "per_class": {
+              "HARD_DISC#OPERATION_PERFORMANCE": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "LAPTOP#USABILITY": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "LAPTOP#PORTABILITY": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "DISPLAY#USABILITY": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "LAPTOP#DESIGN_FEATURES": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "LAPTOP#PRICE": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "SOFTWARE#USABILITY": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "SUPPORT#GENERAL": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "OS#OPERATION_PERFORMANCE": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "LAPTOP#GENERAL": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "KEYBOARD#DESIGN_FEATURES": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "SOFTWARE#DESIGN_FEATURES": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "LAPTOP#OPERATION_PERFORMANCE": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "SHIPPING#OPERATION_PERFORMANCE": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "MULTIMEDIA_DEVICES#OPERATION_PERFORMANCE": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "SOFTWARE#OPERATION_PERFORMANCE": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "KEYBOARD#GENERAL": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "BATTERY#GENERAL": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "POWER_SUPPLY#OPERATION_PERFORMANCE": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "DISPLAY#GENERAL": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "DISPLAY#DESIGN_FEATURES": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "HARDWARE#OPERATION_PERFORMANCE": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "LAPTOP#QUALITY": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "COMPANY#GENERAL": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "LAPTOP#CONNECTIVITY": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "OS#DESIGN_FEATURES": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "PORTS#OPERATION_PERFORMANCE": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              }
+            }
+          }
+        },
+        "aspect": {
+          "micro": {
+            "precision": 0.4810126582278481,
+            "recall": 0.8042328042328042,
+            "f1": 0.6019801980198021
+          }
+        },
+        "polarity": {
+          "micro": {
+            "precision": 0.4123076923076923,
+            "recall": 0.6871794871794872,
+            "f1": 0.5153846153846154
+          },
+          "macro": {
+            "macro": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "per_class": {
+              "neutral": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "positive": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              },
+              "negative": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0
+              }
+            }
+          }
+        },
+        "aspect+sentiment+polarity": {
+          "micro": {
+            "precision": 0.328042328042328,
+            "recall": 0.5367965367965368,
+            "f1": 0.4072249589490969
+          }
+        }
+      }
+    }
+  ]
+}

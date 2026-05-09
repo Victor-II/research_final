@@ -22,7 +22,7 @@
     - Use py-absa stuff.
     - Use romanian emag ds as well.
 
-- consider prefix_allowed_tokens_fn for polarity extraction.
+- consider prefix_allowed_tokens_fn for polarity extraction.check to see if this approach has been tried
 - consider using json for prompt formatting
 
 **[NOTE]** Include both input & output format in every prompt.

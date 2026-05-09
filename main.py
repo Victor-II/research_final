@@ -10,7 +10,7 @@ def main():
     parser = argparse.ArgumentParser(description="ABSA experiment runner")
     parser.add_argument("--config", type=str, default=None, help="overlay config yaml")
     parser.add_argument("--set", action="append", default=[], help="dot-notation override, e.g. --set model.learning_rate=5e-4")
-    parser.add_argument("--mode", choices=["train", "test", "aggregate", "plot"], default="train")
+    parser.add_argument("--mode", choices=["train", "test", "aggregate", "plot", "generate"], default="train")
     parser.add_argument("--checkpoint", type=str, default=None, help="checkpoint path for test mode")
     parser.add_argument("--filter", type=str, default="*", help="glob pattern for aggregate mode")
     parser.add_argument("--experiments", type=str, nargs="+", default=None, help="list of experiment names for aggregate mode")
@@ -22,6 +22,8 @@ def main():
     parser.add_argument("--save", action="store_true", help="save aggregate table to aggregated/tables/")
     parser.add_argument("--plot", type=str, nargs="+", choices=["val", "test", "loss"], default=None, help="plot types for plot mode (val, test, loss)")
     parser.add_argument("--plot-dir", type=str, default="aggregated/plots", help="output directory for plots")
+    parser.add_argument("--verbose", action="store_true", help="verbose output for generate mode")
+    parser.add_argument("--device", type=str, default="cuda", help="device for generate mode verifier (cuda/cpu)")
     args = parser.parse_args()
 
     if args.mode == "aggregate":
@@ -63,6 +65,35 @@ def main():
             plot_val_curves(**common, scope=args.scope or "aspect", metric=args.metric or "micro")
         if "test" in plot_types:
             plot_test_bars(**common, scope=args.scope or "aspect", metric=args.metric or "micro", dataset=args.dataset)
+        return
+
+    if args.mode == "generate":
+        from src.augment.verified_paraphrase import generate_verified_paraphrases
+        cfg = resolve_config(args.config, args.set) if args.config else {}
+        train_files = cfg.get("data", {}).get("train_file", [
+            "downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/402.Restaurant14/train.txt",
+            "downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/403.Restaurant15/train.txt",
+            "downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/404.Restaurant16/train.txt",
+        ])
+        if isinstance(train_files, str):
+            train_files = [train_files]
+        ckpt = args.checkpoint or "experiments/2026-05-01/nl-dep-compact/checkpoints/best.ckpt"
+        output = cfg.get("generate", {}).get("output", "downloads/paraphrased_verified.json")
+        model_name = cfg.get("generate", {}).get("model", "gemma2:27b")
+        max_retries = cfg.get("generate", {}).get("max_retries", 3)
+        threshold = cfg.get("generate", {}).get("aspect_sim_threshold", 0.5)
+        explicit_thresh = cfg.get("generate", {}).get("explicit_threshold", 0.7)
+        generate_verified_paraphrases(
+            train_files=train_files,
+            checkpoint_path=ckpt,
+            output_path=output,
+            model_name=model_name,
+            max_retries=max_retries,
+            aspect_sim_threshold=threshold,
+            explicit_threshold=explicit_thresh,
+            verbose=args.verbose,
+            device=args.device,
+        )
         return
 
     cfg = resolve_config(args.config, args.set)
