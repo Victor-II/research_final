@@ -255,7 +255,7 @@ Curriculum learning, aspect masking, beam search, temperature sampling, majority
 
 ## Next Steps
 
-1. LLM paraphrasing augmentation — rewrite explicit aspects as implicit (scaffolding ready, gemma2:27b prompt refined)
-2. Cross-domain testing on DMASTE (8 Amazon product domains)
-3. Implicit aspect annotation on SemEval 2015/2016 (tools built, annotation in progress)
-4. Lighter neutral oversampling for Romanian (1x instead of 3x)
+ - LLM paraphrasing augmentation — rewrite explicit aspects as implicit (scaffolding ready, gemma2:27b prompt refined) - seems to hard to pull off right, will likely abandon
+ - Implicit aspect annotation on SemEval 2015/2016 (tools built, annotation in progress)
+ - Cross-domain testing on DMASTE (8 Amazon product domains) - done, good aspect / polarity scores, bad sentiment extraction due to different annotation conventions between datasets.
+ - Lighter neutral oversampling for Romanian (1x instead of 3x).
