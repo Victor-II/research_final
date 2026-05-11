@@ -125,14 +125,18 @@ dep-compact in NL format helps Rest14 (+0.6) and Rest15 (+1.0), neutral on Rest1
 
 ### Comparison with published methods
 
-| Method | Rest14 |
-|---|---|
-| GTS (2020, discriminative) | 70.92 |
-| Span-ASTE (2021, discriminative) | 72.89 |
-| MvP (2023, T5-base, generative SOTA) | 76.08 |
-| **Ours (NL + dep-compact)** | **73.05** |
+| Method | Rest14 | Rest15 | Rest16 | Laptop14 |
+|---|---|---|---|---|
+| GTS (2020, discriminative) | 70.92 | 62.53 | 68.71 | 59.46 |
+| Span-ASTE (2021, discriminative) | 72.89 | 64.45 | 71.85 | 62.40 |
+| BDTF (2022, discriminative) | 74.35 | 66.12 | 72.27 | 62.59 |
+| BTF-CCL (2025, discriminative SOTA) | 75.88 | 67.68 | 73.80 | 63.29 |
+| MvP (2023, generative SOTA) | 76.08 | 69.91 | 72.36 | 65.84 |
+| Ours: nl-baseline | 72.43 | 64.01 | 72.48 | **62.67** |
+| Ours: nl-dep-nl | **73.05** | **65.02** | 72.30 | 60.74 |
+| Ours: nl-dep-nl-aux | 71.76 | 63.28 | **72.56** | 59.11 |
 
-Our method is competitive with discriminative approaches and within 3 points of MvP (which uses multi-view prompting with multiple order permutations and T5-base).
+dep-compact helps on Rest14 (+0.6) and Rest15 (+1.0) but hurts on Laptop14 (-1.9). Auxiliary syntax tasks are inconsistent. The plain NL baseline is the most robust — never catastrophically fails and is best on Laptop14.
 
 ---
 
