@@ -2,7 +2,7 @@ import json
 import torch
 from torch.utils.data import DataLoader
 import pytorch_lightning as pl
-from transformers import T5ForConditionalGeneration, AutoTokenizer
+from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
 from src.eval.eval import parse_output, evaluate
 from src.data.data import ABSADataset
 from src.model.utils import gather_floats, gather_string_lists
@@ -80,6 +80,7 @@ class T5ABSAModel(pl.LightningModule):
         structured_attention: bool = False,
         focal_gamma: float = 0.0,
         optimizer: str = "adamw",
+        language: str = "en",
         train_examples: list[dict] = None,
         val_examples: list[dict] = None,
         test_examples: list[dict] = None,
@@ -89,7 +90,7 @@ class T5ABSAModel(pl.LightningModule):
         super().__init__()
         self.save_hyperparameters(ignore=["train_examples", "val_examples"])
 
-        self.model = T5ForConditionalGeneration.from_pretrained(model_name)
+        self.model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
         self.model.config.use_cache = False
         self.model.gradient_checkpointing_enable()
         self.tokenizer = AutoTokenizer.from_pretrained(model_name)
@@ -180,6 +181,8 @@ class T5ABSAModel(pl.LightningModule):
                     infer_implicit=cfg.get("infer_implicit", False),
                     category_set=cfg.get("category_set"),
                     bare_prompt=cfg.get("bare_prompt", False),
+                    language=cfg.get("language", "en"),
+                    include_categories=cfg.get("include_categories", False),
                 ).values()
                 for ex in part
             ]
@@ -281,8 +284,8 @@ class T5ABSAModel(pl.LightningModule):
             gold    = batch["raw_target"][i]
             keys = batch["keys"][i].split(",")
             fmt = batch["output_format"][i]
-            self._val_preds.append(parse_output(decoded, keys, fmt))
-            self._val_golds.append(parse_output(gold, keys, fmt))
+            self._val_preds.append(parse_output(decoded, keys, fmt, language=self.hparams.language))
+            self._val_golds.append(parse_output(gold, keys, fmt, language=self.hparams.language))
 
         return loss
 
@@ -377,8 +380,8 @@ class T5ABSAModel(pl.LightningModule):
                 gold    = batch["raw_target"][i]
                 keys    = batch["keys"][i].split(",")
                 fmt     = batch["output_format"][i]
-                self._test_preds.append(parse_output(decoded, keys, fmt))
-                self._test_golds.append(parse_output(gold, keys, fmt))
+                self._test_preds.append(parse_output(decoded, keys, fmt, language=self.hparams.language))
+                self._test_golds.append(parse_output(gold, keys, fmt, language=self.hparams.language))
         else:
             gen_kwargs["num_return_sequences"] = n_seq
             if self.hparams.num_beams < n_seq and not self.hparams.do_sample:
@@ -394,11 +397,11 @@ class T5ABSAModel(pl.LightningModule):
                 counts = Counter()
                 for j in range(n_seq):
                     decoded = self.tokenizer.decode(output_ids[i * n_seq + j], skip_special_tokens=True)
-                    for triplet in parse_output(decoded, keys, fmt):
+                    for triplet in parse_output(decoded, keys, fmt, language=self.hparams.language):
                         counts[frozenset(triplet.items())] += 1
                 voted = [dict(k) for k, c in counts.items() if c >= self.hparams.vote_threshold]
                 self._test_preds.append(voted)
-                self._test_golds.append(parse_output(gold, keys, fmt))
+                self._test_golds.append(parse_output(gold, keys, fmt, language=self.hparams.language))
 
     def on_test_epoch_end(self):
         if not self._test_preds:

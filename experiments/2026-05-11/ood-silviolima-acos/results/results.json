@@ -1,0 +1,487 @@
+{
+  "train_loss": [],
+  "val_loss": [],
+  "val": [],
+  "test": [
+    {
+      "data": "downloads/silviolima/electronics.json",
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.00019650225977598743,
+          "recall": 0.00013368983957219252,
+          "f1": 0.00015912164850027848
+        }
+      },
+      "aspect": {
+        "micro": {
+          "precision": 0.00032,
+          "recall": 0.0001901863826550019,
+          "f1": 0.0002385780746749374
+        }
+      },
+      "polarity": {
+        "micro": {
+          "precision": 0.8724531377343113,
+          "recall": 0.8021730985387786,
+          "f1": 0.8358383759515908
+        },
+        "macro": {
+          "macro": {
+            "precision": 8.898380494749955e-05,
+            "recall": 5.669898508816692e-05,
+            "f1": 6.926406926406926e-05
+          },
+          "per_class": {
+            "negative": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "positive": {
+              "precision": 0.00026695141484249865,
+              "recall": 0.00017009695526450075,
+              "f1": 0.00020779220779220778
+            },
+            "neutral": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            }
+          }
+        }
+      }
+    },
+    {
+      "data": "downloads/silviolima/laptop.json",
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.0004266211604095563,
+          "recall": 0.0004306632213608958,
+          "f1": 0.0004286326618088298
+        }
+      },
+      "aspect": {
+        "micro": {
+          "precision": 0.001017293997965412,
+          "recall": 0.000994530084535057,
+          "f1": 0.0010057832537088258
+        }
+      },
+      "polarity": {
+        "micro": {
+          "precision": 0.8358702845797485,
+          "recall": 0.8353174603174603,
+          "f1": 0.8355937810122395
+        },
+        "macro": {
+          "macro": {
+            "precision": 0.00040502227622519235,
+            "recall": 0.0004409171075837742,
+            "f1": 0.0004222081486172683
+          },
+          "per_class": {
+            "negative": {
+              "precision": 0.001215066828675577,
+              "recall": 0.0013227513227513227,
+              "f1": 0.001266624445851805
+            },
+            "positive": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "neutral": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            }
+          }
+        }
+      }
+    },
+    {
+      "data": "downloads/silviolima/home.json",
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        }
+      },
+      "aspect": {
+        "micro": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        }
+      },
+      "polarity": {
+        "micro": {
+          "precision": 0.8736442516268981,
+          "recall": 0.8132256436143362,
+          "f1": 0.8423529411764706
+        },
+        "macro": {
+          "macro": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "per_class": {
+            "negative": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "positive": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "neutral": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            }
+          }
+        }
+      }
+    },
+    {
+      "data": "downloads/silviolima/fashion.json",
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        }
+      },
+      "aspect": {
+        "micro": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        }
+      },
+      "polarity": {
+        "micro": {
+          "precision": 0.8916943521594685,
+          "recall": 0.8079470198675497,
+          "f1": 0.8477574226152874
+        },
+        "macro": {
+          "macro": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "per_class": {
+            "negative": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "positive": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "neutral": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            }
+          }
+        }
+      }
+    },
+    {
+      "data": "downloads/silviolima/beauty.json",
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        }
+      },
+      "aspect": {
+        "micro": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        }
+      },
+      "polarity": {
+        "micro": {
+          "precision": 0.8785638859556494,
+          "recall": 0.8370221327967807,
+          "f1": 0.8572900566718187
+        },
+        "macro": {
+          "macro": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "per_class": {
+            "negative": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "positive": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "neutral": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            }
+          }
+        }
+      }
+    },
+    {
+      "data": "downloads/silviolima/grocery.json",
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        }
+      },
+      "aspect": {
+        "micro": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        }
+      },
+      "polarity": {
+        "micro": {
+          "precision": 0.89792663476874,
+          "recall": 0.853030303030303,
+          "f1": 0.8749028749028749
+        },
+        "macro": {
+          "macro": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "per_class": {
+            "negative": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "positive": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "neutral": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            }
+          }
+        }
+      }
+    },
+    {
+      "data": "downloads/silviolima/book.json",
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        }
+      },
+      "aspect": {
+        "micro": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        }
+      },
+      "polarity": {
+        "micro": {
+          "precision": 0.8836805555555556,
+          "recall": 0.8569023569023569,
+          "f1": 0.8700854700854701
+        },
+        "macro": {
+          "macro": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "per_class": {
+            "negative": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "positive": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "neutral": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            }
+          }
+        }
+      }
+    },
+    {
+      "data": "downloads/silviolima/pet.json",
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        }
+      },
+      "aspect": {
+        "micro": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        }
+      },
+      "polarity": {
+        "micro": {
+          "precision": 0.8483333333333334,
+          "recall": 0.7940717628705148,
+          "f1": 0.8203062046736503
+        },
+        "macro": {
+          "macro": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "per_class": {
+            "negative": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "positive": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "neutral": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            }
+          }
+        }
+      }
+    },
+    {
+      "data": "downloads/silviolima/toy.json",
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        }
+      },
+      "aspect": {
+        "micro": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        }
+      },
+      "polarity": {
+        "micro": {
+          "precision": 0.9035769828926905,
+          "recall": 0.8183098591549296,
+          "f1": 0.8588322246858833
+        },
+        "macro": {
+          "macro": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "per_class": {
+            "negative": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "positive": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "neutral": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            }
+          }
+        }
+      }
+    },
+    {
+      "data": "downloads/silviolima/restaurant.json",
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.0005860290670417253,
+          "recall": 0.0006379178361826997,
+          "f1": 0.0006108735491753207
+        }
+      },
+      "aspect": {
+        "micro": {
+          "precision": 0.001098901098901099,
+          "recall": 0.001177856301531213,
+          "f1": 0.0011370096645821487
+        }
+      },
+      "polarity": {
+        "micro": {
+          "precision": 0.8925318761384335,
+          "recall": 0.9136109384711001,
+          "f1": 0.902948402948403
+        },
+        "macro": {
+          "macro": {
+            "precision": 0.0002616020509600795,
+            "recall": 0.0002887002713782551,
+            "f1": 0.00027448397013614406
+          },
+          "per_class": {
+            "negative": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "positive": {
+              "precision": 0.0007848061528802386,
+              "recall": 0.0008661008141347653,
+              "f1": 0.0008234519104084322
+            },
+            "neutral": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            }
+          }
+        }
+      }
+    }
+  ]
+}

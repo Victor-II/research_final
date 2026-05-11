@@ -13,6 +13,7 @@ def apply_augmentations(examples: list[dict], cfg: dict) -> list[dict]:
             examples,
             fraction=d.get("fraction", 0.5),
             seed=cfg.get("seed", 42),
+            filter_polarity=d.get("filter_polarity", None),
         )
 
     if aug_cfg.get("mask_aspects"):

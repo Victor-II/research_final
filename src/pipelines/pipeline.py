@@ -6,7 +6,7 @@ import torch
 import pytorch_lightning as pl
 from pytorch_lightning.callbacks import ModelCheckpoint, EarlyStopping
 
-from src.data.data import split_by_task, load_aste_file, load_silviolima_domain, load_acos_jsonl, to_generative_format, filter_implicit_aspects, enrich_syntax, extract_categories
+from src.data.data import split_by_task, load_aste_file, load_silviolima_domain, load_acos_jsonl, load_emag_csv, to_generative_format, filter_implicit_aspects, enrich_syntax, extract_categories
 from src.model.model import T5ABSAModel
 from src.eval.eval import save_results, save_metrics_table
 from src.augment.registry import apply_augmentations
@@ -17,17 +17,19 @@ def _resolve_tasks(task_keys: list[str]) -> list[Task]:
     return [Task[k.upper()] for k in task_keys]
 
 
-def _load_data(file_path: str, filter_implicit: bool = False, syntax_enrichment: str = None) -> list[dict]:
+def _load_data(file_path: str, filter_implicit: bool = False, syntax_enrichment: str = None, spacy_model: str = "en_core_web_sm") -> list[dict]:
     if file_path.endswith(".jsonl"):
         examples = load_acos_jsonl(file_path)
     elif file_path.endswith(".json"):
         examples = load_silviolima_domain(file_path)
+    elif file_path.endswith(".csv"):
+        examples = load_emag_csv(file_path)
     else:
         examples = load_aste_file(file_path)
     if filter_implicit:
         examples = filter_implicit_aspects(examples)
     if syntax_enrichment:
-        examples = enrich_syntax(examples, syntax_enrichment)
+        examples = enrich_syntax(examples, syntax_enrichment, spacy_model=spacy_model)
     return examples
 
 
@@ -46,8 +48,17 @@ def _prepare_data(cfg: dict):
     canonical_all = []
     fi = data_cfg.get("filter_implicit", False)
     se = data_cfg.get("syntax_enrichment", None)
+    spacy_model = data_cfg.get("spacy_model", "en_core_web_sm")
+    language = data_cfg.get("language", "en")
     for f in train_files:
-        canonical_all.extend(_load_data(f, filter_implicit=fi, syntax_enrichment=se))
+        canonical_all.extend(_load_data(f, filter_implicit=fi, syntax_enrichment=se, spacy_model=spacy_model))
+
+    # train_fraction: subsample training data
+    train_fraction = data_cfg.get("train_fraction", 1.0)
+    if train_fraction < 1.0:
+        rng_frac = _random.Random(cfg["seed"])
+        n_keep = max(1, int(len(canonical_all) * train_fraction))
+        canonical_all = rng_frac.sample(canonical_all, n_keep)
 
     # val split from training data
     val_split = cfg["eval"].get("val_split", 0)
@@ -83,6 +94,8 @@ def _prepare_data(cfg: dict):
 
     bare_prompt = data_cfg.get("bare_prompt", False)
 
+    include_categories = data_cfg.get("include_categories", False)
+
     train_examples = [
         ex
         for part in split_by_task(
@@ -94,6 +107,8 @@ def _prepare_data(cfg: dict):
             infer_implicit=data_cfg.get("infer_implicit", False),
             category_set=category_set,
             bare_prompt=bare_prompt,
+            language=language,
+            include_categories=include_categories,
         ).values()
         for ex in part
     ]
@@ -131,14 +146,16 @@ def _prepare_data(cfg: dict):
             "syntax_auxiliary_tasks": syntax_aux_tasks,
             "syntax_enrichment": se,
             "bare_prompt": bare_prompt,
+            "language": language,
+            "include_categories": include_categories,
         }
 
     val_tasks = _resolve_tasks(cfg["eval"].get("tasks", ["aspect", "sentiment", "polarity"]))
     val_format = cfg["eval"].get("output_format", "structured")
     if canonical_val is not None:
-        val_examples = [to_generative_format(ex, val_tasks, output_format=val_format, category_set=category_set, bare_prompt=bare_prompt) for ex in canonical_val]
+        val_examples = [to_generative_format(ex, val_tasks, output_format=val_format, category_set=category_set, bare_prompt=bare_prompt, language=language, include_categories=include_categories, nl_fraction=nl_fraction) for ex in canonical_val]
     else:
-        val_examples = [to_generative_format(ex, val_tasks, output_format=val_format, category_set=category_set, bare_prompt=bare_prompt) for ex in _load_data(cfg["eval"]["data"], filter_implicit=fi, syntax_enrichment=se)]
+        val_examples = [to_generative_format(ex, val_tasks, output_format=val_format, category_set=category_set, bare_prompt=bare_prompt, language=language, include_categories=include_categories, nl_fraction=nl_fraction) for ex in _load_data(cfg["eval"]["data"], filter_implicit=fi, syntax_enrichment=se, spacy_model=spacy_model)]
 
     print(f"Train: {len(train_examples)} | Val: {len(val_examples)}")
     return train_examples, val_examples, task_split_cfg
@@ -174,6 +191,7 @@ def _build_model(cfg: dict, train_examples: list[dict], val_examples: list[dict]
         optimizer=cfg.get("model", {}).get("optimizer", "adamw"),
         label_smoothing=m.get("label_smoothing", 0.0),
         num_workers=cfg["trainer"].get("num_workers", 11),
+        language=cfg.get("data", {}).get("language", "en"),
         train_examples=train_examples,
         val_examples=val_examples,
         eval_scopes=cfg["eval"]["scopes"],
@@ -298,6 +316,10 @@ def test(cfg: dict, checkpoint: str, output_dir: Path):
     first_tasks = _resolve_tasks(first.get("tasks", ["aspect", "sentiment", "polarity"]))
     fi = cfg.get("data", {}).get("filter_implicit", False)
     se = cfg.get("data", {}).get("syntax_enrichment", None)
+    spacy_model = cfg.get("data", {}).get("spacy_model", "en_core_web_sm")
+    language = cfg.get("data", {}).get("language", "en")
+    include_categories = cfg.get("data", {}).get("include_categories", False)
+    nl_fraction = cfg.get("data", {}).get("natural_language_fraction", 0.0)
     test_format = test_cfg.get("output_format", "structured")
     bp = cfg.get("data", {}).get("bare_prompt", False)
 
@@ -306,14 +328,14 @@ def test(cfg: dict, checkpoint: str, output_dir: Path):
         if cs:
             return cs
         # auto-extract from test data
-        test_data = _load_data(ds_cfg["data"], filter_implicit=fi, syntax_enrichment=se)
+        test_data = _load_data(ds_cfg["data"], filter_implicit=fi, syntax_enrichment=se, spacy_model=spacy_model)
         cats = extract_categories(test_data)
         return cats if cats else None
 
     first_cats = _test_category_set(first)
     model = T5ABSAModel.load_from_checkpoint(
         str(ckpt_path),
-        test_examples=[to_generative_format(ex, first_tasks, output_format=test_format, category_set=first_cats, bare_prompt=bp) for ex in _load_data(first["data"], filter_implicit=fi, syntax_enrichment=se)],
+        test_examples=[to_generative_format(ex, first_tasks, output_format=test_format, category_set=first_cats, bare_prompt=bp, language=language, include_categories=include_categories, nl_fraction=nl_fraction) for ex in _load_data(first["data"], filter_implicit=fi, syntax_enrichment=se, spacy_model=spacy_model)],
         test_scopes=first.get("scopes", default_scopes),
         **{k: v for k, v in cfg.get("generation", {}).items() if v is not None},
     )
@@ -336,7 +358,7 @@ def test(cfg: dict, checkpoint: str, output_dir: Path):
         ds_tasks = _resolve_tasks(ds.get("tasks", ["aspect", "sentiment", "polarity"]))
         ds_cats = _test_category_set(ds)
         model.set_test_data(
-            [to_generative_format(ex, ds_tasks, output_format=test_format, category_set=ds_cats, bare_prompt=bp) for ex in _load_data(ds["data"], filter_implicit=fi, syntax_enrichment=se)],
+            [to_generative_format(ex, ds_tasks, output_format=test_format, category_set=ds_cats, bare_prompt=bp, language=language, include_categories=include_categories, nl_fraction=nl_fraction) for ex in _load_data(ds["data"], filter_implicit=fi, syntax_enrichment=se, spacy_model=spacy_model)],
             scopes,
             ds["data"],
             category_set=ds_cats,
@@ -357,6 +379,10 @@ def _run_test(cfg: dict, model: T5ABSAModel, ckpt_path: Path, results_dir: Path,
     default_scopes = test_cfg["scopes"]
     fi = cfg.get("data", {}).get("filter_implicit", False)
     se = cfg.get("data", {}).get("syntax_enrichment", None)
+    spacy_model = cfg.get("data", {}).get("spacy_model", "en_core_web_sm")
+    language = cfg.get("data", {}).get("language", "en")
+    include_categories = cfg.get("data", {}).get("include_categories", False)
+    nl_fraction = cfg.get("data", {}).get("natural_language_fraction", 0.0)
     test_format = test_cfg.get("output_format", "structured")
     bare_prompt = cfg.get("data", {}).get("bare_prompt", False)
 
@@ -371,13 +397,13 @@ def _run_test(cfg: dict, model: T5ABSAModel, ckpt_path: Path, results_dir: Path,
     for ds in test_cfg["datasets"]:
         scopes = ds.get("scopes", default_scopes)
         ds_tasks = _resolve_tasks(ds.get("tasks", ["aspect", "sentiment", "polarity"]))
-        test_data = _load_data(ds["data"], filter_implicit=fi, syntax_enrichment=se)
+        test_data = _load_data(ds["data"], filter_implicit=fi, syntax_enrichment=se, spacy_model=spacy_model)
         ds_cats = ds.get("category_set") or test_cfg.get("category_set")
         if not ds_cats:
             cats = extract_categories(test_data)
             ds_cats = cats if cats else None
         model.set_test_data(
-            [to_generative_format(ex, ds_tasks, output_format=test_format, category_set=ds_cats, bare_prompt=bare_prompt) for ex in test_data],
+            [to_generative_format(ex, ds_tasks, output_format=test_format, category_set=ds_cats, bare_prompt=bare_prompt, language=language, include_categories=include_categories, nl_fraction=nl_fraction) for ex in test_data],
             scopes,
             ds["data"],
             category_set=ds_cats,

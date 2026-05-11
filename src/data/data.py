@@ -126,6 +126,44 @@ def load_acos_jsonl(file_path: str) -> list[dict]:
     return examples
 
 
+def load_emag_csv(file_path: str, include_title: bool = True) -> list[dict]:
+    import csv
+    examples = []
+    with open(file_path, encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        fields = reader.fieldnames
+        # detect column names (train vs test format)
+        title_col = "title" if "title" in fields else "Title"
+        review_col = "review" if "review" in fields else "Review"
+        aspects_col = "aspects" if "aspects" in fields else "Aspects"
+        for row in reader:
+            title = (row.get(title_col) or "").strip()
+            review = (row.get(review_col) or "").strip()
+            if not review and not title:
+                continue
+            sentence = f"{title}. {review}" if include_title and title else review
+            tokens = sentence.split()
+            raw_aspects = (row.get(aspects_col) or "").strip()
+            annotations = []
+            if raw_aspects:
+                for pair in raw_aspects.split(";"):
+                    pair = pair.strip()
+                    if ":" not in pair:
+                        continue
+                    category, polarity = pair.rsplit(":", 1)
+                    annotations.append({
+                        "aspect": None,
+                        "aspect_idx": None,
+                        "sentiment": None,
+                        "sentiment_idx": None,
+                        "polarity": polarity.strip(),
+                        "category": category.strip(),
+                    })
+            if annotations:
+                examples.append({"sentence": sentence, "tokens": tokens, "annotations": annotations})
+    return examples
+
+
 def filter_implicit_aspects(examples: list[dict]) -> list[dict]:
     """Remove annotations with IMPLICIT aspect or sentiment. Drop examples with no remaining annotations."""
     filtered = []
@@ -207,12 +245,12 @@ def load_semeval_xml_reviews(file_path: str) -> list[dict]:
     return reviews
 
 
-def enrich_syntax(examples: list[dict], mode: str) -> list[dict]:
+def enrich_syntax(examples: list[dict], mode: str, spacy_model: str = "en_core_web_sm") -> list[dict]:
     """Add syntactic annotations to canonical examples. Caches results in '_syntax' field.
     mode: 'dep-tree', 'dep-compact', 'dep-inline', 'pos-inline'
     """
     import spacy
-    nlp = spacy.load("en_core_web_sm")
+    nlp = spacy.load(spacy_model)
     CONTENT_POS = {"NOUN", "VERB", "ADJ", "ADV", "PROPN"}
     sentences = [ex["sentence"] for ex in examples]
     docs = list(nlp.pipe(sentences, batch_size=256))
@@ -344,47 +382,40 @@ def _encode_target(items: list[dict]) -> str:
     )
 
 
-_NL_TEMPLATES = {
-    # singles
-    frozenset(["aspect"]): "the aspect being discussed is {aspect}",
-    frozenset(["sentiment"]): "the opinion expressed is {sentiment}",
-    frozenset(["polarity"]): "the overall sentiment is {polarity}",
-    frozenset(["category"]): "the category being discussed is {category}",
-    # pairs
-    frozenset(["aspect", "sentiment"]): "{aspect} is described as {sentiment}",
-    frozenset(["aspect", "polarity"]): "the opinion about {aspect} is {polarity}",
-    frozenset(["aspect", "category"]): "{aspect}, related to {category}, is being discussed",
-    frozenset(["sentiment", "polarity"]): "the opinion {sentiment} conveys a {polarity} sentiment",
-    frozenset(["sentiment", "category"]): "the opinion {sentiment} is about the category {category}",
-    frozenset(["polarity", "category"]): "the sentiment toward {category} is {polarity}",
-    # triples
-    frozenset(["aspect", "sentiment", "polarity"]): "{aspect} is described as {sentiment}, expressing a {polarity} sentiment",
-    frozenset(["aspect", "sentiment", "category"]): "{aspect}, related to {category}, is described as {sentiment}",
-    frozenset(["aspect", "polarity", "category"]): "{aspect}, related to {category}, expresses a {polarity} sentiment",
-    frozenset(["sentiment", "polarity", "category"]): "the opinion {sentiment} conveys a {polarity} sentiment about {category}",
-    # quad
-    frozenset(["aspect", "sentiment", "polarity", "category"]): "{aspect}, related to {category}, is described as {sentiment}, expressing a {polarity} sentiment",
-}
+from src.data.templates import get_templates, get_plural_templates, get_ordered_template, get_all_templates_for_keys, translate_to_output, translate_from_output, get_prompt_labels, get_task_name
 
-# Template for quads/triples when sentiment is IMPLICIT
-_NL_TEMPLATES_IMPLICIT_SENTIMENT = {
-    frozenset(["aspect", "sentiment", "polarity", "category"]): "{aspect}, related to {category}, carries an implied {polarity} opinion",
-    frozenset(["aspect", "sentiment", "polarity"]): "{aspect} carries an implied {polarity} opinion",
-    frozenset(["aspect", "sentiment", "category"]): "{aspect}, related to {category}, carries an implied opinion",
-    frozenset(["aspect", "sentiment"]): "{aspect} carries an implied opinion",
-    frozenset(["sentiment", "polarity"]): "an implied opinion conveys a {polarity} sentiment",
-    frozenset(["sentiment", "polarity", "category"]): "an implied opinion conveys a {polarity} sentiment about {category}",
-}
+# backward-compat aliases used by constrained.py and eval.py
+_NL_TEMPLATES, _NL_TEMPLATES_IMPLICIT_SENTIMENT = get_templates("en")
 
 
-def _encode_target_nl(items: list[dict], keys_set: frozenset) -> str:
-    template = _NL_TEMPLATES.get(keys_set)
+def _encode_target_nl(items: list[dict], keys_set: frozenset, language: str = "en", keys_ordered: tuple = None) -> str:
+    templates, implicit_templates = get_templates(language)
+    plural_templates = get_plural_templates(language)
+
+    # try ordered template first if provided
+    template = None
+    if keys_ordered:
+        template = get_ordered_template(keys_ordered, language)
     if not template:
-        raise ValueError(f"No natural-language template for keys: {keys_set}")
-    implicit_sent_template = _NL_TEMPLATES_IMPLICIT_SENTIMENT.get(keys_set)
+        template = templates.get(keys_set)
+    if not template:
+        raise ValueError(f"No natural-language template for keys: {keys_set} (language={language})")
+
+    # single-key tasks with multiple annotations → use plural form
+    if len(keys_set) == 1 and len(items) > 1:
+        plural_tmpl = plural_templates.get(keys_set)
+        if plural_tmpl:
+            key = next(iter(keys_set))
+            values = [translate_to_output(d[key], key, language) for d in items]
+            return plural_tmpl.replace("{list}", ", ".join(values))
+
+    implicit_sent_template = implicit_templates.get(keys_set)
     parts = []
     for d in items:
-        d_resolved = dict(d)
+        d_resolved = {}
+        for k, v in d.items():
+            d_resolved[k] = translate_to_output(v, k, language)
+
         aspect_implicit = False
         sentiment_implicit = False
 
@@ -392,11 +423,9 @@ def _encode_target_nl(items: list[dict], keys_set: frozenset) -> str:
         if "aspect" in d_resolved:
             val = d_resolved["aspect"]
             if val.startswith("IMPLIED:"):
-                # annotated implicit: we know the original term
                 d_resolved["aspect"] = val[len("IMPLIED:"):]
                 aspect_implicit = "annotated"
             elif val == "IMPLICIT":
-                # genuinely unknown
                 d_resolved["aspect"] = "an unspecified aspect"
                 aspect_implicit = "unknown"
 
@@ -412,7 +441,6 @@ def _encode_target_nl(items: list[dict], keys_set: frozenset) -> str:
 
         # apply aspect prefix for annotated implicit
         if aspect_implicit == "annotated":
-            # "the implied aspect {term}" replaces "{aspect}" — no "is" verb
             tmpl = tmpl.replace("{aspect}", "the implied aspect {aspect}")
 
         parts.append(tmpl.format(**d_resolved))
@@ -428,15 +456,19 @@ def _decode_target(raw: str, keys: list[str]) -> list[dict]:
     return results
 
 
-def to_generative_format(canonical: dict, tasks: list[Task], output_format: str = "structured", infer_implicit: bool = False, category_set: list[str] = None, bare_prompt: bool = False) -> dict:
+def to_generative_format(canonical: dict, tasks: list[Task], output_format: str = "structured", infer_implicit: bool = False, category_set: list[str] = None, bare_prompt: bool = False, language: str = "en", include_categories: bool = False, nl_fraction: float = 1.0, ignore_order: bool = True) -> dict:
     if output_format == "natural-language":
-        keys = [k for k in CANONICAL_KEY_ORDER if k in {TASK_TO_KEY[t] for t in tasks}]
-        task_list = [t for t in [Task.ASPECT, Task.SENTIMENT, Task.POLARITY, Task.CATEGORY] if TASK_TO_KEY[t] in keys]
+        if ignore_order:
+            keys = [k for k in CANONICAL_KEY_ORDER if k in {TASK_TO_KEY[t] for t in tasks}]
+            task_list = [t for t in [Task.ASPECT, Task.SENTIMENT, Task.POLARITY, Task.CATEGORY] if TASK_TO_KEY[t] in keys]
+        else:
+            keys = [TASK_TO_KEY[t] for t in tasks]
+            task_list = tasks
     else:
         keys = [TASK_TO_KEY[t] for t in tasks]
         task_list = tasks
 
-    task_str = ", ".join(t.value for t in task_list)
+    task_str = ", ".join(get_task_name(t.value, language) for t in task_list)
 
     # build input text with optional syntax enrichment
     if "_syntax_tokens" in canonical:
@@ -444,15 +476,20 @@ def to_generative_format(canonical: dict, tasks: list[Task], output_format: str 
     else:
         input_sentence = canonical["sentence"]
 
-    input_text = f"Task: {task_str}\nInput: {input_sentence}"
+    labels = get_prompt_labels(language)
+    input_text = f"{labels['task']}: {task_str}\n{labels['input']}: {input_sentence}"
 
     if "_syntax" in canonical:
-        input_text += f"\nSyntax: {canonical['_syntax']}"
+        input_text += f"\n{labels['syntax']}: {canonical['_syntax']}"
 
-    if category_set and "category" in keys:
-        input_text += f"\nCategories: {', '.join(category_set)}"
+    if include_categories and category_set and "category" in keys:
+        translated_cats = [translate_to_output(c, "category", language) for c in category_set]
+        input_text += f"\n{labels['categories']}: {', '.join(translated_cats)}"
 
-    input_text += f"\nOutput: {'natural language' if output_format == 'natural-language' else 'structured'}"
+    # only show output format when mixed training (0 < nl_fraction < 1)
+    if 0 < nl_fraction < 1:
+        output_label = labels['output_nl'] if output_format == 'natural-language' else labels['output_struct']
+        input_text += f"\n{labels['output']}: {output_label}"
 
     if bare_prompt:
         input_text = input_sentence
@@ -474,7 +511,8 @@ def to_generative_format(canonical: dict, tasks: list[Task], output_format: str 
             annotations.append(d)
 
     if output_format == "natural-language":
-        target = _encode_target_nl(annotations, frozenset(keys))
+        keys_ordered = tuple(keys) if not ignore_order else None
+        target = _encode_target_nl(annotations, frozenset(keys), language=language, keys_ordered=keys_ordered)
     else:
         target = _encode_target(annotations)
 
@@ -548,6 +586,8 @@ def split_by_task(
     infer_implicit: bool = False,
     category_set: list[str] = None,
     bare_prompt: bool = False,
+    language: str = "en",
+    include_categories: bool = False,
 ) -> dict[tuple[Task, ...], list[dict]]:
     if not tasks_partition:
         raise ValueError("tasks_partition must not be empty")
@@ -576,12 +616,14 @@ def split_by_task(
         perms = perms_by_group[task_group]
         for idx in indices[start:end]:
             fmt = "natural-language" if idx in nl_indices else "structured"
-            ordered = list(rng.choice(perms) if shuffle_tasks and fmt == "structured" else task_group)
+            ordered = list(rng.choice(perms) if shuffle_tasks else task_group)
             # shuffle category order per example to prevent positional bias
             cats = list(category_set) if category_set else None
             if cats:
                 rng.shuffle(cats)
-            partitions[task_group].append(to_generative_format(canonical[idx], ordered, output_format=fmt, infer_implicit=infer_implicit, category_set=cats, bare_prompt=bare_prompt))
+            # when shuffle_tasks is active, use the actual task order for NL template selection
+            use_ignore_order = not shuffle_tasks
+            partitions[task_group].append(to_generative_format(canonical[idx], ordered, output_format=fmt, infer_implicit=infer_implicit, category_set=cats, bare_prompt=bare_prompt, language=language, include_categories=include_categories, nl_fraction=nl_fraction, ignore_order=use_ignore_order))
         start = end
 
     return partitions

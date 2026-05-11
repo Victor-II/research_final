@@ -32,10 +32,10 @@ from sklearn.metrics import ConfusionMatrixDisplay, confusion_matrix
 # Parsing
 # ---------------------------------------------------------------------------
 
-def parse_output(raw: str, keys: list[str], output_format: str = "structured") -> list[dict]:
+def parse_output(raw: str, keys: list[str], output_format: str = "structured", language: str = "en") -> list[dict]:
     """Parse model output into a list of dicts given key order."""
     if output_format == "natural-language":
-        return _parse_nl_output(raw, keys)
+        return _parse_nl_output(raw, keys, language=language)
     results = []
     for match in re.finditer(r"\[([^\[\]]+)\]", raw):
         values = [v.strip() for v in match.group(1).split(",")]
@@ -44,15 +44,32 @@ def parse_output(raw: str, keys: list[str], output_format: str = "structured") -
     return results
 
 
-def _parse_nl_output(raw: str, keys: list[str]) -> list[dict]:
+def _parse_nl_output(raw: str, keys: list[str], language: str = "en") -> list[dict]:
     """Parse natural-language template output back into structured dicts."""
-    from src.data.data import _NL_TEMPLATES, _NL_TEMPLATES_IMPLICIT_SENTIMENT
+    from src.data.templates import get_templates, get_plural_templates, get_all_templates_for_keys, translate_from_output
     from constants import CANONICAL_KEY_ORDER
     canonical_keys = [k for k in CANONICAL_KEY_ORDER if k in keys]
     keys_set = frozenset(canonical_keys)
-    template = _NL_TEMPLATES.get(keys_set)
+    templates, implicit_templates = get_templates(language)
+    template = templates.get(keys_set)
     if not template:
         return []
+
+    # try plural form first for single-key tasks
+    if len(keys_set) == 1:
+        plural_templates = get_plural_templates(language)
+        plural_tmpl = plural_templates.get(keys_set)
+        if plural_tmpl:
+            key = next(iter(keys_set))
+            # build regex: replace {list} with a capture group
+            plural_pattern = re.escape(plural_tmpl).replace(re.escape("{list}"), "(.+)")
+            m = re.match(plural_pattern, raw)
+            if m:
+                values = [v.strip() for v in m.group(1).split(",")]
+                return [{key: translate_from_output(v, key, language)} for v in values if v]
+
+    # get all template variants (frozenset + ordered tuples)
+    all_templates = get_all_templates_for_keys(keys_set, language)
 
     def _build_regex(tmpl, ckeys):
         p = tmpl
@@ -65,7 +82,7 @@ def _parse_nl_output(raw: str, keys: list[str]) -> list[dict]:
     regexes = []
 
     # 1. annotated implicit aspect + implicit sentiment
-    impl_sent_tmpl = _NL_TEMPLATES_IMPLICIT_SENTIMENT.get(keys_set)
+    impl_sent_tmpl = implicit_templates.get(keys_set)
     if impl_sent_tmpl and "aspect" in canonical_keys:
         annotated_impl_sent = impl_sent_tmpl.replace("{aspect}", "the implied aspect (?P<aspect>.+?)")
         # need to rebuild without the standard {aspect} replacement
@@ -109,6 +126,11 @@ def _parse_nl_output(raw: str, keys: list[str]) -> list[dict]:
     # 6. standard explicit template (last, least specific)
     regexes.append(("explicit", _build_regex(template, canonical_keys)))
 
+    # 7. additional ordered template variants
+    for alt_tmpl in all_templates:
+        if alt_tmpl != template:
+            regexes.append(("explicit", _build_regex(alt_tmpl, canonical_keys)))
+
     segments = [s.strip() for s in raw.split(" ; ")]
     results = []
     for seg in segments:
@@ -134,6 +156,11 @@ def _parse_nl_output(raw: str, keys: list[str]) -> list[dict]:
             if "impl_sent" in variant or "impl_both" in variant:
                 d["sentiment"] = "IMPLICIT"
             if len(d) == len(canonical_keys):
+                # translate parsed values back to canonical English
+                if language != "en":
+                    for k in list(d.keys()):
+                        if d[k] not in ("IMPLICIT",) and not d[k].startswith("IMPLICIT:"):
+                            d[k] = translate_from_output(d[k], k, language)
                 results.append(d)
                 matched = True
                 break

@@ -1,0 +1,52 @@
+name: "ro-baseline-neutral-oversample"
+
+model:
+  name: "google/mt5-small"
+  learning_rate: 0.0003
+  max_length: 256
+  batch_size: 4
+  val_batch_size: 8
+  max_new_tokens: 128
+
+trainer:
+  max_epochs: 10
+
+data:
+  train_file: "downloads/emag_ro/ror-train-gpt4_1.csv"
+  language: "ro"
+  spacy_model: "ro_core_news_sm"
+  natural_language_fraction: 1.0
+  shuffle_tasks: false
+  tasks_partition:
+    polarity+category: 1.0
+  syntax_enrichment: null
+  augmentation:
+    duplicate:
+      fraction: 3.0
+      filter_polarity: "neutral"
+
+eval:
+  val_split: 0.1
+  data: null
+  tasks: ["polarity", "category"]
+  output_format: "natural-language"
+  scopes:
+    - keys: ["polarity", "category"]
+      metrics: [micro_f1]
+    - keys: ["polarity"]
+      metrics: [micro_f1, macro_f1]
+    - keys: ["category"]
+      metrics: [micro_f1]
+
+test:
+  output_format: "natural-language"
+  scopes:
+    - keys: ["polarity", "category"]
+      metrics: [micro_f1]
+    - keys: ["polarity"]
+      metrics: [micro_f1, macro_f1]
+    - keys: ["category"]
+      metrics: [micro_f1]
+  datasets:
+    - data: "downloads/emag_ro/emag-phone-review-test.csv"
+      tasks: ["polarity", "category"]

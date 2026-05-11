@@ -45,6 +45,9 @@ trainer:
 
 data:
   train_file: "downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/402.Restaurant14/train.txt"
+  train_fraction: 1.0
+  language: "en"
+  spacy_model: "en_core_web_sm"
   filter_implicit: false
   infer_implicit: false
   tasks_partition:
@@ -64,6 +67,7 @@ data:
   #     tasks_partition: {full: 1.0}
   syntax_enrichment: null  # null, "dep-tree", "dep-compact", "dep-inline", "pos-inline"
   category_set: null  # null = auto-extract from data, or list of category strings
+  include_categories: false  # whether to include category list in prompt
   augmentation:
     duplicate: null
     mask_aspects: null
