@@ -150,6 +150,51 @@ Inline syntax hurts across the board. dep-compact (separate Syntax line) helps I
 - ls=0.1 hurt OOD vs ls=0.0 (0.4269 vs 0.4493). Settled on ls=0.05.
 - Early stopping + cosine is bad — cosine needs full training.
 
+### Gemma 4 E4B Inference (2026-05-17, 4.5B params, 4-bit quantized, no training)
+
+0-shot and 6-shot with hybrid demonstration retrieval (3 BM25 + 3 SimCSE per test sentence).
+
+| Config | Rest14 (ID) | Laptop14 (OOD) |
+|---|---|---|
+| 0-shot structured | 0.3297 | 0.1860 |
+| 6-shot structured (hybrid) | 0.5639 | 0.3446 |
+| 6-shot NL (hybrid) | 0.3631 | 0.2586 |
+
+- Syntax enrichment had zero effect (identical scores with/without) — model ignores it without training
+- NL format scores 0 in 0-shot — parser can't handle Gemma's template variations
+- 6-shot NL has high precision (0.56) but low recall (0.27) — model is conservative
+- Aspect-only F1 is strong: 0.80 ID, 0.64 OOD (6-shot) — bottleneck is opinion span matching
+- ACOS 6-shot quad F1: 0.42 ID, ~0 OOD (category taxonomy mismatch across domains)
+
+### RoBERTa Span Extraction (2026-05-17, 125M params, BIO + biaffine pairing)
+
+Naive discriminative baseline: BIO tagging for aspect/sentiment spans, biaffine scorer for pairing, polarity classifier on paired representations.
+
+| Config | Rest14 (ID) | Laptop14 (OOD) |
+|---|---|---|
+| RoBERTa baseline (Rest14+15+16) | 0.4959 | 0.3949 |
+| RoBERTa + dep-compact syntax | 0.4023 | 0.2790 |
+| RoBERTa Rest14 only | 0.4990 | 0.3743 |
+
+- Syntax as text_pair hurts badly (-10 points) — disrupts word_id alignment for BIO tagging
+- Multi-dataset training gives slight OOD gain (0.39 vs 0.37) but no ID improvement
+- Well below published discriminative SOTA (Span-ASTE: 0.73, BTF-CCL: 0.76) — those use specialised architectures (GCN, table filling, contrastive learning)
+- Our T5 NL approach (0.72 ID, 0.52 OOD) significantly outperforms this naive baseline
+
+### Cross-Method Summary (ASTE, Rest14 / Laptop14)
+
+| Method | Params | Rest14 | Laptop14 |
+|---|---|---|---|
+| Gemma 4 0-shot | 4.5B | 0.33 | 0.19 |
+| Gemma 4 6-shot hybrid | 4.5B | 0.56 | 0.34 |
+| RoBERTa span (ours) | 125M | 0.50 | 0.39 |
+| T5 structured baseline | 250M | 0.68 | 0.43 |
+| **T5 NL baseline** | **250M** | **0.72** | **0.52** |
+| T5 NL + dep-compact | 250M | 0.71 | 0.54 |
+| Span-ASTE (published) | ~110M | 0.73 | 0.62 |
+| BTF-CCL (published) | ~110M | 0.76 | 0.63 |
+| MvP (published) | ~400M | 0.76 | 0.66 |
+
 ## In Progress
 - ACOS quad experiment plan (step-by-step, pick best and continue):
   - Step 1 DONE: structured vs NL → NL wins (lr=1e-4, batch=8, 30 epochs)
@@ -159,8 +204,6 @@ Inline syntax hurts across the board. dep-compact (separate Syntax line) helps I
   - Step 5 RUNNING: auxiliary syntax prediction tasks (dep, pos)
 - Hand-annotating implicit aspects using `tools/annotate.py` on SemEval 2015/2016 XML data
 - LLM auto-suggestion pipeline for implicit aspects (`tools/suggest_aspects.py`)
-
-### ACOS Quad Step 2: Focal Loss (2026-05-03)
 | Config | ID Quad F1 | ID Category F1 | ID Aspect F1 | OOD Aspect F1 | OOD a+s+p F1 |
 |---|---|---|---|---|---|
 | nl-baseline_2 (ls=0.05) | **0.5515** | 0.8061 | **0.8114** | **0.6954** | **0.4735** |

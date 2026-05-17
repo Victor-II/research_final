@@ -12,7 +12,7 @@ import numpy as np
 
 from src.data.data import load_aste_file, to_generative_format, enrich_syntax, Task
 from src.eval.eval import parse_output, prf
-from src.model.model import T5ABSAModel
+from src.model.t5_model import T5ABSAModel
 
 
 def load_model(ckpt_path, device="cuda"):

@@ -75,7 +75,7 @@ def _get_noun_chunks(text: str) -> list[str]:
 
 
 def load_verifier(checkpoint_path: str, device: str = "cuda"):
-    from src.model.model import T5ABSAModel
+    from src.model.t5_model import T5ABSAModel
     model = T5ABSAModel.load_from_checkpoint(checkpoint_path, map_location=device)
     model.eval()
     model.to(device)

@@ -101,15 +101,35 @@ def main():
     output_dir = resolve_output_dir(cfg)
     output_dir.mkdir(parents=True, exist_ok=True)
 
+    model_type = cfg.get("model", {}).get("type", "seq2seq")
+
     if args.mode == "test":
-        from src.pipelines.pipeline import test
         ckpt = args.checkpoint or cfg.get("test", {}).get("from_checkpoint")
-        if not ckpt:
-            raise ValueError("Test mode requires --checkpoint or test.from_checkpoint in config")
-        test(cfg, ckpt, output_dir)
+        if model_type == "causal-lm":
+            # causal LMs don't train — test mode runs inference directly
+            from src.pipelines.gemma_pipeline import run_gemma_inference
+            run_gemma_inference(cfg, output_dir)
+        elif model_type == "span":
+            if not ckpt:
+                raise ValueError("Test mode requires --checkpoint or test.from_checkpoint in config")
+            from src.pipelines.roberta_pipeline import test_roberta
+            test_roberta(cfg, ckpt, output_dir)
+        else:
+            if not ckpt:
+                raise ValueError("Test mode requires --checkpoint or test.from_checkpoint in config")
+            from src.pipelines.t5_pipeline import test
+            test(cfg, ckpt, output_dir)
     else:
-        from src.pipelines.pipeline import run
-        run(cfg, output_dir)
+        # train mode
+        if model_type == "causal-lm":
+            from src.pipelines.gemma_pipeline import run_gemma_inference
+            run_gemma_inference(cfg, output_dir)
+        elif model_type == "span":
+            from src.pipelines.roberta_pipeline import run_roberta
+            run_roberta(cfg, output_dir)
+        else:
+            from src.pipelines.t5_pipeline import run
+            run(cfg, output_dir)
 
     os.environ.pop("_ABSA_OUTPUT_DIR", None)
 

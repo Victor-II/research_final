@@ -1,0 +1,103 @@
+{
+  "train_loss": [],
+  "val_loss": [],
+  "val": [],
+  "test": [
+    {
+      "data": "downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/402.Restaurant14/test.txt",
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.33683105981112277,
+          "recall": 0.32293762575452717,
+          "f1": 0.32973805855161786
+        }
+      },
+      "aspect": {
+        "micro": {
+          "precision": 0.6985040276179517,
+          "recall": 0.7158018867924528,
+          "f1": 0.7070471753057659
+        }
+      },
+      "polarity": {
+        "micro": {
+          "precision": 0.8472727272727273,
+          "recall": 0.8842504743833017,
+          "f1": 0.8653667595171775
+        },
+        "macro": {
+          "macro": {
+            "precision": 0.2579781003310415,
+            "recall": 0.26768047709916426,
+            "f1": 0.26145571614704183
+          },
+          "per_class": {
+            "positive": {
+              "precision": 0.37662337662337664,
+              "recall": 0.33764553686934023,
+              "f1": 0.35607094133697137
+            },
+            "negative": {
+              "precision": 0.2914285714285714,
+              "recall": 0.32903225806451614,
+              "f1": 0.3090909090909091
+            },
+            "neutral": {
+              "precision": 0.10588235294117647,
+              "recall": 0.13636363636363635,
+              "f1": 0.11920529801324502
+            }
+          }
+        }
+      }
+    },
+    {
+      "data": "downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/401.Laptop14/test.txt",
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.18345323741007194,
+          "recall": 0.18853974121996303,
+          "f1": 0.18596171376481313
+        }
+      },
+      "aspect": {
+        "micro": {
+          "precision": 0.5437262357414449,
+          "recall": 0.6177105831533477,
+          "f1": 0.5783619817997978
+        }
+      },
+      "polarity": {
+        "micro": {
+          "precision": 0.8005540166204986,
+          "recall": 0.8352601156069365,
+          "f1": 0.8175388967468176
+        },
+        "macro": {
+          "macro": {
+            "precision": 0.1335066785355532,
+            "recall": 0.14232161600582652,
+            "f1": 0.13653577452989174
+          },
+          "per_class": {
+            "positive": {
+              "precision": 0.21978021978021978,
+              "recall": 0.21978021978021978,
+              "f1": 0.21978021978021978
+            },
+            "negative": {
+              "precision": 0.1342281879194631,
+              "recall": 0.17543859649122806,
+              "f1": 0.15209125475285168
+            },
+            "neutral": {
+              "precision": 0.046511627906976744,
+              "recall": 0.031746031746031744,
+              "f1": 0.03773584905660377
+            }
+          }
+        }
+      }
+    }
+  ]
+}

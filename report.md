@@ -259,8 +259,5 @@ Curriculum learning, aspect masking, beam search, temperature sampling, majority
  - Implicit aspect annotation on SemEval 2015/2016 (tools built, annotation in progress)
  - Cross-domain testing on DMASTE (8 Amazon product domains) - done, good aspect / polarity scores, bad sentiment extraction due to different annotation conventions between datasets.
  - Lighter neutral oversampling for Romanian (1x instead of 3x).
-
- - 0-shot few-shot gemma4b4 + augment;
- - roBerta
  - xlm-roberta
 

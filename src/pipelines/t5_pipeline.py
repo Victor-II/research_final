@@ -7,7 +7,7 @@ import pytorch_lightning as pl
 from pytorch_lightning.callbacks import ModelCheckpoint, EarlyStopping
 
 from src.data.data import split_by_task, load_aste_file, load_silviolima_domain, load_acos_jsonl, load_emag_csv, to_generative_format, filter_implicit_aspects, enrich_syntax, extract_categories
-from src.model.model import T5ABSAModel
+from src.model.t5_model import T5ABSAModel
 from src.eval.eval import save_results, save_metrics_table
 from src.augment.registry import apply_augmentations
 from constants import TASK_KEY_MAP, Task

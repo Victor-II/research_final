@@ -1,0 +1,103 @@
+{
+  "train_loss": [],
+  "val_loss": [],
+  "val": [],
+  "test": [
+    {
+      "data": "downloads/ABSADatasets/datasets/acos_datasets/504.Restaurant16/rest16_quad_test.tsv.jsonl",
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        }
+      },
+      "aspect": {
+        "micro": {
+          "precision": 0.6007462686567164,
+          "recall": 0.6,
+          "f1": 0.6003729024238657
+        }
+      },
+      "polarity": {
+        "micro": {
+          "precision": 0.8421955403087479,
+          "recall": 0.7868589743589743,
+          "f1": 0.8135874067937034
+        },
+        "macro": {
+          "macro": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "per_class": {
+            "negative": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "neutral": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "positive": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            }
+          }
+        }
+      }
+    },
+    {
+      "data": "downloads/ABSADatasets/datasets/acos_datasets/501.Laptop14/laptop_quad_test.tsv.jsonl",
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        }
+      },
+      "aspect": {
+        "micro": {
+          "precision": 0.5706267539756782,
+          "recall": 0.6143001007049346,
+          "f1": 0.5916585838991271
+        }
+      },
+      "polarity": {
+        "micro": {
+          "precision": 0.8505882352941176,
+          "recall": 0.8485915492957746,
+          "f1": 0.8495887191539366
+        },
+        "macro": {
+          "macro": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0
+          },
+          "per_class": {
+            "negative": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "neutral": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            },
+            "positive": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            }
+          }
+        }
+      }
+    }
+  ]
+}

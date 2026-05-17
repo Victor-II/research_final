@@ -1,0 +1,103 @@
+{
+  "train_loss": [],
+  "val_loss": [],
+  "val": [],
+  "test": [
+    {
+      "data": "downloads/ABSADatasets/datasets/acos_datasets/504.Restaurant16/rest16_quad_test.tsv.jsonl",
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.40526849037487334,
+          "recall": 0.4366812227074236,
+          "f1": 0.42038885969521805
+        }
+      },
+      "aspect": {
+        "micro": {
+          "precision": 0.6909090909090909,
+          "recall": 0.7552795031055901,
+          "f1": 0.7216617210682493
+        }
+      },
+      "polarity": {
+        "micro": {
+          "precision": 0.8398791540785498,
+          "recall": 0.8910256410256411,
+          "f1": 0.8646967340590981
+        },
+        "macro": {
+          "macro": {
+            "precision": 0.2900331760592377,
+            "recall": 0.3612272023633416,
+            "f1": 0.3092759040036339
+          },
+          "per_class": {
+            "negative": {
+              "precision": 0.22685185185185186,
+              "recall": 0.23902439024390243,
+              "f1": 0.2327790973871734
+            },
+            "positive": {
+              "precision": 0.5161290322580645,
+              "recall": 0.5037481259370314,
+              "f1": 0.5098634294385432
+            },
+            "neutral": {
+              "precision": 0.1271186440677966,
+              "recall": 0.3409090909090909,
+              "f1": 0.18518518518518517
+            }
+          }
+        }
+      }
+    },
+    {
+      "data": "downloads/ABSADatasets/datasets/acos_datasets/501.Laptop14/laptop_quad_test.tsv.jsonl",
+      "aspect+sentiment+polarity+category": {
+        "micro": {
+          "precision": 0.0014858841010401188,
+          "recall": 0.0017301038062283738,
+          "f1": 0.0015987210231814548
+        }
+      },
+      "aspect": {
+        "micro": {
+          "precision": 0.6398601398601399,
+          "recall": 0.7371601208459214,
+          "f1": 0.685072531586336
+        }
+      },
+      "polarity": {
+        "micro": {
+          "precision": 0.8231441048034934,
+          "recall": 0.8849765258215962,
+          "f1": 0.8529411764705883
+        },
+        "macro": {
+          "macro": {
+            "precision": 0.0011938780476418922,
+            "recall": 0.001347672269821035,
+            "f1": 0.0012655992140369469
+          },
+          "per_class": {
+            "negative": {
+              "precision": 0.0022675736961451248,
+              "recall": 0.002638522427440633,
+              "f1": 0.0024390243902439024
+            },
+            "positive": {
+              "precision": 0.001314060446780552,
+              "recall": 0.0014044943820224719,
+              "f1": 0.0013577732518669382
+            },
+            "neutral": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0
+            }
+          }
+        }
+      }
+    }
+  ]
+}
