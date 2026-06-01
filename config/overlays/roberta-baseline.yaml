@@ -24,13 +24,12 @@ trainer:
 data:
   train_file:
     - "downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/402.Restaurant14/train.txt"
-    - "downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/403.Restaurant15/train.txt"
-    - "downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/404.Restaurant16/train.txt"
   filter_implicit: false
 
 eval:
   val_split: 0
-  data: "downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/402.Restaurant14/dev.txt"
+  data:
+    - "downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/402.Restaurant14/dev.txt"
   scopes:
     - keys: ["aspect", "sentiment", "polarity"]
       metrics: [micro_f1]
@@ -49,6 +48,10 @@ test:
       metrics: [micro_f1, macro_f1]
   datasets:
     - data: "downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/402.Restaurant14/test.txt"
+      tasks: ["aspect", "sentiment", "polarity"]
+    - data: "downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/403.Restaurant15/test.txt"
+      tasks: ["aspect", "sentiment", "polarity"]
+    - data: "downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/404.Restaurant16/test.txt"
       tasks: ["aspect", "sentiment", "polarity"]
     - data: "downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/401.Laptop14/test.txt"
       tasks: ["aspect", "sentiment", "polarity"]

@@ -1,0 +1,247 @@
+{
+  "train_loss": [],
+  "val_loss": [],
+  "val": [],
+  "test": [
+    {
+      "data": "downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/402.Restaurant14/test.txt",
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.5773480662983426,
+          "recall": 0.630784708249497,
+          "f1": 0.6028846153846154
+        }
+      },
+      "aspect": {
+        "micro": {
+          "precision": 0.7581699346405228,
+          "recall": 0.8207547169811321,
+          "f1": 0.7882219705549264
+        }
+      },
+      "polarity": {
+        "micro": {
+          "precision": 0.838160136286201,
+          "recall": 0.9335863377609108,
+          "f1": 0.8833034111310591
+        },
+        "macro": {
+          "macro": {
+            "precision": 0.4237244897959183,
+            "recall": 0.5031028896821995,
+            "f1": 0.45703276715279806
+          },
+          "per_class": {
+            "neutral": {
+              "precision": 0.1836734693877551,
+              "recall": 0.2727272727272727,
+              "f1": 0.21951219512195122
+            },
+            "positive": {
+              "precision": 0.6692307692307692,
+              "recall": 0.6752910737386805,
+              "f1": 0.6722472633612363
+            },
+            "negative": {
+              "precision": 0.4182692307692308,
+              "recall": 0.5612903225806452,
+              "f1": 0.4793388429752066
+            }
+          }
+        }
+      }
+    },
+    {
+      "data": "downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/403.Restaurant15/test.txt",
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.4852686308492201,
+          "recall": 0.5773195876288659,
+          "f1": 0.527306967984934
+        }
+      },
+      "aspect": {
+        "micro": {
+          "precision": 0.7402061855670103,
+          "recall": 0.8310185185185185,
+          "f1": 0.7829880043620501
+        }
+      },
+      "polarity": {
+        "micro": {
+          "precision": 0.8290155440414507,
+          "recall": 0.9221902017291066,
+          "f1": 0.8731241473396998
+        },
+        "macro": {
+          "macro": {
+            "precision": 0.3795444524611191,
+            "recall": 0.46919650276117153,
+            "f1": 0.4185281890629488
+          },
+          "per_class": {
+            "neutral": {
+              "precision": 0.16666666666666666,
+              "recall": 0.24,
+              "f1": 0.19672131147540983
+            },
+            "positive": {
+              "precision": 0.5539772727272727,
+              "recall": 0.6151419558359621,
+              "f1": 0.5829596412556054
+            },
+            "negative": {
+              "precision": 0.41798941798941797,
+              "recall": 0.5524475524475524,
+              "f1": 0.47590361445783125
+            }
+          }
+        }
+      }
+    },
+    {
+      "data": "downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/404.Restaurant16/test.txt",
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.57,
+          "recall": 0.6653696498054474,
+          "f1": 0.6140035906642729
+        }
+      },
+      "aspect": {
+        "micro": {
+          "precision": 0.7485714285714286,
+          "recall": 0.8694690265486725,
+          "f1": 0.804503582395087
+        }
+      },
+      "polarity": {
+        "micro": {
+          "precision": 0.819371727748691,
+          "recall": 0.9287833827893175,
+          "f1": 0.8706536856745479
+        },
+        "macro": {
+          "macro": {
+            "precision": 0.42248184367389663,
+            "recall": 0.5212646936784867,
+            "f1": 0.4654266564706941
+          },
+          "per_class": {
+            "negative": {
+              "precision": 0.38181818181818183,
+              "recall": 0.5384615384615384,
+              "f1": 0.44680851063829785
+            },
+            "positive": {
+              "precision": 0.6423841059602649,
+              "recall": 0.714987714987715,
+              "f1": 0.6767441860465115
+            },
+            "neutral": {
+              "precision": 0.24324324324324326,
+              "recall": 0.3103448275862069,
+              "f1": 0.27272727272727276
+            }
+          }
+        }
+      }
+    },
+    {
+      "data": "downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/401.Laptop14/test.txt",
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.4205128205128205,
+          "recall": 0.45471349353049906,
+          "f1": 0.4369449378330373
+        }
+      },
+      "aspect": {
+        "micro": {
+          "precision": 0.6436567164179104,
+          "recall": 0.7451403887688985,
+          "f1": 0.6906906906906908
+        }
+      },
+      "polarity": {
+        "micro": {
+          "precision": 0.7857142857142857,
+          "recall": 0.8583815028901735,
+          "f1": 0.8204419889502763
+        },
+        "macro": {
+          "macro": {
+            "precision": 0.2924741389801631,
+            "recall": 0.3424694214167898,
+            "f1": 0.3124352843334038
+          },
+          "per_class": {
+            "neutral": {
+              "precision": 0.045454545454545456,
+              "recall": 0.031746031746031744,
+              "f1": 0.037383177570093455
+            },
+            "positive": {
+              "precision": 0.5066666666666667,
+              "recall": 0.521978021978022,
+              "f1": 0.5142083897158323
+            },
+            "negative": {
+              "precision": 0.3253012048192771,
+              "recall": 0.47368421052631576,
+              "f1": 0.3857142857142857
+            }
+          }
+        }
+      }
+    },
+    {
+      "data": "downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/401.Laptop14/test.txt",
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.36155202821869487,
+          "recall": 0.3789279112754159,
+          "f1": 0.3700361010830325
+        }
+      },
+      "aspect": {
+        "micro": {
+          "precision": 0.580896686159844,
+          "recall": 0.6436285097192225,
+          "f1": 0.610655737704918
+        }
+      },
+      "polarity": {
+        "micro": {
+          "precision": 0.7756756756756756,
+          "recall": 0.8294797687861272,
+          "f1": 0.8016759776536313
+        },
+        "macro": {
+          "macro": {
+            "precision": 0.2583156237701692,
+            "recall": 0.2908660540239488,
+            "f1": 0.2717684780319895
+          },
+          "per_class": {
+            "neutral": {
+              "precision": 0.04,
+              "recall": 0.031746031746031744,
+              "f1": 0.035398230088495575
+            },
+            "positive": {
+              "precision": 0.4297520661157025,
+              "recall": 0.42857142857142855,
+              "f1": 0.42916093535075656
+            },
+            "negative": {
+              "precision": 0.3051948051948052,
+              "recall": 0.41228070175438597,
+              "f1": 0.3507462686567164
+            }
+          }
+        }
+      }
+    }
+  ]
+}

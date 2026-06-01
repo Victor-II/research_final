@@ -51,7 +51,17 @@ def _prepare_data(cfg: dict):
     spacy_model = data_cfg.get("spacy_model", "en_core_web_sm")
     language = data_cfg.get("language", "en")
     for f in train_files:
-        canonical_all.extend(_load_data(f, filter_implicit=fi, syntax_enrichment=se, spacy_model=spacy_model))
+        if isinstance(f, dict):
+            file_path = f["path"]
+            fraction = f.get("fraction", 1.0)
+            examples = _load_data(file_path, filter_implicit=fi, syntax_enrichment=se, spacy_model=spacy_model)
+            if fraction < 1.0:
+                rng_f = _random.Random(cfg.get("seed", 42))
+                n_keep = max(1, int(len(examples) * fraction))
+                examples = rng_f.sample(examples, n_keep)
+            canonical_all.extend(examples)
+        else:
+            canonical_all.extend(_load_data(f, filter_implicit=fi, syntax_enrichment=se, spacy_model=spacy_model))
 
     # train_fraction: subsample training data
     train_fraction = data_cfg.get("train_fraction", 1.0)
@@ -128,6 +138,30 @@ def _prepare_data(cfg: dict):
             if aux_ex:
                 train_examples.append(aux_ex)
 
+    # mix in auxiliary opinion-prediction examples
+    opinion_aux_fraction = data_cfg.get("opinion_auxiliary_fraction", 0.0)
+    if opinion_aux_fraction > 0:
+        from src.augment.masking import opinion_prediction_aux
+        aux_opinion = opinion_prediction_aux(
+            canonical_train,
+            fraction=opinion_aux_fraction,
+            seed=cfg["seed"],
+        )
+        train_examples.extend(aux_opinion)
+
+    # STAR-style data multiplication: sub-task variants as additional training examples
+    star_fraction = data_cfg.get("star_multiply_fraction", 0.0)
+    if star_fraction > 0:
+        from src.augment.star import star_multiply
+        star_examples = star_multiply(
+            canonical_train,
+            fraction=star_fraction,
+            output_format="natural-language" if nl_fraction > 0 else "structured",
+            language=language,
+            seed=cfg["seed"],
+        )
+        train_examples.extend(star_examples)
+
     # pass config so model can re-split (and re-augment) each epoch
     task_split_cfg = None
     if needs_resplit or has_augmentation or nl_fraction > 0 or curriculum:
@@ -148,6 +182,8 @@ def _prepare_data(cfg: dict):
             "bare_prompt": bare_prompt,
             "language": language,
             "include_categories": include_categories,
+            "opinion_auxiliary_fraction": opinion_aux_fraction,
+            "star_multiply_fraction": star_fraction,
         }
 
     val_tasks = _resolve_tasks(cfg["eval"].get("tasks", ["aspect", "sentiment", "polarity"]))
@@ -155,7 +191,9 @@ def _prepare_data(cfg: dict):
     if canonical_val is not None:
         val_examples = [to_generative_format(ex, val_tasks, output_format=val_format, category_set=category_set, bare_prompt=bare_prompt, language=language, include_categories=include_categories, nl_fraction=nl_fraction) for ex in canonical_val]
     else:
-        val_examples = [to_generative_format(ex, val_tasks, output_format=val_format, category_set=category_set, bare_prompt=bare_prompt, language=language, include_categories=include_categories, nl_fraction=nl_fraction) for ex in _load_data(cfg["eval"]["data"], filter_implicit=fi, syntax_enrichment=se, spacy_model=spacy_model)]
+        from src.data.data import load_files
+        canonical_val = load_files(cfg["eval"]["data"], filter_implicit=fi, syntax_enrichment=se, spacy_model=spacy_model)
+        val_examples = [to_generative_format(ex, val_tasks, output_format=val_format, category_set=category_set, bare_prompt=bare_prompt, language=language, include_categories=include_categories, nl_fraction=nl_fraction) for ex in canonical_val]
 
     print(f"Train: {len(train_examples)} | Val: {len(val_examples)}")
     return train_examples, val_examples, task_split_cfg
@@ -415,3 +453,114 @@ def _run_test(cfg: dict, model: T5ABSAModel, ckpt_path: Path, results_dir: Path,
         data_label = Path(entry["data"]).stem
         metrics = {k: v for k, v in entry.items() if k != "data"}
         save_metrics_table(metrics, epoch=i, out_dir=str(results_dir), prefix=f"test_{data_label}")
+
+
+def test_mvp(cfg: dict, checkpoint: str, output_dir: Path):
+    """
+    MvP-style multi-prompt voting test.
+
+    For each test example, runs inference with all 6 permutations of the triplet
+    task ordering and aggregates results via majority voting.
+    """
+    logging.getLogger("pytorch_lightning").setLevel(logging.WARNING)
+    torch.set_float32_matmul_precision("medium")
+
+    from itertools import permutations as _perms
+    from collections import Counter
+    from src.eval.eval import parse_output, evaluate, save_results, save_metrics_table
+
+    if "test" not in cfg:
+        raise ValueError("No 'test' block found in config.")
+
+    ckpt_path = Path(checkpoint)
+    if not ckpt_path.exists():
+        raise FileNotFoundError(f"Checkpoint not found: {ckpt_path}")
+
+    test_cfg = cfg["test"]
+    default_scopes = test_cfg["scopes"]
+    fi = cfg.get("data", {}).get("filter_implicit", False)
+    se = cfg.get("data", {}).get("syntax_enrichment", None)
+    spacy_model = cfg.get("data", {}).get("spacy_model", "en_core_web_sm")
+    language = cfg.get("data", {}).get("language", "en")
+    test_format = test_cfg.get("output_format", "structured")
+    bp = cfg.get("data", {}).get("bare_prompt", False)
+    nl_fraction = cfg.get("data", {}).get("natural_language_fraction", 0.0)
+    include_categories = cfg.get("data", {}).get("include_categories", False)
+    vote_threshold = test_cfg.get("mvp_vote_threshold", 2)
+
+    # all 6 orderings of the triplet task
+    base_tasks = [Task.ASPECT, Task.SENTIMENT, Task.POLARITY]
+    all_orderings = list(_perms(base_tasks))
+
+    output_dir.mkdir(parents=True, exist_ok=True)
+    results_dir = output_dir / "results"
+    results_dir.mkdir(exist_ok=True)
+    with open(output_dir / "config.yaml", "w") as f:
+        yaml.dump(cfg, f, default_flow_style=False, sort_keys=False)
+
+    # load model once
+    model = T5ABSAModel.load_from_checkpoint(str(ckpt_path))
+    model.eval()
+    model.cuda()
+    tokenizer = model.tokenizer
+
+    gen_kwargs = {
+        "max_new_tokens": cfg.get("model", {}).get("max_new_tokens", 64),
+        "num_beams": cfg.get("generation", {}).get("num_beams", 1),
+    }
+
+    test_metrics_history = []
+
+    for ds_cfg in test_cfg["datasets"]:
+        data_path = ds_cfg["data"]
+        scopes = ds_cfg.get("scopes", default_scopes)
+        ds_tasks_keys = ds_cfg.get("tasks", ["aspect", "sentiment", "polarity"])
+
+        canonical_data = _load_data(data_path, filter_implicit=fi, syntax_enrichment=se, spacy_model=spacy_model)
+
+        all_preds = []
+        all_golds = []
+
+        for ex in canonical_data:
+            # generate gold from canonical order
+            gold_tasks = _resolve_tasks(ds_tasks_keys)
+            gold_gen = to_generative_format(ex, gold_tasks, output_format=test_format, bare_prompt=bp, language=language, include_categories=include_categories, nl_fraction=nl_fraction)
+            gold_parsed = parse_output(gold_gen["target"], gold_gen["_keys"], gold_gen["_format"], language=language)
+
+            # run inference with all orderings
+            triplet_counts = Counter()
+            for ordering in all_orderings:
+                gen = to_generative_format(ex, list(ordering), output_format=test_format, bare_prompt=bp, language=language, include_categories=include_categories, nl_fraction=nl_fraction, ignore_order=False)
+                inputs = tokenizer(gen["input"], return_tensors="pt", max_length=cfg.get("model", {}).get("max_length", 256), truncation=True).to(model.device)
+                output_ids = model.model.generate(input_ids=inputs["input_ids"], attention_mask=inputs["attention_mask"], **gen_kwargs)
+                decoded = tokenizer.decode(output_ids[0], skip_special_tokens=True)
+                preds = parse_output(decoded, gen["_keys"], gen["_format"], language=language)
+                for triplet in preds:
+                    # normalize: convert to canonical key set for voting
+                    canonical_triplet = {k: triplet.get(k, "") for k in ["aspect", "sentiment", "polarity"] if k in triplet}
+                    if canonical_triplet:
+                        triplet_counts[frozenset(canonical_triplet.items())] += 1
+
+            # vote
+            voted = [dict(k) for k, c in triplet_counts.items() if c >= vote_threshold]
+            all_preds.append(voted)
+            all_golds.append(gold_parsed)
+
+        # evaluate
+        metrics = evaluate(all_preds, all_golds, scopes)
+        entry = {"data": data_path, **metrics}
+        test_metrics_history.append(entry)
+
+        # print summary
+        triplet_key = "aspect+sentiment+polarity"
+        if triplet_key in metrics:
+            micro = metrics[triplet_key].get("micro", {})
+            print(f"  {data_path}: triplet-F1 = {micro.get('f1', 0):.4f} (MvP vote, threshold={vote_threshold})")
+
+    # save
+    for i, entry in enumerate(test_metrics_history):
+        data_label = Path(entry["data"]).stem
+        metrics_only = {k: v for k, v in entry.items() if k != "data"}
+        save_metrics_table(metrics_only, epoch=i, out_dir=str(results_dir), prefix=f"test_{data_label}")
+
+    save_results([], test_metrics_history, [], [], str(results_dir))

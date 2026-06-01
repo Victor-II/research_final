@@ -1,0 +1,32 @@
+name: "ollama-commandr-0shot"
+
+model:
+  type: "ollama"
+  name: "command-r:latest"
+  n_shots: 0
+  output_format: "structured"
+  max_new_tokens: 256
+
+data:
+  train_file:
+    - "downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/402.Restaurant14/train.txt"
+
+test:
+  scopes:
+    - keys: ["aspect", "sentiment", "polarity"]
+      metrics: [micro_f1]
+    - keys: ["aspect"]
+      metrics: [micro_f1]
+    - keys: ["polarity"]
+      metrics: [micro_f1, macro_f1]
+  datasets:
+    - data: "downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/402.Restaurant14/test.txt"
+      tasks: ["aspect", "sentiment", "polarity"]
+    - data: "downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/403.Restaurant15/test.txt"
+      tasks: ["aspect", "sentiment", "polarity"]
+    - data: "downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/404.Restaurant16/test.txt"
+      tasks: ["aspect", "sentiment", "polarity"]
+    - data: "downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/401.Laptop14/test.txt"
+      tasks: ["aspect", "sentiment", "polarity"]
+
+seed: 42

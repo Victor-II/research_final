@@ -205,6 +205,30 @@ class T5ABSAModel(pl.LightningModule):
                     aux_ex = to_syntax_auxiliary(src, task=task)
                     if aux_ex:
                         examples.append(aux_ex)
+
+            # mix in auxiliary opinion-prediction examples
+            opinion_aux_frac = cfg.get("opinion_auxiliary_fraction", 0.0)
+            if opinion_aux_frac > 0:
+                from src.augment.masking import opinion_prediction_aux
+                aux_opinion = opinion_prediction_aux(
+                    cfg["canonical"],
+                    fraction=opinion_aux_frac,
+                    seed=seed,
+                )
+                examples.extend(aux_opinion)
+
+            # STAR-style data multiplication
+            star_frac = cfg.get("star_multiply_fraction", 0.0)
+            if star_frac > 0:
+                from src.augment.star import star_multiply
+                star_examples = star_multiply(
+                    cfg["canonical"],
+                    fraction=star_frac,
+                    output_format="natural-language" if cfg.get("nl_fraction", 0) > 0 else "structured",
+                    language=cfg.get("language", "en"),
+                    seed=seed,
+                )
+                examples.extend(star_examples)
         else:
             examples = self._train_examples
         ds = ABSADataset(examples, self.tokenizer, self.hparams.max_length,

@@ -1,0 +1,26 @@
+name: "ollama-qwen32b-ro-0shot"
+
+model:
+  type: "ollama"
+  name: "qwen2.5-coder:32b"
+  n_shots: 0
+  output_format: "structured"
+  max_new_tokens: 128
+
+data:
+  train_file:
+    - "downloads/emag_ro/ror-train-gpt4_1.csv"
+
+test:
+  scopes:
+    - keys: ["polarity", "category"]
+      metrics: [micro_f1]
+    - keys: ["polarity"]
+      metrics: [micro_f1, macro_f1]
+    - keys: ["category"]
+      metrics: [micro_f1]
+  datasets:
+    - data: "downloads/emag_ro/emag-phone-review-test.csv"
+      tasks: ["category", "polarity"]
+
+seed: 42

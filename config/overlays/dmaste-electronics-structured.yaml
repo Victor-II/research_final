@@ -1,0 +1,108 @@
+model:
+  name: google/flan-t5-base
+  learning_rate: 0.0003
+  weight_decay: 0.01
+  max_length: 384
+  batch_size: 4
+  val_batch_size: 16
+  warmup_ratio: 0.06
+  lr_scheduler: cosine
+  max_new_tokens: 128
+  label_smoothing: 0.05
+generation:
+  num_beams: 1
+trainer:
+  max_epochs: 30
+  precision: bf16-mixed
+  accumulate_grad_batches: 8
+  gradient_clip_val: 1.0
+  log_every_n_steps: 1
+  reload_dataloaders_every_n_epochs: 1
+  deterministic: true
+  early_stopping_patience: 10
+seed: 42
+name: dmaste-electronics-structured
+data:
+  train_file:
+  - downloads/DMASTE/dataset/electronics/train.txt
+  filter_implicit: false
+  tasks_partition:
+    full: 1.0
+  shuffle_tasks: false
+  natural_language_fraction: 0.0
+  syntax_enrichment: null
+eval:
+  val_split: 0
+  data: downloads/DMASTE/dataset/electronics/dev.txt
+  tasks:
+  - aspect
+  - sentiment
+  - polarity
+  scopes:
+  - keys:
+    - aspect
+    - sentiment
+    - polarity
+    metrics:
+    - micro_f1
+  output_format: structured
+test:
+  scopes:
+  - keys:
+    - aspect
+    - sentiment
+    - polarity
+    metrics:
+    - micro_f1
+    - rouge_l
+    token_threshold: 0.8
+  - keys:
+    - aspect
+    metrics:
+    - micro_f1
+    - soft_f1
+    - rouge_l
+    - token_f1
+    - avg_overlap
+    soft_threshold: 0.8
+    token_threshold: 0.8
+  - keys:
+    - sentiment
+    metrics:
+    - micro_f1
+    - rouge_l
+    - token_f1
+    - avg_overlap
+    token_threshold: 0.8
+  - keys:
+    - aspect
+    - sentiment
+    metrics:
+    - micro_f1
+  - keys:
+    - polarity
+    metrics:
+    - micro_f1
+    - macro_f1
+  datasets:
+  - data: downloads/DMASTE/dataset/book/test.txt
+    tasks:
+    - aspect
+    - sentiment
+    - polarity
+  - data: downloads/DMASTE/dataset/grocery/test.txt
+    tasks:
+    - aspect
+    - sentiment
+    - polarity
+  - data: downloads/DMASTE/dataset/pet/test.txt
+    tasks:
+    - aspect
+    - sentiment
+    - polarity
+  - data: downloads/DMASTE/dataset/toy/test.txt
+    tasks:
+    - aspect
+    - sentiment
+    - polarity
+  output_format: structured

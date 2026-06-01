@@ -1,0 +1,19 @@
+Epoch 0
+-----------------------------------------------------------------------
+scope                       type        precision     recall         f1
+-----------------------------------------------------------------------
+aspect+sentiment+polarity   rouge_l        0.3504     0.3708     0.3603
+aspect                      micro          0.6453     0.6364     0.6408
+aspect                      soft           0.5770     0.6105     0.5933
+aspect                      token          0.5699     0.6030     0.5860
+aspect                      rouge_l        0.5699     0.6030     0.5860
+sentiment                   micro          0.4589     0.4879     0.4730
+sentiment                   token          0.4611     0.4878     0.4741
+sentiment                   rouge_l        0.4611     0.4878     0.4741
+aspect+sentiment            micro          0.3673     0.3876     0.3772
+polarity                    micro          0.8651     0.8930     0.8788
+polarity                    macro          0.2412     0.2480     0.2444
+polarity                    neutral        0.1026     0.0976     0.1000
+polarity                    positive       0.3772     0.4042     0.3902
+polarity                    negative       0.2437     0.2422     0.2430
+-----------------------------------------------------------------------

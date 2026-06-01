@@ -1,0 +1,124 @@
+name: ollama-commandr-ro-0shot
+model:
+  name: command-r:latest
+  learning_rate: 0.0003
+  weight_decay: 0.01
+  max_length: 256
+  batch_size: 8
+  val_batch_size: 32
+  warmup_ratio: 0.06
+  lr_scheduler: cosine
+  max_new_tokens: 128
+  label_smoothing: 0.05
+  focal_gamma: 0.0
+  optimizer: adamw
+  type: ollama
+  n_shots: 0
+  output_format: structured
+generation:
+  num_beams: 1
+  repetition_penalty: 1.0
+  length_penalty: 1.0
+  do_sample: false
+  temperature: 1.0
+  num_return_sequences: 1
+  vote_threshold: 1
+  penalty_alpha: 0.0
+  top_k: 0
+  num_beam_groups: 1
+  diversity_penalty: 0.0
+  constrained_decoding: false
+trainer:
+  from_checkpoint: null
+  early_stopping_patience: 0
+  max_epochs: 15
+  precision: bf16-mixed
+  accumulate_grad_batches: 4
+  gradient_clip_val: 1.0
+  log_every_n_steps: 1
+  limit_train_batches: 1.0
+  num_sanity_val_steps: 0
+  reload_dataloaders_every_n_epochs: 1
+  deterministic: true
+  num_workers: 11
+  strategy: auto
+data:
+  train_file:
+  - downloads/emag_ro/ror-train-gpt4_1.csv
+  train_fraction: 1.0
+  language: en
+  spacy_model: en_core_web_sm
+  filter_implicit: false
+  infer_implicit: false
+  tasks_partition:
+    aspect: 0.3
+    polarity: 0.3
+    sentiment: 0.3
+    full: 0.1
+  shuffle_tasks: false
+  natural_language_fraction: 0.0
+  curriculum: null
+  syntax_enrichment: null
+  category_set: null
+  include_categories: false
+  augmentation:
+    duplicate: null
+    mask_aspects: null
+    nlpaug: null
+    llm_paraphrase: null
+eval:
+  val_split: 0
+  data: downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/402.Restaurant14/dev.txt
+  tasks:
+  - aspect
+  - sentiment
+  - polarity
+  scopes:
+  - keys:
+    - aspect
+    - sentiment
+    - polarity
+    metrics:
+    - micro_f1
+  - keys:
+    - aspect
+    metrics:
+    - micro_f1
+    - soft_f1
+    soft_threshold: 0.8
+    soft_model: all-MiniLM-L6-v2
+  - keys:
+    - sentiment
+    metrics:
+    - micro_f1
+  - keys:
+    - polarity
+    metrics:
+    - micro_f1
+    - macro_f1
+test:
+  from_checkpoint: null
+  scopes:
+  - keys:
+    - polarity
+    - category
+    metrics:
+    - micro_f1
+  - keys:
+    - polarity
+    metrics:
+    - micro_f1
+    - macro_f1
+  - keys:
+    - category
+    metrics:
+    - micro_f1
+  datasets:
+  - data: downloads/emag_ro/emag-phone-review-test.csv
+    tasks:
+    - category
+    - polarity
+  filter_implicit: false
+  eval_implicit_split: false
+  implicit_mode: null
+seed: 42

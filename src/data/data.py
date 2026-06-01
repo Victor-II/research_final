@@ -28,7 +28,8 @@ from src.data.utils import find_span_indices
 # ---------------------------------------------------------------------------
 
 def parse_aste_line(line: str) -> dict:
-    text, raw_labels = line.strip().split("####")
+    parts = line.strip().split("####")
+    text, raw_labels = parts[0], parts[1]
     tokens = text.split()
     triplets = ast.literal_eval(raw_labels)
     annotations = []
@@ -173,6 +174,85 @@ def filter_implicit_aspects(examples: list[dict]) -> list[dict]:
         if anns:
             filtered.append({**ex, "annotations": anns})
     return filtered
+
+
+def load_files(file_paths, filter_implicit: bool = False, syntax_enrichment: str = None, spacy_model: str = "en_core_web_sm", seed: int = 42) -> list[dict]:
+    """Load one or more data files into canonical format.
+
+    Accepts a single path string or a list of paths/dicts. Handles ASTE, ACOS JSONL,
+    silviolima JSON, and eMAG CSV formats based on file extension.
+
+    Each entry can be:
+      - a string path (loads all examples)
+      - a dict with 'path' and optional 'fraction' (subsamples to that fraction)
+    """
+    if isinstance(file_paths, str):
+        file_paths = [file_paths]
+    examples = []
+    for entry in file_paths:
+        if isinstance(entry, dict):
+            f = entry["path"]
+            fraction = entry.get("fraction", 1.0)
+        else:
+            f = entry
+            fraction = 1.0
+
+        if f.endswith(".jsonl"):
+            file_examples = load_acos_jsonl(f)
+        elif f.endswith(".json"):
+            file_examples = load_silviolima_domain(f)
+        elif f.endswith(".csv"):
+            file_examples = load_emag_csv(f)
+        else:
+            file_examples = load_aste_file(f)
+
+        if fraction < 1.0:
+            rng = random.Random(seed)
+            n_keep = max(1, int(len(file_examples) * fraction))
+            file_examples = rng.sample(file_examples, n_keep)
+
+        examples.extend(file_examples)
+    if filter_implicit:
+        examples = filter_implicit_aspects(examples)
+    if syntax_enrichment:
+        examples = enrich_syntax(examples, syntax_enrichment, spacy_model=spacy_model)
+    return examples
+
+
+def load_train_val(cfg: dict) -> tuple[list[dict], list[dict]]:
+    """Load train and val examples in canonical format from config.
+
+    Handles: train_file (str or list), train_fraction, val_split vs eval.data (str or list).
+    Returns (train_examples, val_examples) in canonical format.
+    """
+    data_cfg = cfg["data"]
+    fi = data_cfg.get("filter_implicit", False)
+    se = data_cfg.get("syntax_enrichment", None)
+    spacy_model = data_cfg.get("spacy_model", "en_core_web_sm")
+
+    train_examples = load_files(data_cfg["train_file"], filter_implicit=fi, syntax_enrichment=se, spacy_model=spacy_model, seed=cfg.get("seed", 42))
+
+    # train fraction
+    train_fraction = data_cfg.get("train_fraction", 1.0)
+    if train_fraction < 1.0:
+        rng = random.Random(cfg["seed"])
+        n_keep = max(1, int(len(train_examples) * train_fraction))
+        train_examples = rng.sample(train_examples, n_keep)
+
+    # val data
+    val_split = cfg["eval"].get("val_split", 0)
+    if val_split > 0:
+        rng = random.Random(cfg["seed"])
+        indices = list(range(len(train_examples)))
+        rng.shuffle(indices)
+        n_val = int(len(train_examples) * val_split)
+        val_indices = set(indices[:n_val])
+        val_examples = [train_examples[i] for i in indices[:n_val]]
+        train_examples = [train_examples[i] for i in range(len(train_examples)) if i not in val_indices]
+    else:
+        val_examples = load_files(cfg["eval"]["data"], filter_implicit=fi, syntax_enrichment=se, spacy_model=spacy_model)
+
+    return train_examples, val_examples
 
 
 def _parse_semeval_xml_opinion(opinion_el, tokens: list[str]) -> dict:

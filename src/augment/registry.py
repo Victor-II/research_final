@@ -1,4 +1,4 @@
-from src.augment.masking import mask_aspects
+from src.augment.masking import mask_aspects, mask_opinions, opinion_prediction_aux
 
 
 def apply_augmentations(examples: list[dict], cfg: dict) -> list[dict]:
@@ -19,6 +19,16 @@ def apply_augmentations(examples: list[dict], cfg: dict) -> list[dict]:
     if aug_cfg.get("mask_aspects"):
         m = aug_cfg["mask_aspects"]
         examples = mask_aspects(
+            examples,
+            fraction=m.get("fraction", 0.5),
+            replace=m.get("replace", False),
+            mask_target=m.get("mask_target", False),
+            seed=cfg.get("seed", 42),
+        )
+
+    if aug_cfg.get("mask_opinions"):
+        m = aug_cfg["mask_opinions"]
+        examples = mask_opinions(
             examples,
             fraction=m.get("fraction", 0.5),
             replace=m.get("replace", False),

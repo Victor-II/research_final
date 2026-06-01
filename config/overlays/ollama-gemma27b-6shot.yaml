@@ -1,0 +1,39 @@
+name: "ollama-gemma27b-6shot"
+
+model:
+  type: "ollama"
+  name: "gemma2:27b"
+  n_shots: 6
+  output_format: "structured"
+  max_new_tokens: 256
+  demo_selection: "hybrid"
+
+data:
+  train_file:
+    - "downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/402.Restaurant14/train.txt"
+
+test:
+  scopes:
+    - keys: ["aspect", "sentiment", "polarity"]
+      metrics: [micro_f1]
+    - keys: ["aspect"]
+      metrics: [micro_f1]
+    - keys: ["polarity"]
+      metrics: [micro_f1, macro_f1]
+  datasets:
+    - data: "downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/402.Restaurant14/test.txt"
+      tasks: ["aspect", "sentiment", "polarity"]
+      demo_source: "downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/402.Restaurant14/train.txt"
+    - data: "downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/403.Restaurant15/test.txt"
+      tasks: ["aspect", "sentiment", "polarity"]
+      demo_source: "downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/403.Restaurant15/train.txt"
+    - data: "downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/404.Restaurant16/test.txt"
+      tasks: ["aspect", "sentiment", "polarity"]
+      demo_source: "downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/404.Restaurant16/train.txt"
+    - data: "downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/401.Laptop14/test.txt"
+      tasks: ["aspect", "sentiment", "polarity"]
+      demo_source: "downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/401.Laptop14/train.txt"
+    - data: "downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/401.Laptop14/test.txt"
+      tasks: ["aspect", "sentiment", "polarity"]
+
+seed: 42

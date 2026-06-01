@@ -28,7 +28,8 @@ Output format: one triplet per line as [aspect, opinion, polarity]
 - opinion: the opinion expression about the aspect (exact span from text)
 - polarity: positive, negative, or neutral
 
-If there are no triplets, output: none"""
+If there are no triplets, output: none
+Do not explain your reasoning. Only output the triplets."""
 
 _SYSTEM_PROMPT_NL = """You are an aspect-based sentiment analysis system. Given a review sentence, extract all aspect-opinion-polarity triplets and express each one in natural language.
 
@@ -49,7 +50,8 @@ Output format: one quad per line as [aspect, opinion, polarity, category]
 - polarity: positive, negative, or neutral
 - category: the aspect category (e.g. food quality, service general, etc.)
 
-If there are no quads, output: none"""
+If there are no quads, output: none
+Do not explain your reasoning. Only output the quads."""
 
 _SYSTEM_PROMPT_QUAD_NL = """You are an aspect-based sentiment analysis system. Given a review sentence, extract all (aspect, opinion, polarity, category) quads and express each one in natural language.
 
@@ -63,8 +65,27 @@ Output format: one quad per line using this template:
 
 If there are no quads, output: none"""
 
+_SYSTEM_PROMPT_CATPOL = """You are a sentiment analysis system for phone reviews written in Romanian. Given a review, extract all (category, polarity) pairs that are discussed.
+
+Output format: one pair per line as [category, polarity]
+- category: Must be one of: experience, durability, performance, battery, price_quality, design, camera, audio, software, brand, service
+- polarity: Must be one of: positive, negative, neutral
+
+Category descriptions (for reference):
+  experience = overall satisfaction, durability = build quality/longevity,
+  performance = speed/responsiveness, battery = battery life/charging,
+  price_quality = value for money, design = appearance/form factor,
+  camera = photo/video quality, audio = speakers/microphone,
+  software = OS/apps/updates, brand = manufacturer reputation,
+  service = delivery/customer support/warranty
+
+If there are no pairs, output: none
+Do not explain your reasoning. Only output the pairs."""
+
 
 def _get_system_prompt(task_type: str, output_format: str) -> str:
+    if task_type == "catpol":
+        return _SYSTEM_PROMPT_CATPOL
     if task_type == "quad":
         return _SYSTEM_PROMPT_QUAD_NL if output_format == "nl" else _SYSTEM_PROMPT_QUAD_STRUCTURED
     return _SYSTEM_PROMPT_NL if output_format == "nl" else _SYSTEM_PROMPT_STRUCTURED

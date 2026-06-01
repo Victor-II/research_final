@@ -189,6 +189,27 @@ def comparison_latex(
 
 
 
+_PLOT_STYLE = {
+    "font.sans-serif": ["Noto Sans"],
+    "font.family": "sans-serif",
+    "font.size": 11,
+    "axes.titlesize": 12,
+    "axes.labelsize": 11,
+    "legend.fontsize": 9,
+    "figure.dpi": 150,
+}
+
+
+def _plot_filename(out_dir: str, prefix: str, parts: list[str], experiment_names: list[str] = None) -> Path:
+    """Build a unique plot filename from components."""
+    name_parts = [prefix] + [p for p in parts if p]
+    if experiment_names and len(experiment_names) <= 4:
+        name_parts.append("_".join(experiment_names))
+    elif experiment_names:
+        name_parts.append(f"{len(experiment_names)}exps")
+    return Path(out_dir) / ("+".join(name_parts) + ".png")
+
+
 def plot_val_curves(
     experiments_dir: str,
     out_dir: str,
@@ -199,6 +220,7 @@ def plot_val_curves(
     value: str = "f1",
 ):
     import matplotlib.pyplot as plt
+    plt.rcParams.update(_PLOT_STYLE)
 
     results = load_experiment_results(experiments_dir, filter_pattern, experiment_names)
     results = [r for r in results if r.get("val")]
@@ -216,18 +238,19 @@ def plot_val_curves(
             epochs.append(entry["epoch"])
             vals.append(scope_val[metric][value])
         if vals:
-            ax.plot(epochs, vals, marker="o", label=exp["name"])
+            ax.plot(epochs, vals, marker="o", markersize=4, linewidth=1.5, label=exp["name"])
 
     ax.set_xlabel("Epoch")
-    ax.set_ylabel(f"{scope} {metric} {value}")
-    ax.set_title(f"Validation {scope} {metric} {value} over epochs")
-    ax.legend()
-    ax.grid(True, alpha=0.3)
+    ax.set_ylabel(f"{value.upper()}")
+    ax.set_title(f"Validation {scope} ({metric} {value})")
+    ax.legend(loc="lower right", framealpha=0.9)
+    ax.grid(True, alpha=0.2)
+    ax.set_ylim(bottom=0)
     fig.tight_layout()
 
     Path(out_dir).mkdir(parents=True, exist_ok=True)
-    path = Path(out_dir) / f"val_{scope}_{metric}_{value}.png"
-    fig.savefig(path, dpi=150)
+    path = _plot_filename(out_dir, "val", [scope, metric, value], experiment_names)
+    fig.savefig(path, dpi=150, bbox_inches="tight")
     plt.close(fig)
     print(f"Saved: {path}")
 
@@ -240,9 +263,11 @@ def plot_test_bars(
     dataset: str = None,
     scope: str = "aspect",
     metric: str = "micro",
+    show: list[str] = None,
 ):
     import matplotlib.pyplot as plt
     import numpy as np
+    plt.rcParams.update(_PLOT_STYLE)
 
     results = load_experiment_results(experiments_dir, filter_pattern, experiment_names)
     rows = _flatten_results(results)
@@ -251,33 +276,49 @@ def plot_test_bars(
         print("No test results match the given filters.")
         return
 
-    names = [r["experiment"] for r in rows]
-    p = [r["precision"] for r in rows]
-    r_ = [r["recall"] for r in rows]
-    f1 = [r["f1"] for r in rows]
+    # which bars to show
+    all_bars = ["precision", "recall", "f1"]
+    if show:
+        bars_to_show = [b for b in all_bars if b in show]
+    else:
+        bars_to_show = all_bars
+    n_bars = len(bars_to_show)
 
+    colors = {"precision": "#4c72b0", "recall": "#55a868", "f1": "#c44e52"}
+    labels = {"precision": "Precision", "recall": "Recall", "f1": "F1"}
+
+    names = [r["experiment"] for r in rows]
     x = np.arange(len(names))
-    w = 0.25
-    fig, ax = plt.subplots(figsize=(max(8, len(names) * 2), 5))
-    ax.bar(x - w, p, w, label="Precision")
-    ax.bar(x, r_, w, label="Recall")
-    ax.bar(x + w, f1, w, label="F1")
+    w = 0.7 / n_bars
+
+    fig, ax = plt.subplots(figsize=(max(8, len(names) * 1.8), 5))
+    for i, bar_key in enumerate(bars_to_show):
+        vals = [r[bar_key] for r in rows]
+        offset = (i - (n_bars - 1) / 2) * w
+        bars = ax.bar(x + offset, vals, w, label=labels[bar_key], color=colors[bar_key], alpha=0.85)
+        if bar_key == bars_to_show[-1]:
+            for bar, val in zip(bars, vals):
+                ax.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 0.005,
+                        f"{val:.3f}", ha="center", va="bottom", fontsize=8)
 
     ax.set_xticks(x)
     ax.set_xticklabels(names, rotation=30, ha="right")
     ax.set_ylabel("Score")
-    title_parts = [f"{scope} {metric}"]
+    max_val = max(r[bars_to_show[-1]] for r in rows)
+    ax.set_ylim(0, min(1.0, max_val + 0.08))
+    title_parts = [f"{scope} ({metric})"]
     if dataset:
-        title_parts.append(f"dataset={dataset}")
-    ax.set_title("Test: " + ", ".join(title_parts))
-    ax.legend()
-    ax.grid(True, axis="y", alpha=0.3)
+        title_parts.append(dataset)
+    ax.set_title(" — ".join(title_parts))
+    ax.legend(loc="upper right")
+    ax.grid(True, axis="y", alpha=0.2)
     fig.tight_layout()
 
     Path(out_dir).mkdir(parents=True, exist_ok=True)
     ds_label = dataset or "all"
-    path = Path(out_dir) / f"test_{scope}_{metric}_{ds_label}.png"
-    fig.savefig(path, dpi=150)
+    bars_label = "-".join(bars_to_show)
+    path = _plot_filename(out_dir, "test", [scope, metric, ds_label, bars_label], experiment_names)
+    fig.savefig(path, dpi=150, bbox_inches="tight")
     plt.close(fig)
     print(f"Saved: {path}")
 
@@ -287,8 +328,10 @@ def plot_loss_curves(
     out_dir: str,
     filter_pattern: str = "*",
     experiment_names: list[str] = None,
+    show: list[str] = None,
 ):
     import matplotlib.pyplot as plt
+    plt.rcParams.update(_PLOT_STYLE)
 
     results = load_experiment_results(experiments_dir, filter_pattern, experiment_names)
     results = [r for r in results if r.get("train_loss") or r.get("val_loss")]
@@ -296,28 +339,136 @@ def plot_loss_curves(
         print("No experiments with loss history found.")
         return
 
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5))
+    show = show or ["val"]
+
+    fig, ax = plt.subplots(figsize=(8, 5))
     for exp in results:
-        if exp.get("train_loss"):
-            ax1.plot(range(len(exp["train_loss"])), exp["train_loss"], marker="o", label=exp["name"])
-        if exp.get("val_loss"):
-            ax2.plot(range(len(exp["val_loss"])), exp["val_loss"], marker="o", label=exp["name"])
+        name = exp["name"]
+        if "train" in show and exp.get("train_loss"):
+            ax.plot(range(len(exp["train_loss"])), exp["train_loss"],
+                    linewidth=1.5, linestyle="-", label=f"{name} (train)")
+        if "val" in show and exp.get("val_loss"):
+            ax.plot(range(len(exp["val_loss"])), exp["val_loss"],
+                    linewidth=1.5, linestyle="--", label=f"{name} (val)")
 
-    ax1.set_xlabel("Epoch")
-    ax1.set_ylabel("Loss")
-    ax1.set_title("Train Loss")
-    ax1.legend()
-    ax1.grid(True, alpha=0.3)
-
-    ax2.set_xlabel("Epoch")
-    ax2.set_ylabel("Loss")
-    ax2.set_title("Val Loss")
-    ax2.legend()
-    ax2.grid(True, alpha=0.3)
-
+    ax.set_xlabel("Epoch")
+    ax.set_ylabel("Loss")
+    ax.set_title("Training & Validation Loss" if len(show) > 1 else f"{'Training' if 'train' in show else 'Validation'} Loss")
+    ax.legend(loc="upper right", framealpha=0.9)
+    ax.grid(True, alpha=0.2)
     fig.tight_layout()
+
     Path(out_dir).mkdir(parents=True, exist_ok=True)
-    path = Path(out_dir) / "loss_curves.png"
-    fig.savefig(path, dpi=150)
+    path = _plot_filename(out_dir, "loss", show, experiment_names)
+    fig.savefig(path, dpi=150, bbox_inches="tight")
     plt.close(fig)
     print(f"Saved: {path}")
+
+
+
+def cross_method_table(
+    experiments_dir: str,
+    experiment_names: list[str],
+    scope: str = "aspect+sentiment+polarity",
+    metric: str = "micro",
+    latex: bool = False,
+) -> str:
+    """Generate a cross-method comparison table (experiments as rows, datasets as columns).
+
+    Produces a pivot table with F1 scores: rows = experiments, columns = datasets.
+    Highlights the best score per column.
+    """
+    results = load_experiment_results(experiments_dir, experiment_names=experiment_names)
+    if not results:
+        return "No experiment results found."
+
+    rows = _flatten_results(results)
+    rows = _filter_rows(rows, metric=metric, scope=scope)
+    if not rows:
+        return "No results match the given filters."
+
+    # pivot: experiment -> dataset -> f1
+    pivot = defaultdict(dict)
+    datasets_seen = []
+    for r in rows:
+        pivot[r["experiment"]][r["dataset"]] = r["f1"]
+        if r["dataset"] not in datasets_seen:
+            datasets_seen.append(r["dataset"])
+
+    # preserve experiment order from input
+    exp_order = []
+    for name in experiment_names:
+        if name in pivot and name not in exp_order:
+            exp_order.append(name)
+    # add any found but not in input order
+    for name in pivot:
+        if name not in exp_order:
+            exp_order.append(name)
+
+    # find best per dataset
+    best_per_ds = {}
+    for ds in datasets_seen:
+        vals = [(name, pivot[name].get(ds, 0)) for name in exp_order]
+        if vals:
+            best_per_ds[ds] = max(vals, key=lambda x: x[1])[1]
+
+    if latex:
+        return _cross_method_latex(exp_order, datasets_seen, pivot, best_per_ds, scope, metric)
+    else:
+        return _cross_method_text(exp_order, datasets_seen, pivot, best_per_ds)
+
+
+def _cross_method_text(exp_order, datasets, pivot, best_per_ds) -> str:
+    # column widths
+    name_w = max(len(n) for n in exp_order)
+    ds_w = max(max(len(d) for d in datasets), 8)
+
+    header = f"{'Method':<{name_w}}" + "".join(f"  {d:>{ds_w+1}}" for d in datasets)
+    sep = "-" * len(header)
+    lines = [header, sep]
+
+    for name in exp_order:
+        parts = [f"{name:<{name_w}}"]
+        for ds in datasets:
+            val = pivot[name].get(ds)
+            if val is None:
+                parts.append(f"  {'—':>{ds_w+1}}")
+            else:
+                marker = "*" if val == best_per_ds.get(ds) else " "
+                parts.append(f"  {val:>{ds_w}.4f}{marker}")
+        lines.append("".join(parts))
+
+    lines.append(sep)
+    lines.append("* = best in column")
+    return "\n".join(lines)
+
+
+def _cross_method_latex(exp_order, datasets, pivot, best_per_ds, scope, metric) -> str:
+    n_ds = len(datasets)
+    col_spec = "l" + "r" * n_ds
+    ds_headers = " & ".join(datasets)
+
+    lines = [
+        "\\begin{table}[htbp]",
+        "\\centering",
+        f"\\caption{{Cross-method comparison ({scope}, {metric} F1)}}",
+        f"\\begin{{tabular}}{{{col_spec}}}",
+        "\\toprule",
+        f"Method & {ds_headers} \\\\",
+        "\\midrule",
+    ]
+
+    for name in exp_order:
+        parts = [name.replace("_", "\\_")]
+        for ds in datasets:
+            val = pivot[name].get(ds)
+            if val is None:
+                parts.append("—")
+            elif val == best_per_ds.get(ds):
+                parts.append(f"\\textbf{{{val:.4f}}}")
+            else:
+                parts.append(f"{val:.4f}")
+        lines.append(" & ".join(parts) + " \\\\")
+
+    lines.extend(["\\bottomrule", "\\end{tabular}", "\\end{table}"])
+    return "\n".join(lines)

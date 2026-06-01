@@ -10,7 +10,7 @@ def main():
     parser = argparse.ArgumentParser(description="ABSA experiment runner")
     parser.add_argument("--config", type=str, default=None, help="overlay config yaml")
     parser.add_argument("--set", action="append", default=[], help="dot-notation override, e.g. --set model.learning_rate=5e-4")
-    parser.add_argument("--mode", choices=["train", "test", "aggregate", "plot", "generate"], default="train")
+    parser.add_argument("--mode", choices=["train", "test", "aggregate", "plot", "generate", "mvp"], default="train")
     parser.add_argument("--checkpoint", type=str, default=None, help="checkpoint path for test mode")
     parser.add_argument("--filter", type=str, default="*", help="glob pattern for aggregate mode")
     parser.add_argument("--experiments", type=str, nargs="+", default=None, help="list of experiment names for aggregate mode")
@@ -19,25 +19,40 @@ def main():
     parser.add_argument("--dataset", type=str, default=None, help="filter by dataset name")
     parser.add_argument("--scope", type=str, default=None, help="filter by scope (e.g. aspect, polarity)")
     parser.add_argument("--latex", action="store_true", help="output aggregate tables as LaTeX")
+    parser.add_argument("--pivot", action="store_true", help="cross-method pivot table (experiments as rows, datasets as columns)")
     parser.add_argument("--save", action="store_true", help="save aggregate table to aggregated/tables/")
     parser.add_argument("--plot", type=str, nargs="+", choices=["val", "test", "loss"], default=None, help="plot types for plot mode (val, test, loss)")
     parser.add_argument("--plot-dir", type=str, default="aggregated/plots", help="output directory for plots")
+    parser.add_argument("--bars", type=str, nargs="+", choices=["precision", "recall", "f1"], default=None, help="which bars to show in test bar plot (default: all)")
+    parser.add_argument("--loss-type", type=str, nargs="+", choices=["train", "val"], default=None, help="which loss curves to show (default: both)")
     parser.add_argument("--verbose", action="store_true", help="verbose output for generate mode")
     parser.add_argument("--device", type=str, default="cuda", help="device for generate mode verifier (cuda/cpu)")
     args = parser.parse_args()
 
     if args.mode == "aggregate":
-        from src.eval.aggregate import comparison_table, comparison_latex
-        fn = comparison_latex if args.latex else comparison_table
-        output = fn(
-            str(EXPERIMENTS_DIR),
-            filter_pattern=args.filter,
-            experiment_names=args.experiments,
-            group_by=args.group_by,
-            metric=args.metric,
-            dataset=args.dataset,
-            scope=args.scope,
-        )
+        from src.eval.aggregate import comparison_table, comparison_latex, cross_method_table
+        if args.pivot:
+            if not args.experiments:
+                print("--pivot requires --experiments to specify which experiments to compare")
+                return
+            output = cross_method_table(
+                str(EXPERIMENTS_DIR),
+                experiment_names=args.experiments,
+                scope=args.scope or "aspect+sentiment+polarity",
+                metric=args.metric or "micro",
+                latex=args.latex,
+            )
+        else:
+            fn = comparison_latex if args.latex else comparison_table
+            output = fn(
+                str(EXPERIMENTS_DIR),
+                filter_pattern=args.filter,
+                experiment_names=args.experiments,
+                group_by=args.group_by,
+                metric=args.metric,
+                dataset=args.dataset,
+                scope=args.scope,
+            )
         print(output)
         if args.save:
             tables_dir = Path("aggregated/tables")
@@ -60,11 +75,11 @@ def main():
             experiment_names=args.experiments,
         )
         if "loss" in plot_types:
-            plot_loss_curves(**common)
+            plot_loss_curves(**common, show=args.loss_type)
         if "val" in plot_types:
             plot_val_curves(**common, scope=args.scope or "aspect", metric=args.metric or "micro")
         if "test" in plot_types:
-            plot_test_bars(**common, scope=args.scope or "aspect", metric=args.metric or "micro", dataset=args.dataset)
+            plot_test_bars(**common, scope=args.scope or "aspect", metric=args.metric or "micro", dataset=args.dataset, show=args.bars)
         return
 
     if args.mode == "generate":
@@ -109,6 +124,9 @@ def main():
             # causal LMs don't train — test mode runs inference directly
             from src.pipelines.gemma_pipeline import run_gemma_inference
             run_gemma_inference(cfg, output_dir)
+        elif model_type == "ollama":
+            from src.pipelines.ollama_pipeline import run_ollama_inference
+            run_ollama_inference(cfg, output_dir)
         elif model_type == "span":
             if not ckpt:
                 raise ValueError("Test mode requires --checkpoint or test.from_checkpoint in config")
@@ -119,14 +137,26 @@ def main():
                 raise ValueError("Test mode requires --checkpoint or test.from_checkpoint in config")
             from src.pipelines.t5_pipeline import test
             test(cfg, ckpt, output_dir)
+    elif args.mode == "mvp":
+        ckpt = args.checkpoint or cfg.get("test", {}).get("from_checkpoint")
+        if not ckpt:
+            raise ValueError("MvP mode requires --checkpoint or test.from_checkpoint in config")
+        from src.pipelines.t5_pipeline import test_mvp
+        test_mvp(cfg, ckpt, output_dir)
     else:
         # train mode
         if model_type == "causal-lm":
             from src.pipelines.gemma_pipeline import run_gemma_inference
             run_gemma_inference(cfg, output_dir)
+        elif model_type == "ollama":
+            from src.pipelines.ollama_pipeline import run_ollama_inference
+            run_ollama_inference(cfg, output_dir)
         elif model_type == "span":
             from src.pipelines.roberta_pipeline import run_roberta
             run_roberta(cfg, output_dir)
+        elif model_type == "classifier":
+            from src.pipelines.xlmr_pipeline import run_xlmr_classifier
+            run_xlmr_classifier(cfg, output_dir)
         else:
             from src.pipelines.t5_pipeline import run
             run(cfg, output_dir)

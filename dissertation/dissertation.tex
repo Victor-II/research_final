@@ -1,0 +1,497 @@
+\documentclass[12pt,a4paper]{report}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{textgreek}
+
+\makeatletter
+\newcommand\footnoteref[1]{\protected@xdef\@thefnmark{\ref{#1}}\@footnotemark}
+\makeatother
+
+\usepackage[table,xcdraw]{xcolor}
+ 
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    numberstyle=\tiny\color{codegray},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+\usepackage{perpage}
+\MakePerPage{listing}
+% \MakePerPage{footnote}
+
+
+\usepackage[perpage]{footmisc}
+
+
+
+
+\usepackage[utf8]{inputenc} % pentru suport diacritice
+\usepackage[english]{babel} % setări pentru limba română 
+\usepackage{amsmath}
+\renewcommand\familydefault{\sfdefault} % sans serif
+\usepackage{color}
+\usepackage{float}
+
+\usepackage[margin=2.54cm]{geometry}	% dimensiuni pagină și margini
+\usepackage{graphicx} % support the \includegraphics command and options
+
+% formatting sections and subsections
+\usepackage{textcase}
+\usepackage[titletoc, title]{appendix}
+\usepackage{titlesec}
+\titleformat{\chapter}{\large\bfseries\MakeUppercase}{\thechapter}{2ex}{}[\vspace*{-1.5cm}]
+\titleformat*{\section}{\large\bfseries}
+\titleformat*{\subsection}{\large\bfseries}
+\titleformat*{\subsubsection}{\large\bfseries}
+
+\usepackage{chngcntr}
+\counterwithout{figure}{chapter} % no chapter number in figure labels
+\counterwithout{table}{chapter} % no chapter number in table labels
+\counterwithout{equation}{chapter} % no chapter number in equation labels
+
+\usepackage{booktabs} % for much better looking tables
+\usepackage{url} % Useful for inserting web links nicely
+\usepackage[bookmarks,unicode,hidelinks]{hyperref}
+
+
+\usepackage[titles]{tocloft}
+
+\usepackage{array} % for better arrays (eg matrices) in maths
+\usepackage{paralist} % very flexible & customisable lists (eg. enumerate/itemize, etc.)
+\usepackage{verbatim} % adds environment for commenting out blocks of text & for better verbatim
+\usepackage{subfig} % make it possible to include more than one captioned figure/table in a single float
+\usepackage{enumitem}
+\setlist{noitemsep}
+
+
+%%% HEADERS & FOOTERS
+\usepackage{fancyhdr}
+\pagestyle{empty}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\lhead{}\chead{}\rhead{}
+\lfoot{}\cfoot{\thepage}\rfoot{}
+
+
+
+\newcommand{\HeaderLineSpace}{-0.25cm}
+\newcommand{\UniTextRO}{UNIVERSITATEA POLITEHNICA DIN BUCUREȘTI \\[\HeaderLineSpace] 
+FACULTATEA DE AUTOMATICĂ ȘI CALCULATOARE \\[\HeaderLineSpace]
+DEPARTAMENTUL DE CALCULATOARE\\}
+\newcommand{\DiplomaRO}{PROIECT DE DIZERTAȚIE}
+\newcommand{\AdvisorRO}{Coordonator științific:}
+\newcommand{\BucRO}{BUCUREȘTI}
+
+\newcommand{\UniTextEN}{UNIVERSITY POLITEHNICA OF BUCHAREST \\[\HeaderLineSpace]
+FACULTY OF AUTOMATIC CONTROL AND COMPUTERS \\[\HeaderLineSpace]
+COMPUTER SCIENCE AND ENGINEERING DEPARTMENT\\}
+\newcommand{\DiplomaEN}{MASTER THESIS}
+\newcommand{\AdvisorEN}{Thesis advisor:}
+\newcommand{\BucEN}{BUCHAREST}
+
+\newcommand{\frontPage}[6]{
+\begin{titlepage}
+\begin{center}
+{\Large #1}  % header (university, faculty, department)
+\vspace{50pt}
+\begin{tabular}{p{6cm}p{4cm}}
+\includegraphics[scale=0.8]{figures/upb-logo.jpg} &
+	\includegraphics[scale=0.5,trim={14cm 11cm 2cm 5cm},clip=true]{figures/cs-logo.pdf}
+\end{tabular}
+
+\vspace{105pt}
+{\Huge #2}\\                           % diploma project text
+\vspace{40pt}
+{\Huge #3}\\ \vspace{0pt}  % project title
+% {\Large #4}\\                          % project subtitle
+\vspace{40pt}
+{\LARGE \Name}\\                   % student name
+\end{center}
+\vspace{60pt}
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}p{6cm}r}
+&{\large\textbf{#5}}\vspace{10pt}\\      % scientific advisor
+&{\large \AdvisorA}\\                                    % advisor name
+&{\large \AdvisorB}                                    % advisor name
+\end{tabular*}
+\vspace{20pt}
+\begin{center}
+{\large\textbf{#6}}\\                                % bucharest
+\vspace{0pt}
+{\normalsize \Year}
+\end{center}
+\end{titlepage}
+}
+
+
+\newcommand{\frontPageRO}{\frontPage{\UniTextRO}{\DiplomaRO}{\ProjectTitleRO}{\ProjectSubtitleRO}{\AdvisorRO}{\BucRO}}
+\newcommand{\frontPageEN}{\frontPage{\UniTextEN}{\DiplomaEN}{\ProjectTitleEN}{\ProjectSubtitleEN}{\AdvisorEN}{\BucEN}}
+
+\linespread{1.15}
+\setlength\parindent{0pt}
+\setlength\parskip{.28cm}
+
+%% Abstract macro
+\newcommand{\AbstractPage}{
+\begin{titlepage}
+\textbf{\large SINOPSIS}\par
+\AbstractRO\par\vfill
+\textbf{\large ABSTRACT}\par
+\AbstractEN \vfill
+\end{titlepage}
+}
+
+%% Thank you macro
+\newcommand{\ThanksPage}{
+\begin{titlepage}
+{\noindent \large\textbf{ACKNOWLEDGEMENTS}}\\
+\Thanks
+\end{titlepage}
+}
+
+\tolerance=1
+\emergencystretch=\maxdimen
+\hyphenpenalty=10000
+\hbadness=10000
+\sloppy
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   
+%%
+%%          End of template definitions
+%%   
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%% Puteți elimina aceste linii din lucrare, servesc numai pentru template.
+\newcommand{\worktype}[1]{[\textit{#1}] }
+\newcommand{\dezvoltare}{\worktype{Dezvoltare de produs}}
+\newcommand{\cercetare}{\worktype{Cercetare}}
+\newcommand{\ambele}{\worktype{Ambele}}
+%%%
+
+
+%%
+%%   Campurile de mai jos trebuie modificate de autor. Modificati doar continutul, nu si numele fiecarei definitii
+%%
+\newcommand{\ProjectTitleRO}{Un studiu empiric sistematic al strategiilor de antrenare pentru generalizarea în afara domeniului în analiza generativă a sentimentelor la nivel de aspect}
+\newcommand{\ProjectSubtitleRO}{}
+\newcommand{\ProjectTitleEN}{A Systematic Empirical Study of Training Strategies for Out-of-Domain Generalisation in Generative Aspect-Based Sentiment Analysis}
+\newcommand{\ProjectSubtitleEN}{}
+\newcommand{\Name}{[TO DO] FirstName SirName}
+\newcommand{\AdvisorA}{[TO DO] Adviser 1}
+\newcommand{\AdvisorB}{}
+\newcommand{\Year}{2026}
+
+% Setări document
+\title{Proiect de diplomă}
+\author{\Name}
+\date{\Year}
+
+%%
+%%   Campurile aferente rezumatului
+%%
+\newcommand{\AbstractRO}{TODO
+
+\textbf{Cuvinte cheie: TOOD} 
+}
+
+\newcommand{\AbstractEN}{ TODO
+\textbf{Keywords: TODO} 
+}
+
+%%
+%%   Campurile aferente paginii de multumiri
+%%
+\newcommand{\Thanks}{I would like to express my sincere appreciation and gratitude towards the support received from ....}
+
+\begin{document}
+
+\frontPageRO
+\frontPageEN
+
+\setlength{\cftbeforechapskip}{0.75pt}
+\addtocontents{toc}{\protect\thispagestyle{empty}}
+\begingroup
+\linespread{-1}
+\tableofcontents
+\thispagestyle{empty}
+\endgroup
+
+% \begingroup
+% \linespread{1}
+% \tableofcontents
+% \endgroup
+
+\AbstractPage
+\ThanksPage
+
+
+% Textul licentei incepe de aici 
+
+
+
+\chapter{Introduction}\label{ch:introduction}\pagestyle{fancy}
+
+Sentiment analysis has evolved from document-level polarity classification into increasingly fine-grained formulations that aim to capture the full structure of opinions expressed in text~\cite{liu2015sentiment, hussein2018survey}. Among these, Aspect-Based Sentiment Analysis (ABSA) seeks to identify not just whether a review is positive or negative, but precisely which aspects of a product or service are being discussed, what opinions are expressed about them, and what sentiment polarity those opinions carry~\cite{pontiki2014semeval}. The most complete formulation of this task is Aspect Sentiment Triplet Extraction (ASTE)~\cite{peng2020knowing, xu2020position}, which requires jointly extracting (aspect term, opinion term, sentiment polarity) triplets from a given sentence. For example, from the sentence ``The pizza is delicious but the service was slow'', a model should extract the triplets (pizza, delicious, positive) and (service, slow, negative).
+
+Recent work has demonstrated that generative approaches based on sequence-to-sequence models such as T5~\cite{raffel2020exploring} can achieve competitive or superior performance on ASTE compared to discriminative methods based on tagging or span extraction~\cite{zhang2021towards, yan2021unified, gou2023mvp}. These generative methods reformulate the extraction task as a text generation problem, where the model produces a structured or natural-language representation of the sentiment triplets given the input sentence~\cite{zhang2021aspect}.
+
+However, a critical limitation of current ABSA research is its near-exclusive focus on in-domain evaluation. Models are typically trained and tested on data from the same domain (e.g., restaurant reviews), which masks a fundamental challenge: when deployed in real-world applications, these models encounter reviews from domains unseen during training. The resulting performance degradation --- often exceeding 14 percentage points in F1 score~\cite{chia2022rethinking} --- represents a significant barrier to practical deployment.
+
+Cross-domain generalisation in ABSA remains understudied, particularly for generative approaches. Existing work on domain adaptation for ABSA has focused primarily on discriminative models and techniques such as adversarial training, which have shown limited effectiveness on the triplet extraction task due to the difficulty of simultaneously learning domain-invariant features and maintaining fine-grained discrimination between aspects, opinions, and polarities~\cite{xu2023dmaste}. Meanwhile, several techniques have been proposed for generative ABSA --- including natural-language output templates~\cite{zhang2021aspect}, multi-view prompting~\cite{gou2023mvp}, and task decomposition~\cite{xie2025star} --- but these have only been evaluated in-domain. Their potential as levers for out-of-domain generalisation remains unexplored.
+
+
+\section{Motivation}
+
+The motivation for this work stems from a practical observation: while generative ABSA models achieve strong in-domain results, their out-of-domain behaviour is poorly understood. Techniques such as natural-language output templates~\cite{zhang2021aspect}, task decomposition~\cite{xie2025star}, and multi-view prompting~\cite{gou2023mvp} have been proposed and evaluated in-domain, but their impact on cross-domain generalisation has not been measured. Similarly, training-level interventions such as syntactic enrichment of inputs and cross-domain data mixing have not been evaluated as levers for OOD performance in generative ABSA.
+
+Rather than proposing new architectures, this thesis contributes a systematic empirical study that isolates the contribution of each training strategy to out-of-domain generalisation, using controlled experiments with statistical validation. The goal is to identify which existing techniques matter most for generalisation, and which do not help despite intuitive appeal.
+
+
+\section{Objectives}
+
+The primary objectives of this thesis are:
+
+\begin{enumerate}
+    \item To systematically evaluate the impact of output format (structured vs. natural-language templates) on out-of-domain generalisation in generative ABSA, with statistical validation across multiple random seeds.
+    
+    \item To investigate whether syntactic enrichment of model inputs (dependency parsing, part-of-speech information) improves cross-domain transfer, and under what conditions.
+    
+    \item To assess the effectiveness of training-time augmentation strategies (template augmentation, cross-domain data mixing) for improving out-of-domain performance.
+    
+    \item To provide a comprehensive cross-method comparison spanning discriminative models (RoBERTa, XLM-R), large language models (Gemma2, Qwen2.5, Command-R), and our fine-tuned generative approach (FLAN-T5-base), evaluating both in-domain and out-of-domain performance.
+    
+    \item To validate findings across multiple benchmarks: SemEval ASTE (restaurant $\rightarrow$ laptop transfer), DMASTE (multi-domain Amazon reviews with 4 held-out target domains), and a Romanian ABSA dataset (eMAG phone reviews).
+\end{enumerate}
+
+
+\section{Contributions}
+
+The main contributions of this thesis are:
+
+\begin{enumerate}
+    \item We demonstrate that natural-language output format is the single most impactful training strategy for out-of-domain generalisation in generative ABSA, providing an improvement of +8.6 F1 points over structured output on average across 5 random seeds, with non-overlapping confidence intervals.
+    
+    \item We show that a FLAN-T5-base model (250M parameters) with natural-language output matches the best discriminative model (Span-ASTE) on the DMASTE cross-domain benchmark without any domain adaptation techniques.
+    
+    \item We provide systematic negative results for several intuitively promising strategies --- syntactic enrichment, curriculum learning, aspect masking, alternative decoding strategies --- establishing that these do not reliably improve out-of-domain performance for generative ABSA.
+    
+    \item We demonstrate that fine-tuned small models (250M parameters) consistently outperform much larger language models (27--32B parameters) in few-shot settings on both English and Romanian ABSA tasks.
+\end{enumerate}
+
+
+\section{Structure of the thesis}
+
+The thesis is structured across \textbf{6 chapters}.
+
+Chapter~\ref{ch:introduction} introduces the problem of out-of-domain generalisation in aspect-based sentiment analysis and outlines the research objectives and contributions.
+
+Chapter~\ref{ch:stateoftheart} reviews the state of the art in ABSA, covering task formulations (ASTE, ACOS), generative and discriminative approaches, cross-domain methods, and relevant data augmentation techniques.
+
+Chapter~\ref{ch:metodology} presents our methodology, including the natural-language output format design, syntactic enrichment modes, augmentation strategies, and the evaluation framework.
+
+Chapter~\ref{ch:implementation} describes the implementation details: model architecture, training pipeline, configuration system, and experimental infrastructure.
+
+Chapter~\ref{ch:results} presents experimental results across three benchmarks (SemEval, DMASTE, eMAG), including multi-seed validation, cross-method comparisons, and ablation studies.
+
+Chapter~\ref{ch:conclusions} summarises the findings, discusses limitations, and outlines directions for future work.
+
+
+\chapter{State of the Art}\label{ch:stateoftheart}
+TODO
+
+\chapter{Methodology}\label{ch:metodology}
+
+This chapter presents the methodology underlying our approach to out-of-domain generalisation in generative ABSA. We describe the task formulation, the natural-language output format design, syntactic enrichment strategies, data augmentation methods, and the evaluation framework.
+
+\section{Task Formulation}
+
+We formulate Aspect Sentiment Triplet Extraction (ASTE) as a sequence-to-sequence generation problem, following the approach established by GAS~\cite{zhang2021towards} and further developed by the Paraphrase~\cite{zhang2021aspect} and STAR~\cite{xie2025star} frameworks. Given an input sentence $x$, the model generates a text sequence $y$ that encodes all sentiment triplets $(a_i, o_i, p_i)$ present in the sentence, where $a_i$ is an aspect term, $o_i$ is an opinion term, and $p_i \in \{\text{positive}, \text{negative}, \text{neutral}\}$ is the sentiment polarity.
+
+The input to the model follows a structured prompt format with a task prefix that specifies which elements the model should extract:
+
+\begin{lstlisting}
+Task: aspect-extraction, sentiment-extraction, polarity-inference
+Input: But the staff was so horrible to us .
+\end{lstlisting}
+
+The task prefix serves two purposes: it tells the model which elements to extract (enabling sub-task training where only a subset is requested), and its ordering determines the order of elements in the output (enabling template augmentation, as described in Section~\ref{sec:template-aug}).
+
+\section{Output Format Design}\label{sec:output-format}
+
+A central hypothesis of this work is that the output representation used during training significantly impacts generalisation. We compare two output formats:
+
+\subsection{Structured Output}
+
+The structured format encodes triplets as bracketed tuples:
+
+\begin{lstlisting}
+[staff, horrible, negative]
+\end{lstlisting}
+
+Multiple triplets are concatenated: \texttt{[aspect1, opinion1, polarity1] [aspect2, opinion2, polarity2]}.
+
+This format is compact and unambiguous, but provides no linguistic structure beyond the ordering convention. The model must learn the bracket/comma syntax as an arbitrary encoding.
+
+\subsection{Natural-Language Output}
+
+The natural-language format encodes triplets using English templates:
+
+\begin{lstlisting}
+staff is described as horrible, expressing a negative sentiment
+\end{lstlisting}
+
+Multiple triplets are joined with semicolons: \texttt{triplet1 ; triplet2}.
+
+The template for the full triplet (aspect + opinion + polarity) is:
+
+\begin{center}
+\texttt{\{aspect\} is described as \{sentiment\}, expressing a \{polarity\} sentiment}
+\end{center}
+
+For sentences with implicit aspects (where the aspect is not explicitly mentioned in the text), we use a variant:
+
+\begin{center}
+\texttt{the implied aspect is \{aspect\}, described as \{sentiment\}, expressing a \{polarity\} sentiment}
+\end{center}
+
+The rationale for natural-language output is twofold:
+\begin{enumerate}
+    \item It aligns with the pre-training objective of the language model, which was trained to generate fluent English text rather than bracketed structures. The model can leverage its existing language generation capabilities rather than learning an arbitrary output syntax from scratch.
+    \item The template words (``is described as'', ``expressing a'') act as structural delimiters that constrain the output space. This may reduce the likelihood of malformed outputs, particularly on out-of-domain inputs where the model is less certain.
+\end{enumerate}
+
+\subsection{Template Augmentation (MvP-style)}\label{sec:template-aug}
+
+When template augmentation is enabled (\texttt{shuffle\_tasks: true}), the model is trained with multiple template orderings for the same triplet. The task ordering in the input prompt determines which output template the model should produce. For example, the same triplet may appear as:
+
+\begin{itemize}
+    \item \texttt{Task: aspect-extraction, sentiment-extraction, polarity-inference} $\rightarrow$ \texttt{\{aspect\} is described as \{sentiment\}, expressing a \{polarity\} sentiment}
+    \item \texttt{Task: polarity-inference, aspect-extraction, sentiment-extraction} $\rightarrow$ \texttt{a \{polarity\} sentiment toward \{aspect\} is expressed as \{sentiment\}}
+\end{itemize}
+
+This is functionally equivalent to the element-order prompting mechanism in MvP~\cite{gou2023mvp}, where different element orderings in the input prompt guide the model to generate tuples in different orders. The difference is syntactic: MvP uses explicit markers (\texttt{[A][C][O][S]}) while we encode the order through the task name sequence in the prompt.
+
+At inference time, MvP generates predictions from multiple orderings and aggregates via majority voting. We evaluate this inference-time voting separately from the training-time augmentation to isolate their individual contributions.
+
+\subsection{STAR-style Data Multiplication}
+
+Following the STAR framework~\cite{xie2025star}, we investigate whether training on decomposed sub-tasks alongside the full triplet task improves generalisation. For each training example, we generate additional training instances for all sub-task combinations:
+
+\begin{itemize}
+    \item Singles: aspect-only, sentiment-only, polarity-only
+    \item Pairs: aspect+sentiment, aspect+polarity, sentiment+polarity
+\end{itemize}
+
+This results in a 7$\times$ data multiplication (1 full triplet + 6 sub-tasks per example). The hypothesis is that explicitly training on sub-task decompositions helps the model learn element-level dependencies that transfer across domains. Unlike STAR, which was designed for ASQP (quads) and evaluated only in-domain, we apply this to ASTE (triples) and evaluate its impact on out-of-domain performance.
+
+
+\section{Syntactic Enrichment}\label{sec:syntax}
+
+The relationship between an aspect and its opinion is often encoded in syntactic structure: opinion words typically modify aspects through dependency relations such as \texttt{amod} (adjectival modifier), \texttt{nsubj} (nominal subject), or \texttt{advmod} (adverbial modifier). These syntactic patterns are largely domain-invariant --- ``delicious pizza'' and ``responsive touchscreen'' share the same \texttt{amod} relation despite belonging to different domains. We hypothesise that providing explicit syntactic information in the input may help the model identify aspect-opinion relationships in unseen domains where surface-level vocabulary patterns differ from training.
+
+The input is augmented with a separate \texttt{Syntax} line containing syntactic annotations:
+
+\begin{lstlisting}
+Task: aspect-extraction, sentiment-extraction, polarity-inference
+Input: But the staff was so horrible to us .
+Syntax: staff->was:nsubj horrible->was:acomp
+\end{lstlisting}
+
+We evaluate four syntactic enrichment modes:
+
+\subsection{dep-compact}
+
+Includes only content words (nouns, verbs, adjectives, adverbs, proper nouns) with their dependency head and relation in the format \texttt{word->head:relation}. Punctuation and function words are excluded. This is presented as a separate \texttt{Syntax:} line in the input.
+
+\subsection{pos-compact}
+
+Includes only content words with their part-of-speech tag in the format \texttt{word/POS}. Presented as a separate \texttt{Syntax:} line.
+
+\subsection{dep-inline and pos-inline}
+
+Replace the original input tokens with annotated versions (\texttt{word/relation} or \texttt{word/POS}). These modify the \texttt{Input:} line directly rather than adding a separate syntax line.
+
+
+\section{Data Augmentation Strategies}\label{sec:augmentation}
+
+\subsection{Cross-Domain Data Mixing}
+
+We investigate whether mixing training data from multiple domains improves generalisation to unseen domains. In the domain-mix configuration, the primary training set (e.g., SemEval Restaurant14) is augmented with a fraction of data from a different domain (e.g., DMASTE electronics or beauty reviews). The fraction is controlled to maintain a balanced contribution relative to the primary dataset size.
+
+\subsection{Aspect Masking}
+
+Aspect spans in the input sentence are replaced with sentinel tokens (\texttt{<extra\_id\_X>}). The model must still predict the correct aspect in the output, forcing it to rely on contextual cues (syntactic position, surrounding words) rather than copying the aspect term directly from the input. The motivation for OOD generalisation is that if the model learns to identify aspects by their contextual role rather than by memorising specific terms, it may better recognise novel aspect terms in unseen domains.
+
+\subsection{Curriculum Learning}
+
+Training proceeds through waypoints that interpolate between different task partition ratios across epochs. For example, early epochs may focus on simpler sub-tasks (aspect-only, polarity-only) before transitioning to the full triplet extraction task. The motivation is that learning simpler element-level patterns first may provide a better foundation for the compositional triplet task, particularly when generalising to new domains where the model must compose familiar sub-patterns in unfamiliar combinations.
+
+
+\section{Evaluation Framework}\label{sec:evaluation}
+
+\subsection{Metrics}
+
+We evaluate using micro-averaged precision, recall, and F1 score at the triplet level. A predicted triplet $(a, o, p)$ is considered correct only if all three elements exactly match a gold triplet. We additionally report:
+
+\begin{itemize}
+    \item \textbf{Aspect-only F1}: evaluates aspect extraction independently of opinion and polarity.
+    \item \textbf{Sentiment-only F1}: evaluates opinion span extraction independently.
+    \item \textbf{Polarity F1}: evaluates whether the model correctly identifies the sentiment polarity for each annotation, independently of aspect and opinion spans.
+    \item \textbf{Aspect+Sentiment F1}: evaluates whether the model correctly pairs aspects with their corresponding opinion spans, regardless of polarity.
+\end{itemize}
+
+This decomposition allows us to identify which component of the triplet is the bottleneck for out-of-domain performance.
+
+\subsection{Evaluation Protocol}
+
+For out-of-domain evaluation, the model is trained on one domain and tested on a different domain without any adaptation. We use two primary evaluation setups:
+
+\begin{enumerate}
+    \item \textbf{SemEval ASTE}: Train on Restaurant14, test on Restaurant14 (in-domain), Restaurant15 (near-OOD), Restaurant16 (near-OOD), and Laptop14 (out-of-domain).
+    \item \textbf{DMASTE}: Train on source domains (electronics, beauty, fashion, home), test on held-out target domains (book, grocery, pet, toy). Both single-source (electronics only) and multi-source (all four) settings are evaluated.
+\end{enumerate}
+
+All experiments use 5 random seeds (42, 123, 456, 789, 1337) for statistical validation, reporting mean and standard deviation of F1 scores.
+
+\subsection{Strict Output Parsing}
+
+Generated outputs are parsed using regex-based template matching. Malformed predictions that do not conform to the expected template structure score zero --- no lenient parsing or partial credit is applied. This ensures that reported metrics reflect the model's ability to produce well-formed outputs, not the flexibility of the evaluation script.
+
+\chapter{Implementation}\label{ch:implementation}
+TODO
+
+\chapter{Experimental Results}\label{ch:results}
+TODO
+
+\section{Discussions}
+TODO
+
+\chapter{Conclusions}\label{ch:conclusions}
+TODO
+
+\chapter{Annex}\label{ch:annex}
+TODO
+
+
+\addcontentsline{toc}{chapter}{Bibliography}
+\bibliographystyle{plain}
+\bibliography{bibliographyDizertatie}
+
+\end{document}

@@ -6,10 +6,10 @@ import re
 
 _NL_TEMPLATES_EN = {
     # singles
-    frozenset(["aspect"]): "the aspect being discussed is {aspect}",
+    frozenset(["aspect"]): "the aspect discussed is {aspect}",
     frozenset(["sentiment"]): "the opinion expressed is {sentiment}",
     frozenset(["polarity"]): "the overall sentiment is {polarity}",
-    frozenset(["category"]): "the category being discussed is {category}",
+    frozenset(["category"]): "the category discussed is {category}",
     # pairs
     frozenset(["aspect", "sentiment"]): "{aspect} is described as {sentiment}",
     frozenset(["aspect", "polarity"]): "the opinion about {aspect} is {polarity}",
@@ -22,16 +22,23 @@ _NL_TEMPLATES_EN = {
     frozenset(["aspect", "sentiment", "category"]): "{aspect}, related to {category}, is described as {sentiment}",
     frozenset(["aspect", "polarity", "category"]): "{aspect}, related to {category}, expresses a {polarity} sentiment",
     frozenset(["sentiment", "polarity", "category"]): "the opinion {sentiment} conveys a {polarity} sentiment about {category}",
+    # ordered triplet variants (for shuffle_tasks)
+    ("aspect", "sentiment", "polarity"): "{aspect} is described as {sentiment}, expressing a {polarity} sentiment",
+    ("aspect", "polarity", "sentiment"): "{aspect} carries a {polarity} opinion, expressed as {sentiment}",
+    ("sentiment", "aspect", "polarity"): "the opinion {sentiment} is expressed towards {aspect}, conveying a {polarity} sentiment",
+    ("sentiment", "polarity", "aspect"): "{sentiment} conveys a {polarity} sentiment about {aspect}",
+    ("polarity", "aspect", "sentiment"): "a {polarity} sentiment toward {aspect} is expressed as {sentiment}",
+    ("polarity", "sentiment", "aspect"): "a {polarity} sentiment is expressed as {sentiment}, regarding {aspect}",
     # quad
     frozenset(["aspect", "sentiment", "polarity", "category"]): "{aspect}, related to {category}, is described as {sentiment}, expressing a {polarity} sentiment",
 }
 
 # Plural forms for single-key tasks (2+ annotations → comma-separated list)
 _NL_TEMPLATES_PLURAL_EN = {
-    frozenset(["aspect"]): "the aspects being discussed are {list}",
+    frozenset(["aspect"]): "the aspects discussed are {list}",
     frozenset(["sentiment"]): "the opinions expressed are {list}",
-    frozenset(["polarity"]): "the overall sentiments are {list}",
-    frozenset(["category"]): "the categories being discussed are {list}",
+    frozenset(["polarity"]): "the sentiments are {list}",
+    frozenset(["category"]): "the categories discussed are {list}",
 }
 
 _NL_TEMPLATES_IMPLICIT_SENTIMENT_EN = {

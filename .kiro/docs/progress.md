@@ -48,7 +48,9 @@
 
 ## Completed Experiments & Results
 
-### Full NL Output (2026-05-01, ASTE, 30 epochs, best results)
+**Note:** Experiments from 2026-04-30 to 2026-05-02 used multi-restaurant training (Rest14+15+16). This setup was abandoned on 2026-05-19 after discovering 80% overlap between Rest15 test and the combined train set. Results are valid as relative comparisons but absolute numbers are inflated. All experiments from 2026-05-20 onward use Rest14-only training.
+
+### Full NL Output (2026-05-01, ASTE, 30 epochs, multi-restaurant train)
 | config | Epochs | Rest14 (ID) | Laptop14 (OOD) |
 |---|---|---|---|
 | nl-baseline | 30 | 0.7166 | 0.5211 |
@@ -187,23 +189,204 @@ Naive discriminative baseline: BIO tagging for aspect/sentiment spans, biaffine 
 |---|---|---|---|
 | Gemma 4 0-shot | 4.5B | 0.33 | 0.19 |
 | Gemma 4 6-shot hybrid | 4.5B | 0.56 | 0.34 |
-| RoBERTa span (ours) | 125M | 0.50 | 0.39 |
-| T5 structured baseline | 250M | 0.68 | 0.43 |
-| **T5 NL baseline** | **250M** | **0.72** | **0.52** |
-| T5 NL + dep-compact | 250M | 0.71 | 0.54 |
+| Ollama Gemma2 27B 6-shot | 27B | 0.65 | 0.41 |
+| Ollama Qwen2.5 32B 0-shot | 32B | 0.54 | 0.36 |
+| RoBERTa span (ours) | 125M | 0.54 | 0.38 |
+| XLM-R span (ours) | 278M | 0.47 | 0.34 |
+| T5 structured baseline | 250M | 0.69±0.01 | 0.44±0.01 |
+| T5 structured + dep-compact | 250M | 0.70±0.00 | 0.45±0.01 |
+| **T5 NL baseline** | **250M** | **0.72±0.00** | **0.52±0.01** |
+| T5 NL + dep-compact | 250M | 0.71±0.01 | 0.51±0.01 |
+| T5 NL + split | 250M | 0.73±0.01 | 0.52±0.01 |
 | Span-ASTE (published) | ~110M | 0.73 | 0.62 |
 | BTF-CCL (published) | ~110M | 0.76 | 0.63 |
 | MvP (published) | ~400M | 0.76 | 0.66 |
 
 ## In Progress
-- ACOS quad experiment plan (step-by-step, pick best and continue):
-  - Step 1 DONE: structured vs NL → NL wins (lr=1e-4, batch=8, 30 epochs)
-  - Step 2 DONE: NL + focal loss (gamma=2.0) vs NL + label smoothing (0.05) → ls=0.05 wins
-  - Step 3 DONE: winner + dep-compact vs dep-tree vs pos-compact → none improve over baseline
-  - Step 4 DONE: constrained decoding, structured attention mask → no improvement
-  - Step 5 RUNNING: auxiliary syntax prediction tasks (dep, pos)
-- Hand-annotating implicit aspects using `tools/annotate.py` on SemEval 2015/2016 XML data
-- LLM auto-suggestion pipeline for implicit aspects (`tools/suggest_aspects.py`)
+
+### T5 OOD Experiments — Rest14 Only (2026-05-20)
+Training on Rest14 only, testing on Rest14 (ID), Rest15 (near-OOD), Rest16 (near-OOD), Laptop14 (OOD).
+
+| Config | Rest14 (ID) | Rest15 | Rest16 | Laptop14 (OOD) |
+|---|---|---|---|---|
+| structured baseline | 0.6980 | 0.5700 | 0.6367 | 0.4205 |
+| **nl-baseline** | **0.7265** | **0.6073** | **0.6723** | **0.5430** |
+| nl-dep-compact | 0.6995 | 0.5924 | 0.6623 | 0.5174 |
+| nl-dep-compact-aux | 0.7146 | 0.6057 | 0.6685 | 0.4807 |
+| nl-split | 0.7290 | 0.5946 | 0.7020 | 0.5086 |
+| nl-split-dep-compact | 0.7188 | 0.5871 | 0.6557 | 0.5051 |
+| nl-pos-compact | 0.6980 | 0.6066 | 0.6806 | 0.5130 |
+| nl-template-aug | PENDING RETEST (old results had config bug) |
+
+Key observations:
+- NL format remains the biggest lever: +12 points OOD over structured (0.42→0.54)
+- dep-compact does NOT help OOD with Rest14-only training (0.54→0.52, -2.5 points)
+- nl-split gives best ID (0.729) but slightly lower OOD than nl-baseline
+- pos-compact similar to dep-compact: helps near-OOD (Rest15/16) but not far-OOD (Laptop)
+- Hypothesis: syntax enrichment benefit is data-size-dependent. With 2728 sentences (3 datasets) it helped; with 1728 (Rest14 only) it hurts.
+
+### Multi-Seed Validation (2026-05-22/23/24, 5 seeds: 42, 123, 456, 789, 1337)
+
+#### Rest14-only training (mean±std, triplet micro-F1)
+
+| Config | Rest14 (ID) | Rest15 | Rest16 | Laptop14 (OOD) |
+|---|---|---|---|---|
+| structured baseline | 0.6926±0.0081 | 0.5747±0.0093 | 0.6399±0.0089 | 0.4390±0.0119 |
+| structured + dep-compact | 0.6991±0.0036 | 0.5779±0.0123 | 0.6546±0.0075 | 0.4473±0.0117 |
+| **nl-baseline** | **0.7218±0.0047** | 0.6023±0.0043 | 0.6798±0.0096 | **0.5247±0.0116** |
+| nl-dep-compact | 0.7076±0.0060 | 0.5962±0.0056 | 0.6692±0.0039 | 0.5091±0.0053 |
+| nl-pos-compact | 0.6987±0.0031 | 0.6006±0.0099 | 0.6716±0.0072 | 0.5055±0.0118 |
+| nl-split | 0.7295±0.0054 | 0.5929±0.0104 | 0.6859±0.0086 | 0.5237±0.0110 |
+
+#### Allrest training (Rest14+15+16 → Rest14 ID + Laptop14 OOD)
+
+| Config | Rest14 (ID) | Laptop14 (OOD) |
+|---|---|---|
+| structured baseline | 0.6981±0.0039 | 0.4253±0.0121 |
+| structured + dep-compact | 0.6970±0.0059 | 0.4442±0.0048 |
+| **nl-baseline** | 0.7135±0.0057 | 0.5162±0.0087 |
+| nl-dep-compact | 0.7084±0.0014 | 0.5119±0.0092 |
+| nl-pos-compact | 0.7043±0.0078 | 0.5155±0.0123 |
+| nl-split | 0.7226±0.0030 | 0.5111±0.0083 |
+
+Key findings from multi-seed:
+- NL format advantage is statistically significant: +8.6 points OOD over structured (p < 0.01)
+- dep-compact does NOT significantly help OOD in either setup (0.5247 vs 0.5091, overlapping CIs)
+- nl-split gives best ID but OOD is within noise of nl-baseline
+- All NL variants cluster around 0.51-0.52 OOD — the format is the lever, not the variant
+- Allrest training does NOT help OOD vs Rest14-only (0.516 vs 0.525) — more same-domain data doesn't generalise better
+
+### Ollama Cross-Method (2026-05-19, ASTE, per-dataset demos for 6-shot)
+| Method | Rest14 | Rest15 | Rest16 | Laptop14 |
+|---|---|---|---|---|
+| Gemma2 27B 0-shot | 0.4412 | 0.4176 | 0.4554 | 0.2754 |
+| Gemma2 27B 6-shot | **0.6461** | **0.5917** | **0.6365** | **0.4095** |
+| Qwen2.5 32B 0-shot | 0.5350 | 0.4513 | 0.5564 | 0.3631 |
+| Qwen2.5 32B 6-shot | 0.6029 | 0.5273 | 0.6140 | 0.3700 |
+| Command-R 0-shot | 0.3178 | 0.2558 | 0.3087 | 0.2064 |
+| Command-R 6-shot | 0.5761 | 0.4986 | 0.5682 | 0.3732 |
+
+- Gemma2:27b 6-shot is the best LLM across all datasets
+- All LLMs still below fine-tuned T5 NL baseline (0.73 ID, 0.54 OOD)
+- 6-shot demos from corresponding train split (per-dataset, no cross-contamination)
+
+### RoBERTa / XLM-R (2026-05-18, Rest14 train only)
+| Method | Rest14 | Rest15 | Rest16 | Laptop14 |
+|---|---|---|---|---|
+| RoBERTa span | 0.5439 | 0.4605 | 0.5600 | 0.3787 |
+| XLM-R span | 0.4685 | 0.4277 | 0.5155 | 0.3363 |
+
+- XLM-R underperforms RoBERTa on English — multilingual pretraining doesn't help for English-only ASTE
+- Both well below T5 NL baseline (0.72 ID, 0.52 OOD) — naive span extraction can't compete with generative approach
+- XLM-R Romanian (classifier, polarity+category on eMAG): 0.7945 pair-F1, 0.8805 polarity, 0.8614 category
+
+### Romanian Experiments (2026-05-09/10/21)
+
+#### T5 (FLAN-T5-base, NL format, eMAG phone reviews, polarity+category)
+| Config | Polarity+Category F1 | Polarity F1 | Category F1 |
+|---|---|---|---|
+| ro-baseline | 0.7642 | 0.8816 | 0.8532 |
+| ro-baseline-neutral-oversample | 0.7549 | 0.8780 | 0.8505 |
+| ro-split | 0.7534 | 0.8744 | 0.8473 |
+
+#### Ollama LLMs (Romanian, eMAG phone reviews)
+| Method | Polarity+Category F1 | Polarity F1 | Category F1 |
+|---|---|---|---|
+| Gemma2 27B 0-shot | 0.7445 | 0.8877 | 0.8039 |
+| Gemma2 27B 6-shot | 0.7582 | 0.8875 | 0.8259 |
+| Qwen2.5 32B 0-shot | 0.6205 | 0.8537 | 0.6885 |
+| Qwen2.5 32B 6-shot | 0.7401 | 0.8808 | 0.8072 |
+| Command-R 0-shot | 0.5346 | 0.7659 | 0.6116 |
+| Command-R 6-shot | 0.7501 | 0.8800 | 0.8214 |
+
+Key findings:
+- Fine-tuned T5 (250M) matches or beats 27-32B LLMs on Romanian ABSA
+- Gemma2 27B 0-shot nearly matches T5 on pair-F1 (0.74 vs 0.76) — strong zero-shot for Romanian
+- Category prediction is the bottleneck for LLMs (0.61-0.80 vs T5's 0.85)
+
+### DMASTE Cross-Domain (2026-05-27, retested)
+
+Training on DMASTE source domains, testing on 4 held-out target domains (book, grocery, pet, toy). Triplet micro-F1.
+
+#### Single-source (Electronics only → target)
+
+| Method | Book | Grocery | Pet | Toy | Avg |
+|---|---|---|---|---|---|
+| nl-template-aug | 37.28 | 43.78 | 40.33 | 46.72 | 42.03 |
+| nl (baseline) | 36.05 | 43.65 | 38.93 | 46.74 | 41.34 |
+| nl-dep-compact | 34.74 | 42.45 | 38.47 | 44.77 | 40.11 |
+| nl-pos-compact | 33.35 | 42.15 | 38.15 | 44.03 | 39.42 |
+| structured | 34.49 | 38.88 | 37.62 | 44.67 | 38.92 |
+| roberta (span) | 10.59 | 16.08 | 15.35 | 13.95 | 13.99 |
+
+#### Multi-source (Electronics+Beauty+Fashion+Home → target)
+
+| Method | Book | Grocery | Pet | Toy | Avg |
+|---|---|---|---|---|---|
+| nl-template-aug | 41.83 | 46.90 | 43.06 | 50.02 | 45.45 |
+| nl (baseline) | 41.27 | 46.62 | 43.22 | 50.16 | 45.32 |
+| nl-pos-compact | 41.30 | 45.86 | 43.18 | 48.94 | 44.82 |
+| nl-dep-compact | 40.45 | 46.47 | 43.77 | 48.56 | 44.81 |
+| structured | 37.50 | 44.96 | 42.47 | 47.33 | 43.07 |
+| roberta (span) | 20.39 | 23.16 | 22.37 | 22.15 | 22.02 |
+
+#### Comparison with DMASTE paper (Xu et al., 2023)
+
+Single-source (Electronics → target):
+| Method | Book | Grocery | Pet | Toy | Avg |
+|---|---|---|---|---|---|
+| Span-ASTE (paper best) | 40.36 | 45.36 | 41.04 | 47.23 | 43.50 |
+| GAS (paper, generative) | 35.57 | 39.16 | 38.17 | 43.55 | 39.11 |
+| **Ours: nl-template-aug** | 37.28 | 43.78 | 40.33 | 46.72 | 42.03 |
+
+Multi-source (ALL → target):
+| Method | Book | Grocery | Pet | Toy | Avg |
+|---|---|---|---|---|---|
+| Span-ASTE (paper best) | 41.83 | 46.07 | 43.62 | 50.16 | 45.42 |
+| **Ours: nl-template-aug** | 41.83 | 46.90 | 43.06 | 50.02 | 45.45 |
+| **Ours: nl (baseline)** | 41.27 | 46.62 | 43.22 | 50.16 | 45.32 |
+
+Key findings:
+- Multi-source: FLAN-T5-base matches Span-ASTE (paper SOTA) without any domain adaptation (45.45 vs 45.42 avg)
+- Single-source: significantly outperforms GAS (paper generative, +3 avg), approaches Span-ASTE (-1.5 avg)
+- NL format consistently beats structured (+2-3 points avg)
+- Template augmentation (shuffle_tasks) gives small edge in single-source, negligible in multi-source
+- Syntax enrichment (dep/pos-compact) does not help on DMASTE — slightly hurts
+- RoBERTa span model generalises very poorly OOD (expected for non-generative)
+- Multi-source training provides ~4-6 point boost over single-source
+- Paper reports 5-seed averages; ours is single-seed (42)
+
+### Next Steps
+- STAR-style data multiplication: running (t5-nl-star)
+- MvP-style multi-prompt voting: running (test-only on existing checkpoints)
+- After that: finalise dissertation writing
+
+### Template Augmentation on SemEval (2026-06-01, retested from checkpoint)
+
+| Config | Rest14 (ID) | Rest15 | Rest16 | Laptop14 (OOD) |
+|---|---|---|---|---|
+| nl-baseline (s42 ref) | 0.7265 | 0.6073 | 0.6723 | 0.5430 |
+| nl-template-aug | 0.7136 | 0.5968 | 0.6830 | 0.5147 |
+
+Template augmentation (shuffle_tasks) does not help OOD on SemEval. Result falls within baseline confidence interval (0.5247±0.0116). Consistent with DMASTE finding.
+
+### Cross-Domain Data Mixing (2026-06-01, Rest14 + DMASTE domain fraction)
+
+| Config | Rest14 (ID) | Rest15 | Rest16 | Laptop14 (OOD) |
+|---|---|---|---|---|
+| nl-baseline (s42 ref) | 0.7265 | 0.6073 | 0.6723 | 0.5430 |
+| domainmix-beauty | 0.7068 | 0.6095 | 0.6990 | 0.5231 |
+| domainmix-electronics | 0.7197 | 0.6047 | 0.6849 | 0.5255 |
+| domainmix-fashion | 0.7093 | 0.5894 | 0.6887 | 0.5015 |
+| domainmix-home | 0.7359 | 0.5960 | 0.6886 | 0.5249 |
+| domainmix-all | 0.7191 | 0.6148 | 0.6679 | 0.5221 |
+
+Key findings:
+- No domainmix variant significantly improves Laptop14 OOD — all results within baseline CI (0.5247±0.0116)
+- domainmix-all helps near-OOD (Rest15: 0.6148, best) but not far-OOD
+- domainmix-home gives best ID (0.7359) — home domain vocabulary overlaps with restaurant
+- Adding diverse data helps within-domain-family transfer but not cross-domain
+- Another negative result: data mixing is not a lever for far-OOD generalisation
 | Config | ID Quad F1 | ID Category F1 | ID Aspect F1 | OOD Aspect F1 | OOD a+s+p F1 |
 |---|---|---|---|---|---|
 | nl-baseline_2 (ls=0.05) | **0.5515** | 0.8061 | **0.8114** | **0.6954** | **0.4735** |
@@ -284,25 +467,15 @@ Key findings:
 
 ## Future Work (Prioritized)
 
-### High Priority
-- LLM paraphrasing augmentation (scaffolding done, generation function ready)
-  - Refine prompt to avoid domain hallucination
-  - Generate full restaurant dataset paraphrases
-  - Test with infer_implicit on ASTE
-- Beam search at test time — re-test best checkpoints with num_beams=4
-- Curriculum learning experiments — use waypoint interpolation to combine split + dep-compact sequentially
+### Remaining Experiments
+- Domain-mix (Rest14 + DMASTE domain fraction): configs ready, bug fixed, in run_final_gaps.sh
+- Template-aug retest on SemEval: checkpoint exists, needs retest with fixed config
 
-### Medium Priority
-- Longer training for dep-compact variants (40+ epochs)
-- Lighter split ratios (10-90) with dep-compact + NL
-- STAR-style data multiplication vs partition comparison
-- MvP-style majority voting at inference
-- Test on silviolima with NL output format
-
-### Exploratory
-- Attention-based learned masking
-- Two-phase training (split first, then dep-compact from checkpoint)
-- Contextual soft F1 extension
+### Dissertation Writing
+- Main story: NL output format as the key lever for OOD generalisation in generative ABSA
+- Supporting evidence: multi-seed validation, cross-dataset (DMASTE), cross-method comparison
+- Negative results chapter: masking, curriculum, focal loss, constrained decoding, beam search, syntax enrichment (context-dependent)
+- Romanian case study: fine-tuned T5 vs LLMs on low-resource language
 
 ## Related Papers (Key)
 - STAR (Xie et al., 2025): task decomposition for ASQP, validates our approach, no OOD eval
@@ -393,16 +566,18 @@ Test: `test.output_format: "natural-language"` to evaluate with NL output.
 | GAS (2021) | ~70 | ~58 | — | — |
 | Paraphrase (2021) | ~70 | ~58 | — | — |
 | MvP (T5-base, ACL 2023) | 76.08 | 65.84 | 69.91 | 72.36 |
-| **Ours (nl-baseline, per-dataset)** | **72.4** | — | — | — |
-| **Ours (nl-pos-aux, per-dataset)** | — | — | — | — |
+| **Ours (nl-baseline, per-dataset)** | **72.4** | **62.7** | **64.0** | **72.5** |
+| **Ours (nl-dep-nl, per-dataset)** | **73.1** | **60.7** | **65.0** | **72.3** |
 
-Note: "per-dataset" = standard benchmark setup (train and test on same dataset). Results pending for remaining datasets.
+Note: "per-dataset" = standard benchmark setup (train and test on same dataset).
 
 ### Generative (multi-restaurant train, non-standard)
 | Method | 14Res | 14Lap (OOD) |
 |---|---|---|
 | Ours (nl-baseline) | 71.66 | 52.11 |
 | Ours (nl-dep-compact) | 70.83 | **54.14** |
+
+**NOTE (2026-05-19): Multi-restaurant pooling abandoned.** Discovered that 80% of Rest15 test sentences overlap with the combined Rest14+15+16 train set (shared Yelp reviews across SemEval years). This inflates discriminative model scores on Rest15 (XLM-R got 0.77 — clearly leaked). Generative T5 was less affected due to output format differences, but the setup is still methodologically unsound. All OOD experiments now train on Rest14 only and test on Rest14 (ID), Rest15 (near-OOD), Rest16 (near-OOD), Laptop14 (OOD). Overlap stats: Rest14 test has 1 sentence overlap (0.2%), Rest16 test has 1 sentence overlap (0.3%), Rest15 test has 258 sentences overlap (80.1%).
 
 ### OOD (Restaurant → Laptop)
 | Method | 14Res→14Lap |

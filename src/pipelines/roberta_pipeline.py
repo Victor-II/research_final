@@ -13,23 +13,9 @@ import torch
 import pytorch_lightning as pl
 from pytorch_lightning.callbacks import ModelCheckpoint, EarlyStopping
 
-from src.data.data import load_aste_file, load_acos_jsonl, load_silviolima_domain, load_emag_csv, filter_implicit_aspects, enrich_syntax
+from src.data.data import load_files, load_train_val
 from src.model.roberta_span import RoBERTaSpanModel, SpanExtractionDataset, _collate_fn
 from src.eval.eval import save_results, save_metrics_table
-
-
-def _load_data(file_path: str, filter_implicit: bool = False) -> list[dict]:
-    if file_path.endswith(".jsonl"):
-        examples = load_acos_jsonl(file_path)
-    elif file_path.endswith(".json"):
-        examples = load_silviolima_domain(file_path)
-    elif file_path.endswith(".csv"):
-        examples = load_emag_csv(file_path)
-    else:
-        examples = load_aste_file(file_path)
-    if filter_implicit:
-        examples = filter_implicit_aspects(examples)
-    return examples
 
 
 def run_roberta(cfg: dict, output_dir: Path):
@@ -46,45 +32,9 @@ def run_roberta(cfg: dict, output_dir: Path):
     model_cfg = cfg["model"]
     trainer_cfg = cfg["trainer"]
 
-    # load training data
-    train_files = data_cfg["train_file"]
-    if isinstance(train_files, str):
-        train_files = [train_files]
-    fi = data_cfg.get("filter_implicit", False)
+    train_examples, val_examples = load_train_val(cfg)
     syntax_enrichment = data_cfg.get("syntax_enrichment", None)
-    spacy_model = data_cfg.get("spacy_model", "en_core_web_sm")
-
-    train_examples = []
-    for f in train_files:
-        train_examples.extend(_load_data(f, filter_implicit=fi))
-
-    if syntax_enrichment:
-        from src.data.data import enrich_syntax
-        train_examples = enrich_syntax(train_examples, syntax_enrichment, spacy_model=spacy_model)
-
-    # train fraction
-    import random
-    train_fraction = data_cfg.get("train_fraction", 1.0)
-    if train_fraction < 1.0:
-        rng = random.Random(cfg["seed"])
-        n_keep = max(1, int(len(train_examples) * train_fraction))
-        train_examples = rng.sample(train_examples, n_keep)
-
-    # val data
-    val_split = cfg["eval"].get("val_split", 0)
-    if val_split > 0:
-        rng = random.Random(cfg["seed"])
-        indices = list(range(len(train_examples)))
-        rng.shuffle(indices)
-        n_val = int(len(train_examples) * val_split)
-        val_indices = set(indices[:n_val])
-        val_examples = [train_examples[i] for i in indices[:n_val]]
-        train_examples = [train_examples[i] for i in range(len(train_examples)) if i not in val_indices]
-    else:
-        val_examples = _load_data(cfg["eval"]["data"], filter_implicit=fi)
-        if syntax_enrichment:
-            from src.data.data import enrich_syntax
-            val_examples = enrich_syntax(val_examples, syntax_enrichment, spacy_model=spacy_model)
+    fi = data_cfg.get("filter_implicit", False)
 
     print(f"Train: {len(train_examples)} | Val: {len(val_examples)}")
 
@@ -154,10 +104,7 @@ def run_roberta(cfg: dict, output_dir: Path):
 
         for ds in test_cfg["datasets"]:
             scopes = ds.get("scopes", default_scopes)
-            test_data = _load_data(ds["data"], filter_implicit=fi)
-            if syntax_enrichment:
-                from src.data.data import enrich_syntax
-                test_data = enrich_syntax(test_data, syntax_enrichment, spacy_model=spacy_model)
+            test_data = load_files(ds["data"], filter_implicit=fi, syntax_enrichment=syntax_enrichment, spacy_model=data_cfg.get("spacy_model", "en_core_web_sm"))
             model.set_test_data(test_data, scopes, ds["data"])
             test_trainer.test(model, ckpt_path=ckpt)
             ckpt = None
@@ -187,7 +134,7 @@ def test_roberta(cfg: dict, checkpoint: str, output_dir: Path):
     fi = cfg.get("data", {}).get("filter_implicit", False)
 
     first_ds = test_cfg["datasets"][0]
-    first_data = _load_data(first_ds["data"], filter_implicit=fi)
+    first_data = load_files(first_ds["data"], filter_implicit=fi)
 
     model = RoBERTaSpanModel.load_from_checkpoint(
         checkpoint,
@@ -208,7 +155,7 @@ def test_roberta(cfg: dict, checkpoint: str, output_dir: Path):
 
     for ds in test_cfg["datasets"][1:]:
         scopes = ds.get("scopes", default_scopes)
-        test_data = _load_data(ds["data"], filter_implicit=fi)
+        test_data = load_files(ds["data"], filter_implicit=fi)
         model.set_test_data(test_data, scopes, ds["data"])
         trainer.test(model)
 

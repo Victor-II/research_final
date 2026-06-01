@@ -395,6 +395,54 @@ def soft_prf(
     return {"precision": precision, "recall": recall, "f1": f1}
 
 
+def avg_overlap(
+    preds: list[list[dict]],
+    golds: list[list[dict]],
+    keys: list[str],
+) -> dict:
+    """Compute average token overlap and LCS overlap between matched pred-gold pairs.
+
+    Uses greedy matching (best overlap first). Reports mean overlap scores
+    across all matched pairs, plus the fraction of predictions that have any match.
+    """
+    token_scores = []
+    lcs_scores = []
+    n_preds = 0
+    n_matched = 0
+
+    for pred_list, gold_list in zip(preds, golds):
+        pred_tuples = project(pred_list, keys)
+        gold_tuples = project(gold_list, keys)
+        n_preds += len(pred_tuples)
+
+        matched_gold = set()
+        for pt in pred_tuples:
+            best_token = 0.0
+            best_lcs = 0.0
+            best_j = -1
+            for j, gt in enumerate(gold_tuples):
+                if j in matched_gold:
+                    continue
+                tok_sim = _tuple_similarity(pt, gt, _token_overlap_f1)
+                if tok_sim > best_token:
+                    best_token = tok_sim
+                    best_lcs = _tuple_similarity(pt, gt, _lcs_f1)
+                    best_j = j
+            if best_j >= 0 and best_token > 0:
+                token_scores.append(best_token)
+                lcs_scores.append(best_lcs)
+                matched_gold.add(best_j)
+                n_matched += 1
+
+    return {
+        "avg_token_overlap": sum(token_scores) / len(token_scores) if token_scores else 0.0,
+        "avg_lcs_overlap": sum(lcs_scores) / len(lcs_scores) if lcs_scores else 0.0,
+        "match_rate": n_matched / n_preds if n_preds else 0.0,
+        "n_matched": n_matched,
+        "n_preds": n_preds,
+    }
+
+
 def evaluate(
     preds: list[list[dict]],
     golds: list[list[dict]],
@@ -439,6 +487,8 @@ def evaluate(
         if "rouge_l" in metrics:
             threshold = scope.get("token_threshold", 0.8)
             results[label]["rouge_l"] = lenient_prf(preds, golds, keys, _lcs_f1, threshold)
+        if "avg_overlap" in metrics:
+            results[label]["avg_overlap"] = avg_overlap(preds, golds, keys)
     return results
 
 
