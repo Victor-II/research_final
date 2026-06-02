@@ -1,0 +1,199 @@
+{
+  "train_loss": [],
+  "val_loss": [],
+  "val": [],
+  "test": [
+    {
+      "data": "downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/402.Restaurant14/test.txt",
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.7287615148413511,
+          "recall": 0.716297786720322,
+          "f1": 0.7224759005580923
+        }
+      },
+      "aspect": {
+        "micro": {
+          "precision": 0.8491017964071856,
+          "recall": 0.8360849056603774,
+          "f1": 0.8425430778371955
+        }
+      },
+      "polarity": {
+        "micro": {
+          "precision": 0.903954802259887,
+          "recall": 0.9108159392789373,
+          "f1": 0.9073724007561437
+        },
+        "macro": {
+          "macro": {
+            "precision": 0.5749399106251899,
+            "recall": 0.5371886877791815,
+            "f1": 0.551482457767836
+          },
+          "per_class": {
+            "neutral": {
+              "precision": 0.2564102564102564,
+              "recall": 0.15151515151515152,
+              "f1": 0.1904761904761905
+            },
+            "positive": {
+              "precision": 0.7550761421319797,
+              "recall": 0.7697283311772316,
+              "f1": 0.7623318385650224
+            },
+            "negative": {
+              "precision": 0.7133333333333334,
+              "recall": 0.6903225806451613,
+              "f1": 0.7016393442622951
+            }
+          }
+        }
+      }
+    },
+    {
+      "data": "downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/403.Restaurant15/test.txt",
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.5789473684210527,
+          "recall": 0.6350515463917525,
+          "f1": 0.6057030481809244
+        }
+      },
+      "aspect": {
+        "micro": {
+          "precision": 0.7611940298507462,
+          "recall": 0.8263888888888888,
+          "f1": 0.7924528301886792
+        }
+      },
+      "polarity": {
+        "micro": {
+          "precision": 0.8507042253521127,
+          "recall": 0.8703170028818443,
+          "f1": 0.8603988603988604
+        },
+        "macro": {
+          "macro": {
+            "precision": 0.4512088418747331,
+            "recall": 0.49940570470538925,
+            "f1": 0.47115506651950606
+          },
+          "per_class": {
+            "neutral": {
+              "precision": 0.1891891891891892,
+              "recall": 0.28,
+              "f1": 0.22580645161290325
+            },
+            "positive": {
+              "precision": 0.638121546961326,
+              "recall": 0.7287066246056783,
+              "f1": 0.6804123711340206
+            },
+            "negative": {
+              "precision": 0.5263157894736842,
+              "recall": 0.48951048951048953,
+              "f1": 0.5072463768115942
+            }
+          }
+        }
+      }
+    },
+    {
+      "data": "downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/404.Restaurant16/test.txt",
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.6433691756272402,
+          "recall": 0.6984435797665369,
+          "f1": 0.6697761194029851
+        }
+      },
+      "aspect": {
+        "micro": {
+          "precision": 0.772,
+          "recall": 0.8539823008849557,
+          "f1": 0.8109243697478993
+        }
+      },
+      "polarity": {
+        "micro": {
+          "precision": 0.8333333333333334,
+          "recall": 0.9050445103857567,
+          "f1": 0.8677098150782362
+        },
+        "macro": {
+          "macro": {
+            "precision": 0.44903285638579754,
+            "recall": 0.48620117585634826,
+            "f1": 0.46665267358718104
+          },
+          "per_class": {
+            "neutral": {
+              "precision": 0.20588235294117646,
+              "recall": 0.2413793103448276,
+              "f1": 0.22222222222222224
+            },
+            "positive": {
+              "precision": 0.7162162162162162,
+              "recall": 0.7813267813267813,
+              "f1": 0.7473560517038779
+            },
+            "negative": {
+              "precision": 0.425,
+              "recall": 0.4358974358974359,
+              "f1": 0.43037974683544306
+            }
+          }
+        }
+      }
+    },
+    {
+      "data": "downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/401.Laptop14/test.txt",
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.5599214145383105,
+          "recall": 0.5268022181146026,
+          "f1": 0.5428571428571428
+        }
+      },
+      "aspect": {
+        "micro": {
+          "precision": 0.7304347826086957,
+          "recall": 0.7257019438444925,
+          "f1": 0.7280606717226435
+        }
+      },
+      "polarity": {
+        "micro": {
+          "precision": 0.847953216374269,
+          "recall": 0.838150289017341,
+          "f1": 0.8430232558139535
+        },
+        "macro": {
+          "macro": {
+            "precision": 0.48820963057583905,
+            "recall": 0.4449585502217081,
+            "f1": 0.4545192321981235
+          },
+          "per_class": {
+            "neutral": {
+              "precision": 0.32142857142857145,
+              "recall": 0.14285714285714285,
+              "f1": 0.1978021978021978
+            },
+            "positive": {
+              "precision": 0.576271186440678,
+              "recall": 0.5604395604395604,
+              "f1": 0.5682451253481894
+            },
+            "negative": {
+              "precision": 0.5669291338582677,
+              "recall": 0.631578947368421,
+              "f1": 0.5975103734439833
+            }
+          }
+        }
+      }
+    }
+  ]
+}

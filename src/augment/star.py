@@ -5,14 +5,16 @@ variants (singles, pairs) as additional training examples.
 Inspired by: Lai et al. (2025) "STAR: Stepwise Task Augmentation with Relation
 Learning for Aspect Sentiment Quad Prediction"
 
-The key idea: instead of only training on the full triplet task, also train on
-decomposed sub-tasks (aspect-only, sentiment-only, polarity-only, aspect+sentiment,
-aspect+polarity, sentiment+polarity). This teaches the model to capture
-dependencies between elements at different granularities.
+Two modes:
+1. star_multiply() — original sub-task decomposition (aspect-only, pair combos, etc.)
+2. star_pairwise() — MvP/STAR pairwise relation examples with marker format.
+   Input: sentence [AO][SP] etc.
+   Output: [AO] pizza is delicious [SP] great
+   Tagged with _level="pairwise" for balanced contribution loss.
 """
 
 import random
-from itertools import combinations
+from itertools import combinations, permutations
 
 from constants import Task, TASK_TO_KEY
 from src.data.data import to_generative_format
@@ -30,6 +32,14 @@ ASTE_SUBTASKS = [
     (Task.SENTIMENT, Task.POLARITY),
 ]
 
+# Pairwise relation markers (element pair → marker token)
+PAIRWISE_MARKERS = {
+    ("aspect", "sentiment"): "[AO]",
+    ("aspect", "polarity"): "[AS]",
+    ("sentiment", "polarity"): "[SP]",
+    ("aspect", "category"): "[AC]",
+}
+
 
 def star_multiply(
     canonical_examples: list[dict],
@@ -46,16 +56,7 @@ def star_multiply(
     per sub-task combination. These are returned as ready-to-use training examples
     (input/target/_keys/_format dicts).
 
-    Args:
-        canonical_examples: list of canonical dicts
-        fraction: proportion of examples to generate sub-tasks from (1.0 = all)
-        subtasks: list of task tuples to generate (default: all ASTE sub-tasks)
-        output_format: "natural-language" or "structured"
-        language: output language
-        seed: random seed for selection
-
-    Returns:
-        list of generative-format dicts (to be appended to training examples)
+    All returned examples are tagged with _level="pairwise" for balanced loss.
     """
     if subtasks is None:
         subtasks = ASTE_SUBTASKS
@@ -89,6 +90,79 @@ def star_multiply(
             )
             # skip if target is empty (no valid annotations for this sub-task)
             if gen["target"].strip():
+                gen["_level"] = "pairwise"
                 aux_examples.append(gen)
 
     return aux_examples
+
+
+def star_pairwise(
+    canonical_examples: list[dict],
+    tasks: list[Task] = None,
+    output_format: str = "mvp-markers",
+    language: str = "en",
+    seed: int = 42,
+) -> list[dict]:
+    """
+    Generate STAR pairwise relation examples in MvP marker format.
+
+    For each canonical example, generates pairwise relation examples where:
+    - Input: sentence [AO][SP] (pair markers appended to sentence)
+    - Output: [AO] pizza is delicious [SP] great
+
+    These teach the model to recognize element-pair relationships.
+    All returned examples are tagged with _level="pairwise".
+    """
+    if tasks is None:
+        tasks = [Task.ASPECT, Task.SENTIMENT, Task.POLARITY]
+
+    keys = [TASK_TO_KEY[t] for t in tasks]
+    # generate all pair combinations from the task keys
+    pair_combos = list(combinations(keys, 2))
+
+    KEY_TO_MARKER = {"aspect": "[A]", "sentiment": "[O]", "polarity": "[S]", "category": "[C]"}
+
+    examples = []
+    for ex in canonical_examples:
+        sentence = ex["sentence"]
+        annotations = ex["annotations"]
+
+        for pair in pair_combos:
+            k1, k2 = pair
+            pair_marker = PAIRWISE_MARKERS.get(pair)
+            if pair_marker is None:
+                pair_marker = PAIRWISE_MARKERS.get((k2, k1))
+            if pair_marker is None:
+                pair_marker = f"[{k1[0].upper()}{k2[0].upper()}]"
+
+            # collect valid annotations for this pair
+            valid_anns = []
+            for ann in annotations:
+                v1, v2 = ann.get(k1), ann.get(k2)
+                if v1 is not None and v2 is not None:
+                    valid_anns.append({k1: v1, k2: v2})
+
+            if not valid_anns:
+                continue
+
+            # build input: sentence + pair markers
+            input_text = f"{sentence} {pair_marker}"
+
+            # build output: [AO] aspect is sentiment [SP] polarity ...
+            # Use the element markers to wrap values
+            m1 = KEY_TO_MARKER.get(k1, f"[{k1[0].upper()}]")
+            m2 = KEY_TO_MARKER.get(k2, f"[{k2[0].upper()}]")
+            output_parts = []
+            for ann in valid_anns:
+                output_parts.append(f"{m1} {ann[k1]} {m2} {ann[k2]}")
+            target = " [SSEP] ".join(output_parts)
+
+            examples.append({
+                "input": input_text,
+                "target": target,
+                "_keys": list(pair),
+                "_format": output_format,
+                "_level": "pairwise",
+            })
+
+    return examples

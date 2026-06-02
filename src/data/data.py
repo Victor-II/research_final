@@ -536,6 +536,30 @@ def _decode_target(raw: str, keys: list[str]) -> list[dict]:
     return results
 
 
+def _encode_target_mvp_markers(annotations: list[dict], keys: list[str]) -> str:
+    """Encode annotations in MvP marker format.
+    
+    Each element value is wrapped in its marker: [A] pizza [O] delicious [S] positive
+    Multiple tuples separated by [SSEP].
+    """
+    KEY_TO_MARKER = {"aspect": "[A]", "sentiment": "[O]", "polarity": "[S]", "category": "[C]"}
+    parts = []
+    for ann in annotations:
+        tokens = []
+        for k in keys:
+            marker = KEY_TO_MARKER.get(k, f"[{k[0].upper()}]")
+            tokens.append(f"{marker} {ann[k]}")
+        parts.append(" ".join(tokens))
+    return " [SSEP] ".join(parts)
+
+
+def _build_mvp_input(sentence: str, keys: list[str]) -> str:
+    """Build MvP-style input: sentence followed by element markers."""
+    KEY_TO_MARKER = {"aspect": "[A]", "sentiment": "[O]", "polarity": "[S]", "category": "[C]"}
+    markers = " ".join(KEY_TO_MARKER.get(k, f"[{k[0].upper()}]") for k in keys)
+    return f"{sentence} {markers}"
+
+
 def to_generative_format(canonical: dict, tasks: list[Task], output_format: str = "structured", infer_implicit: bool = False, category_set: list[str] = None, bare_prompt: bool = False, language: str = "en", include_categories: bool = False, nl_fraction: float = 1.0, ignore_order: bool = True) -> dict:
     if output_format == "natural-language":
         if ignore_order:
@@ -548,31 +572,36 @@ def to_generative_format(canonical: dict, tasks: list[Task], output_format: str 
         keys = [TASK_TO_KEY[t] for t in tasks]
         task_list = tasks
 
-    task_str = ", ".join(get_task_name(t.value, language) for t in task_list)
-
-    # build input text with optional syntax enrichment
-    if "_syntax_tokens" in canonical:
-        input_sentence = " ".join(canonical["_syntax_tokens"])
-    else:
+    # build input text
+    if output_format == "mvp-markers":
         input_sentence = canonical["sentence"]
+        input_text = _build_mvp_input(input_sentence, keys)
+    else:
+        task_str = ", ".join(get_task_name(t.value, language) for t in task_list)
 
-    labels = get_prompt_labels(language)
-    input_text = f"{labels['task']}: {task_str}\n{labels['input']}: {input_sentence}"
+        # build input text with optional syntax enrichment
+        if "_syntax_tokens" in canonical:
+            input_sentence = " ".join(canonical["_syntax_tokens"])
+        else:
+            input_sentence = canonical["sentence"]
 
-    if "_syntax" in canonical:
-        input_text += f"\n{labels['syntax']}: {canonical['_syntax']}"
+        labels = get_prompt_labels(language)
+        input_text = f"{labels['task']}: {task_str}\n{labels['input']}: {input_sentence}"
 
-    if include_categories and category_set and "category" in keys:
-        translated_cats = [translate_to_output(c, "category", language) for c in category_set]
-        input_text += f"\n{labels['categories']}: {', '.join(translated_cats)}"
+        if "_syntax" in canonical:
+            input_text += f"\n{labels['syntax']}: {canonical['_syntax']}"
 
-    # only show output format when mixed training (0 < nl_fraction < 1)
-    if 0 < nl_fraction < 1:
-        output_label = labels['output_nl'] if output_format == 'natural-language' else labels['output_struct']
-        input_text += f"\n{labels['output']}: {output_label}"
+        if include_categories and category_set and "category" in keys:
+            translated_cats = [translate_to_output(c, "category", language) for c in category_set]
+            input_text += f"\n{labels['categories']}: {', '.join(translated_cats)}"
+
+        # only show output format when mixed training (0 < nl_fraction < 1)
+        if 0 < nl_fraction < 1:
+            output_label = labels['output_nl'] if output_format == 'natural-language' else labels['output_struct']
+            input_text += f"\n{labels['output']}: {output_label}"
 
     if bare_prompt:
-        input_text = input_sentence
+        input_text = canonical["sentence"]
 
     annotations = []
     for ann in canonical["annotations"]:
@@ -593,6 +622,8 @@ def to_generative_format(canonical: dict, tasks: list[Task], output_format: str 
     if output_format == "natural-language":
         keys_ordered = tuple(keys) if not ignore_order else None
         target = _encode_target_nl(annotations, frozenset(keys), language=language, keys_ordered=keys_ordered)
+    elif output_format == "mvp-markers":
+        target = _encode_target_mvp_markers(annotations, keys)
     else:
         target = _encode_target(annotations)
 
@@ -720,6 +751,50 @@ def extract_categories(examples: list[dict]) -> list[str]:
 
 
 # ---------------------------------------------------------------------------
+# MvP top-k ordering multiplication
+# ---------------------------------------------------------------------------
+
+def mvp_multiply_orderings(
+    canonical_examples: list[dict],
+    tasks: list[Task],
+    output_format: str = "mvp-markers",
+    top_k: int = 5,
+    language: str = "en",
+    seed: int = 42,
+) -> list[dict]:
+    """Generate top-k ordering variants per example for MvP-style training.
+
+    For each canonical example, produces top_k training instances, each with a
+    different permutation of element markers in the input/output. If there are
+    fewer than top_k possible permutations, uses all of them.
+
+    Returns list of generative-format dicts tagged with _level="main".
+    """
+    all_perms = list(permutations(tasks))
+    rng = random.Random(seed)
+
+    if len(all_perms) <= top_k:
+        selected_perms = all_perms
+    else:
+        selected_perms = rng.sample(all_perms, top_k)
+
+    examples = []
+    for ex in canonical_examples:
+        for perm in selected_perms:
+            keys = [TASK_TO_KEY[t] for t in perm]
+            gen = to_generative_format(
+                ex, list(perm),
+                output_format=output_format,
+                language=language,
+                ignore_order=False,
+            )
+            if gen["target"].strip():
+                gen["_level"] = "main"
+                examples.append(gen)
+    return examples
+
+
+# ---------------------------------------------------------------------------
 # Dataset
 # ---------------------------------------------------------------------------
 
@@ -759,6 +834,7 @@ class ABSADataset(Dataset):
             "raw_input":      ex["input"],
             "keys":           ",".join(ex.get("_keys", ["aspect", "sentiment", "polarity"])),
             "output_format":  ex.get("_format", "structured"),
+            "level":          ex.get("_level", "main"),
         }
         if self.structured_attention:
             from src.data.syntax_mask import build_syntax_attention_mask

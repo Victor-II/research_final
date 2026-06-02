@@ -68,6 +68,10 @@ data:
   syntax_enrichment: null  # null, "dep-tree", "dep-compact", "dep-inline", "pos-inline"
   category_set: null  # null = auto-extract from data, or list of category strings
   include_categories: false  # whether to include category list in prompt
+  output_format: null  # null = use per-partition format, "mvp-markers" = MvP marker format
+  mvp_top_k: 0  # number of orderings per example for MvP training (0 = disabled)
+  star_pairwise: false  # add STAR pairwise relation examples
+  star_balanced_loss: false  # normalize loss per task level (main/pairwise)
   augmentation:
     duplicate: null
     mask_aspects: null

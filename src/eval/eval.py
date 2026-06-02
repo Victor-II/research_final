@@ -36,11 +36,54 @@ def parse_output(raw: str, keys: list[str], output_format: str = "structured", l
     """Parse model output into a list of dicts given key order."""
     if output_format == "natural-language":
         return _parse_nl_output(raw, keys, language=language)
+    if output_format == "mvp-markers":
+        return _parse_mvp_markers_output(raw, keys)
     results = []
     for match in re.finditer(r"\[([^\[\]]+)\]", raw):
         values = [v.strip() for v in match.group(1).split(",")]
         if len(values) == len(keys):
             results.append(dict(zip(keys, values)))
+    return results
+
+
+def _parse_mvp_markers_output(raw: str, keys: list[str]) -> list[dict]:
+    """Parse MvP marker format output into structured dicts.
+
+    Format: [A] pizza [O] delicious [S] positive [SSEP] [A] service [O] slow [S] negative
+    """
+    KEY_TO_MARKER = {"aspect": "[A]", "sentiment": "[O]", "polarity": "[S]", "category": "[C]"}
+    MARKER_TO_KEY = {v: k for k, v in KEY_TO_MARKER.items()}
+
+    # split on [SSEP]
+    tuples_raw = re.split(r'\[SSEP\]', raw)
+    results = []
+
+    # build marker regex for the expected keys
+    markers = [KEY_TO_MARKER.get(k, f"[{k[0].upper()}]") for k in keys]
+    # escape markers for regex
+    marker_patterns = [re.escape(m) for m in markers]
+
+    for tuple_str in tuples_raw:
+        tuple_str = tuple_str.strip()
+        if not tuple_str:
+            continue
+
+        # try to parse: extract value after each marker, up to the next marker or end
+        d = {}
+        for i, (key, marker_pat) in enumerate(zip(keys, marker_patterns)):
+            # look for this marker followed by content until the next marker or end
+            if i < len(keys) - 1:
+                next_markers = "|".join(marker_patterns[i+1:] + [r'\[SSEP\]'])
+                pattern = marker_pat + r'\s*(.+?)(?=\s*(?:' + next_markers + r')\s*|$)'
+            else:
+                pattern = marker_pat + r'\s*(.+?)$'
+            m = re.search(pattern, tuple_str)
+            if m:
+                d[key] = m.group(1).strip()
+
+        if len(d) == len(keys) and all(d.values()):
+            results.append(d)
+
     return results
 
 

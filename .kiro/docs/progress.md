@@ -357,9 +357,102 @@ Key findings:
 - Paper reports 5-seed averages; ours is single-seed (42)
 
 ### Next Steps
-- STAR-style data multiplication: running (t5-nl-star)
-- MvP-style multi-prompt voting: running (test-only on existing checkpoints)
-- After that: finalise dissertation writing
+- Opinion synonym augmentation with fraction=0.2 running
+- Error analysis (GPU busy)
+- Finalise dissertation writing
+
+### Opinion Synonym Augmentation (2026-06-02)
+
+LLM-generated opinion synonym variants using Gemma2:27b via ollama chat API (5-shot).
+For each training example, the LLM rewrites the sentence replacing opinion terms with synonyms of the same polarity.
+Generated 1989 valid variants from 1266 Rest14 train examples (~80% success rate).
+Saved to: `downloads/opinion_synonyms_rest14.json`
+
+| Config | Rest14 (ID) | Rest15 | Rest16 | Laptop14 (OOD) |
+|---|---|---|---|---|
+| nl-baseline (5-seed avg) | 0.7218±0.005 | 0.6023±0.004 | 0.6798±0.010 | 0.5247±0.012 |
+| nl-opinion-aug (fraction=1.0) | 0.7034 | 0.5711 | 0.6597 | 0.4722 |
+| nl-opinion-aug (fraction=0.2) | RUNNING | | | |
+
+fraction=1.0 result: augmentation actively hurts (-5 points OOD, -2 points ID). The LLM-generated sentences introduce distributional shift that dilutes the clean training signal. Testing with smaller fraction (0.2) to see if a lighter augmentation dose helps or if the noise is inherent.
+
+### Annotation Quality Issues (for dissertation error analysis)
+
+Example of questionable SemEval Rest14 annotation:
+```
+Sentence: "Barbecued codfish was gorgeously moist - as if poached - yet the fabulous texture was let down by curiously bland seasoning - a spice rub might have overwhelmed , however herb mix or other sauce would have done much to enhance ."
+  [positive] Barbecued codfish -> moist         ← correct
+  [negative] seasoning -> bland                 ← correct
+  [negative] spice rub -> overwhelmed           ← wrong: hypothetical dismissal, not actual negative opinion
+  [negative] herb mix -> to enhance             ← wrong: counterfactual wish, not negative about herb mix
+  [negative] sauce -> to enhance                ← wrong: same issue
+```
+The annotators interpreted complex rhetorical structures (hypotheticals, counterfactuals) as negative opinions. The model cannot reasonably predict "to enhance" as a negative opinion span. This represents irreducible annotation noise that inflates the gap between model performance and true task difficulty.
+
+### MvP & STAR Proper Replication (2026-06-02)
+
+Proper replication of MvP (Gou et al., 2023) and STAR (Lai et al., 2025) mechanisms on our Rest14-only OOD setup.
+
+#### Results (triplet micro-F1)
+
+| Config | Rest14 (ID) | Rest15 | Rest16 | Laptop14 (OOD) |
+|---|---|---|---|---|
+| nl-baseline (5-seed avg) | 0.7218±0.005 | 0.6023±0.004 | 0.6798±0.010 | 0.5247±0.012 |
+| MvP proper (greedy) | 0.7280 | 0.6047 | 0.6876 | 0.5283 |
+| MvP proper + voting (t=3) | 0.7345 | 0.6040 | 0.6927 | 0.5296 |
+| STAR proper (greedy) | 0.7177 | 0.5922 | 0.6923 | 0.4869 |
+| STAR proper + voting (t=3) | 0.7230 | 0.5984 | 0.7136 | 0.4995 |
+
+#### Implementation details (vs papers)
+
+MvP replication includes:
+- Element markers in input/output ([A], [O], [S])
+- [SSEP] separator between tuples
+- 5 orderings per example at training time (top-k=5 of 6 possible)
+- Majority voting at inference with threshold k/2=3
+
+MvP differences from paper:
+- Single-dataset training (Rest14 only) vs paper's multi-task training on 10 datasets
+- FLAN-T5-base vs paper's T5-base
+- No tuple sorting by appearance order
+- Paper's ID F1=76.08 uses multi-task cross-dataset knowledge; our 72.80 is single-dataset (fair for OOD evaluation)
+
+STAR replication includes:
+- MvP marker format as base (5 orderings)
+- Pairwise relation sub-tasks ([AO], [AS], [SP] markers)
+- Balanced contribution loss (per-level normalisation: main vs pairwise)
+- Examples tagged with _level for loss grouping
+
+STAR differences from paper:
+- ASTE (triples) vs paper's ASQP (quads) — fewer element combinations
+- No "overall relation" paraphrase task (would be redundant with our NL format)
+- No generation-score-based order selection (minimal impact with only 6 permutations)
+- Paper reports gains mainly in low-resource; full-data improvement over MvP is ~1 point
+
+#### Key findings:
+- MvP with voting matches nl-baseline on OOD (0.5296 vs 0.5247±0.012 — within CI)
+- MvP gives small ID gain from voting (+0.7 points)
+- STAR hurts OOD significantly (0.4869-0.4995 vs 0.5247 avg) — pairwise decomposition splits model capacity without helping cross-domain transfer
+- STAR voting partially recovers OOD (+1.3 points over greedy) but still below baseline
+- Neither method addresses vocabulary/domain shift — they optimise compositional accuracy which is already strong in-domain
+- The marker format ([A] x [O] y [S] z) achieves comparable OOD to NL templates — format type is less important than previously thought when controlling for multi-ordering exposure
+
+### Data Analysis & Figures (2026-06-02)
+
+Generated dissertation figures in `dissertation/figures/`:
+- `pos_comparison.pdf` — per-dataset POS distribution for aspects (top) and opinions (bottom), all 13 datasets
+- `vocab_overlap.pdf` — aspect vs opinion token overlap for each test set with training
+- `overlap_vs_f1.pdf` — 2x2 scatter: F1 vs vocabulary overlap, implicit %, sentence length, triplets/sentence
+- `dataset_characteristics.pdf` — 5-panel: sentence length, triplets/sentence, implicit %, aspect span length, opinion span length
+
+Key findings from data analysis:
+- SemEval opinions are ADJ-dominant (37-46% head POS), DMASTE opinions are VERB-dominant (21-24%)
+- This is a fundamental annotation style difference, not just vocabulary
+- Vocabulary overlap: Laptop14 has only 8.7% aspect token overlap with Rest14 train, but 47.3% opinion overlap
+- DMASTE target domains have 24-55% aspect overlap and 60-76% opinion overlap with source
+- Pet dataset has highest vocabulary overlap (54.5% aspect, 75.5% opinion) but second-worst F1 (0.4322)
+- Pet's poor performance explained by highest implicit aspect rate (47.4%) — vocabulary overlap is necessary but not sufficient
+- Full report saved in `dissertation/data_analysis_report.txt`
 
 ### Template Augmentation on SemEval (2026-06-01, retested from checkpoint)
 

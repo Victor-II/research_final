@@ -6,7 +6,7 @@ import torch
 import pytorch_lightning as pl
 from pytorch_lightning.callbacks import ModelCheckpoint, EarlyStopping
 
-from src.data.data import split_by_task, load_aste_file, load_silviolima_domain, load_acos_jsonl, load_emag_csv, to_generative_format, filter_implicit_aspects, enrich_syntax, extract_categories
+from src.data.data import split_by_task, load_aste_file, load_silviolima_domain, load_acos_jsonl, load_emag_csv, to_generative_format, filter_implicit_aspects, enrich_syntax, extract_categories, mvp_multiply_orderings
 from src.model.t5_model import T5ABSAModel
 from src.eval.eval import save_results, save_metrics_table
 from src.augment.registry import apply_augmentations
@@ -162,9 +162,40 @@ def _prepare_data(cfg: dict):
         )
         train_examples.extend(star_examples)
 
+    # MvP top-k ordering multiplication (replaces normal training when mvp-markers format)
+    mvp_top_k = data_cfg.get("mvp_top_k", 0)
+    output_format = data_cfg.get("output_format", None)
+    if mvp_top_k > 0 and output_format == "mvp-markers":
+        # resolve the main task tuple from partition (use the largest weight group)
+        main_task_key = max(tasks_partition, key=lambda k: tasks_partition[k])
+        main_tasks = list(main_task_key)
+        mvp_examples = mvp_multiply_orderings(
+            augmented_train,
+            tasks=main_tasks,
+            output_format="mvp-markers",
+            top_k=mvp_top_k,
+            language=language,
+            seed=cfg["seed"],
+        )
+        # replace training examples with MvP orderings (tagged _level="main")
+        train_examples = mvp_examples
+
+    # STAR pairwise relation examples
+    star_pairwise_flag = data_cfg.get("star_pairwise", False)
+    if star_pairwise_flag:
+        from src.augment.star import star_pairwise
+        pairwise_format = output_format if output_format == "mvp-markers" else ("natural-language" if nl_fraction > 0 else "structured")
+        pairwise_examples = star_pairwise(
+            canonical_train,
+            output_format=pairwise_format,
+            language=language,
+            seed=cfg["seed"],
+        )
+        train_examples.extend(pairwise_examples)
+
     # pass config so model can re-split (and re-augment) each epoch
     task_split_cfg = None
-    if needs_resplit or has_augmentation or nl_fraction > 0 or curriculum:
+    if needs_resplit or has_augmentation or nl_fraction > 0 or curriculum or mvp_top_k > 0 or star_pairwise_flag:
         task_split_cfg = {
             "file_path": train_files[0],
             "tasks_partition": tasks_partition,
@@ -184,10 +215,13 @@ def _prepare_data(cfg: dict):
             "include_categories": include_categories,
             "opinion_auxiliary_fraction": opinion_aux_fraction,
             "star_multiply_fraction": star_fraction,
+            "mvp_top_k": mvp_top_k,
+            "output_format": output_format,
+            "star_pairwise": star_pairwise_flag,
         }
 
     val_tasks = _resolve_tasks(cfg["eval"].get("tasks", ["aspect", "sentiment", "polarity"]))
-    val_format = cfg["eval"].get("output_format", "structured")
+    val_format = cfg["eval"].get("output_format", data_cfg.get("output_format") or "structured")
     if canonical_val is not None:
         val_examples = [to_generative_format(ex, val_tasks, output_format=val_format, category_set=category_set, bare_prompt=bare_prompt, language=language, include_categories=include_categories, nl_fraction=nl_fraction) for ex in canonical_val]
     else:
@@ -262,6 +296,7 @@ def run(cfg: dict, output_dir: Path):
     model = _build_model(cfg, train_examples, val_examples)
     if task_split_cfg is not None:
         model._task_split_cfg = task_split_cfg
+    model._star_balanced_loss = cfg.get("data", {}).get("star_balanced_loss", False)
     ckpt_dir, results_dir = _setup_output(cfg, output_dir)
     model._results_dir = str(results_dir)
 
@@ -459,8 +494,10 @@ def test_mvp(cfg: dict, checkpoint: str, output_dir: Path):
     """
     MvP-style multi-prompt voting test.
 
-    For each test example, runs inference with all 6 permutations of the triplet
-    task ordering and aggregates results via majority voting.
+    For each test example, runs inference with multiple permutations of the
+    element ordering and aggregates results via majority voting.
+    Supports both NL/structured format (task-order permutation in prompt)
+    and mvp-markers format (marker ordering permutation in input).
     """
     logging.getLogger("pytorch_lightning").setLevel(logging.WARNING)
     torch.set_float32_matmul_precision("medium")
@@ -468,6 +505,7 @@ def test_mvp(cfg: dict, checkpoint: str, output_dir: Path):
     from itertools import permutations as _perms
     from collections import Counter
     from src.eval.eval import parse_output, evaluate, save_results, save_metrics_table
+    from src.eval.mvp_vote import generate_multiview_inputs, vote_predictions
 
     if "test" not in cfg:
         raise ValueError("No 'test' block found in config.")
@@ -482,15 +520,12 @@ def test_mvp(cfg: dict, checkpoint: str, output_dir: Path):
     se = cfg.get("data", {}).get("syntax_enrichment", None)
     spacy_model = cfg.get("data", {}).get("spacy_model", "en_core_web_sm")
     language = cfg.get("data", {}).get("language", "en")
-    test_format = test_cfg.get("output_format", "structured")
+    test_format = test_cfg.get("output_format", cfg.get("data", {}).get("output_format", "structured"))
     bp = cfg.get("data", {}).get("bare_prompt", False)
     nl_fraction = cfg.get("data", {}).get("natural_language_fraction", 0.0)
     include_categories = cfg.get("data", {}).get("include_categories", False)
-    vote_threshold = test_cfg.get("mvp_vote_threshold", 2)
-
-    # all 6 orderings of the triplet task
-    base_tasks = [Task.ASPECT, Task.SENTIMENT, Task.POLARITY]
-    all_orderings = list(_perms(base_tasks))
+    mvp_top_k = cfg.get("data", {}).get("mvp_top_k", 5)
+    vote_threshold = test_cfg.get("mvp_vote_threshold", (mvp_top_k + 1) // 2)
 
     output_dir.mkdir(parents=True, exist_ok=True)
     results_dir = output_dir / "results"
@@ -514,7 +549,6 @@ def test_mvp(cfg: dict, checkpoint: str, output_dir: Path):
     for ds_cfg in test_cfg["datasets"]:
         data_path = ds_cfg["data"]
         scopes = ds_cfg.get("scopes", default_scopes)
-        ds_tasks_keys = ds_cfg.get("tasks", ["aspect", "sentiment", "polarity"])
 
         canonical_data = _load_data(data_path, filter_implicit=fi, syntax_enrichment=se, spacy_model=spacy_model)
 
@@ -522,27 +556,37 @@ def test_mvp(cfg: dict, checkpoint: str, output_dir: Path):
         all_golds = []
 
         for ex in canonical_data:
-            # generate gold from canonical order
-            gold_tasks = _resolve_tasks(ds_tasks_keys)
+            # generate gold
+            gold_tasks = _resolve_tasks(ds_cfg.get("tasks", ["aspect", "sentiment", "polarity"]))
             gold_gen = to_generative_format(ex, gold_tasks, output_format=test_format, bare_prompt=bp, language=language, include_categories=include_categories, nl_fraction=nl_fraction)
             gold_parsed = parse_output(gold_gen["target"], gold_gen["_keys"], gold_gen["_format"], language=language)
 
-            # run inference with all orderings
-            triplet_counts = Counter()
-            for ordering in all_orderings:
-                gen = to_generative_format(ex, list(ordering), output_format=test_format, bare_prompt=bp, language=language, include_categories=include_categories, nl_fraction=nl_fraction, ignore_order=False)
+            # generate multiview inputs
+            variants = generate_multiview_inputs(
+                ex,
+                output_format=test_format,
+                language=language,
+                top_k=mvp_top_k,
+                seed=cfg.get("seed", 42),
+            )
+
+            # run inference for each variant
+            predictions_per_view = []
+            for gen in variants:
                 inputs = tokenizer(gen["input"], return_tensors="pt", max_length=cfg.get("model", {}).get("max_length", 256), truncation=True).to(model.device)
                 output_ids = model.model.generate(input_ids=inputs["input_ids"], attention_mask=inputs["attention_mask"], **gen_kwargs)
                 decoded = tokenizer.decode(output_ids[0], skip_special_tokens=True)
                 preds = parse_output(decoded, gen["_keys"], gen["_format"], language=language)
+                # normalize to canonical key set for voting
+                canonical_preds = []
                 for triplet in preds:
-                    # normalize: convert to canonical key set for voting
                     canonical_triplet = {k: triplet.get(k, "") for k in ["aspect", "sentiment", "polarity"] if k in triplet}
                     if canonical_triplet:
-                        triplet_counts[frozenset(canonical_triplet.items())] += 1
+                        canonical_preds.append(canonical_triplet)
+                predictions_per_view.append(canonical_preds)
 
             # vote
-            voted = [dict(k) for k, c in triplet_counts.items() if c >= vote_threshold]
+            voted = vote_predictions(predictions_per_view, threshold=vote_threshold)
             all_preds.append(voted)
             all_golds.append(gold_parsed)
 
@@ -555,7 +599,7 @@ def test_mvp(cfg: dict, checkpoint: str, output_dir: Path):
         triplet_key = "aspect+sentiment+polarity"
         if triplet_key in metrics:
             micro = metrics[triplet_key].get("micro", {})
-            print(f"  {data_path}: triplet-F1 = {micro.get('f1', 0):.4f} (MvP vote, threshold={vote_threshold})")
+            print(f"  {data_path}: triplet-F1 = {micro.get('f1', 0):.4f} (MvP vote, k={mvp_top_k}, threshold={vote_threshold})")
 
     # save
     for i, entry in enumerate(test_metrics_history):

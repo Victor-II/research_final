@@ -229,6 +229,35 @@ class T5ABSAModel(pl.LightningModule):
                     seed=seed,
                 )
                 examples.extend(star_examples)
+
+            # MvP top-k ordering multiplication
+            mvp_top_k = cfg.get("mvp_top_k", 0)
+            output_format = cfg.get("output_format")
+            if mvp_top_k > 0 and output_format == "mvp-markers":
+                from src.data.data import mvp_multiply_orderings
+                main_task_key = max(tasks_partition, key=lambda k: tasks_partition[k])
+                main_tasks = list(main_task_key)
+                mvp_examples = mvp_multiply_orderings(
+                    canonical,
+                    tasks=main_tasks,
+                    output_format="mvp-markers",
+                    top_k=mvp_top_k,
+                    language=cfg.get("language", "en"),
+                    seed=seed,
+                )
+                examples = mvp_examples
+
+            # STAR pairwise relation examples
+            if cfg.get("star_pairwise", False):
+                from src.augment.star import star_pairwise
+                pairwise_format = output_format if output_format == "mvp-markers" else ("natural-language" if cfg.get("nl_fraction", 0) > 0 else "structured")
+                pairwise_examples = star_pairwise(
+                    cfg["canonical"],
+                    output_format=pairwise_format,
+                    language=cfg.get("language", "en"),
+                    seed=seed,
+                )
+                examples.extend(pairwise_examples)
         else:
             examples = self._train_examples
         ds = ABSADataset(examples, self.tokenizer, self.hparams.max_length,
@@ -259,7 +288,34 @@ class T5ABSAModel(pl.LightningModule):
         logits = out.logits
         labels = batch["labels"]
 
-        if self.hparams.focal_gamma > 0:
+        balanced_loss = getattr(self, "_star_balanced_loss", False)
+
+        if balanced_loss and "level" in batch:
+            # Balanced contribution loss: normalize per level
+            ce = torch.nn.functional.cross_entropy(
+                logits.view(-1, logits.size(-1)), labels.view(-1),
+                ignore_index=-100, reduction="none",
+            )
+            # reshape to (batch, seq_len) and average per sample
+            bsz, seq_len = labels.shape
+            ce = ce.view(bsz, seq_len)
+            # mask out padding
+            mask = (labels != -100).float()
+            per_sample_loss = (ce * mask).sum(dim=1) / mask.sum(dim=1).clamp(min=1)
+
+            # group by level and average
+            levels = batch["level"]  # list of strings
+            level_set = list(set(levels))
+            level_losses = []
+            for lvl in level_set:
+                indices = [i for i, l in enumerate(levels) if l == lvl]
+                if indices:
+                    idx_t = torch.tensor(indices, device=per_sample_loss.device)
+                    level_losses.append(per_sample_loss[idx_t].mean())
+            # average across levels (equal weight per level)
+            loss = torch.stack(level_losses).mean() if level_losses else per_sample_loss.mean()
+
+        elif self.hparams.focal_gamma > 0:
             # focal loss: (1 - p_t)^gamma * CE
             ce = torch.nn.functional.cross_entropy(
                 logits.view(-1, logits.size(-1)), labels.view(-1),

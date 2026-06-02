@@ -1,0 +1,218 @@
+{
+  "train_loss": [
+    1.157798408626286,
+    0.14464977337709536,
+    0.08430693360666434,
+    0.05677144261412499,
+    0.038432191019656364,
+    0.02993085430982842,
+    0.022789072625410387,
+    0.01672705818042321,
+    0.01446080339063212,
+    0.012871362937554183,
+    0.01058946068656221,
+    0.008199963444585907,
+    0.007073362417742819,
+    0.006638720778552505
+  ],
+  "val_loss": [
+    0.208836068212986,
+    0.19241732358932495,
+    0.19941380396485328,
+    0.24305299073457717,
+    0.23370129093527794,
+    0.25949382930994036,
+    0.2968562990427017,
+    0.32992985397577285,
+    0.3386303782463074,
+    0.3305659398436546,
+    0.3635569497942924,
+    0.3763927727937698,
+    0.3954395517706871,
+    0.4082592010498047
+  ],
+  "val": [
+    {
+      "epoch": 0,
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.6119733924611973,
+          "recall": 0.4791666666666667,
+          "f1": 0.5374878286270691
+        }
+      }
+    },
+    {
+      "epoch": 1,
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.6483739837398373,
+          "recall": 0.5538194444444444,
+          "f1": 0.5973782771535581
+        }
+      }
+    },
+    {
+      "epoch": 2,
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.6304347826086957,
+          "recall": 0.6041666666666666,
+          "f1": 0.6170212765957447
+        }
+      }
+    },
+    {
+      "epoch": 3,
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.6084828711256117,
+          "recall": 0.6475694444444444,
+          "f1": 0.6274179983179141
+        }
+      }
+    },
+    {
+      "epoch": 4,
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.6591760299625468,
+          "recall": 0.6111111111111112,
+          "f1": 0.6342342342342343
+        }
+      }
+    },
+    {
+      "epoch": 5,
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.6381461675579323,
+          "recall": 0.6215277777777778,
+          "f1": 0.6297273526824978
+        }
+      }
+    },
+    {
+      "epoch": 6,
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.6428571428571429,
+          "recall": 0.65625,
+          "f1": 0.6494845360824744
+        }
+      }
+    },
+    {
+      "epoch": 7,
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.6451612903225806,
+          "recall": 0.625,
+          "f1": 0.634920634920635
+        }
+      }
+    },
+    {
+      "epoch": 8,
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.6388888888888888,
+          "recall": 0.6388888888888888,
+          "f1": 0.6388888888888888
+        }
+      }
+    },
+    {
+      "epoch": 9,
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.6524822695035462,
+          "recall": 0.6388888888888888,
+          "f1": 0.6456140350877193
+        }
+      }
+    },
+    {
+      "epoch": 10,
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.6224489795918368,
+          "recall": 0.6354166666666666,
+          "f1": 0.6288659793814433
+        }
+      }
+    },
+    {
+      "epoch": 11,
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.6335078534031413,
+          "recall": 0.6302083333333334,
+          "f1": 0.6318537859007832
+        }
+      }
+    },
+    {
+      "epoch": 12,
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.6174496644295302,
+          "recall": 0.6388888888888888,
+          "f1": 0.6279863481228669
+        }
+      }
+    },
+    {
+      "epoch": 13,
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.6379310344827587,
+          "recall": 0.6423611111111112,
+          "f1": 0.6401384083044983
+        }
+      }
+    }
+  ],
+  "test": [
+    {
+      "data": "downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/402.Restaurant14/test.txt",
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.7180261832829808,
+          "recall": 0.7173038229376257,
+          "f1": 0.7176648213387015
+        }
+      }
+    },
+    {
+      "data": "downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/403.Restaurant15/test.txt",
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.5596330275229358,
+          "recall": 0.6288659793814433,
+          "f1": 0.5922330097087379
+        }
+      }
+    },
+    {
+      "data": "downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/404.Restaurant16/test.txt",
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.6539792387543253,
+          "recall": 0.7354085603112841,
+          "f1": 0.6923076923076923
+        }
+      }
+    },
+    {
+      "data": "downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/401.Laptop14/test.txt",
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.4915254237288136,
+          "recall": 0.4824399260628466,
+          "f1": 0.48694029850746273
+        }
+      }
+    }
+  ]
+}

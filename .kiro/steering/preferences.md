@@ -1,5 +1,11 @@
 # Project & Developer Preferences
 
+## Workflow
+- Discuss first, implement only when explicitly asked — present the approach, expected results, tradeoffs, then wait for approval before writing code, running commands, or making changes
+- No file edits, deletions, or training runs without explicit request
+- When proposing something, describe it; don't do it
+- For LLM prompting tasks: always present the full prompt template for review before any generation begins
+
 ## Research goal
 Master's dissertation focused on improving ABSA performance, specifically:
 - Primary goal: out-of-domain generalisation (this is the main focus)

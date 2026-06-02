@@ -1,0 +1,686 @@
+Loaded spaCy model: en_core_web_sm
+
+============================================================
+  402.Restaurant14/train
+============================================================
+  Sentences:          1266
+  Total annotations:  2338
+  Avg ann/sentence:   1.85
+
+  Sentence length (tokens):
+    Min: 3, Max: 79, Mean: 17.3, Median: 16
+
+  Annotations per sentence:
+    Single: 605 (48%)
+    Multi:  661 (52%)
+    Max:    7
+
+  Polarity distribution:
+    positive: 1692 (72.4%)
+    negative: 480 (20.5%)
+    neutral: 166 (7.1%)
+
+  Aspect span length (words):
+    Min: 1, Max: 21, Mean: 1.38, Median: 1
+    Distribution: 1w=1778, 2w=398, 3w=104, 4w=24, 5w=19
+  Sentiment span length (words):
+    Min: 1, Max: 6, Mean: 1.17, Median: 1
+    Distribution: 1w=2079, 2w=170, 3w=47, 4w=29, 5w=8
+
+  Aspect POS distribution (top 5):
+    NOUN: 804 (54.5%)
+    PROPN: 310 (21.0%)
+    ADJ: 133 (9.0%)
+    VERB: 105 (7.1%)
+    ADP: 69 (4.7%)
+  Sentiment POS distribution (top 5):
+    ADJ: 422 (37.1%)
+    VERB: 189 (16.6%)
+    ADV: 148 (13.0%)
+    NOUN: 138 (12.1%)
+    PART: 67 (5.9%)
+
+
+============================================================
+  402.Restaurant14/test
+============================================================
+  Sentences:          492
+  Total annotations:  994
+  Avg ann/sentence:   2.02
+
+  Sentence length (tokens):
+    Min: 5, Max: 70, Mean: 16.3, Median: 14
+
+  Annotations per sentence:
+    Single: 206 (42%)
+    Multi:  286 (58%)
+    Max:    14
+
+  Polarity distribution:
+    positive: 773 (77.8%)
+    negative: 155 (15.6%)
+    neutral: 66 (6.6%)
+
+  Aspect span length (words):
+    Min: 1, Max: 11, Mean: 1.44, Median: 1
+    Distribution: 1w=725, 2w=180, 3w=51, 4w=21, 5w=7
+  Sentiment span length (words):
+    Min: 1, Max: 4, Mean: 1.13, Median: 1
+    Distribution: 1w=903, 2w=61, 3w=23, 4w=7
+
+  Aspect POS distribution (top 5):
+    NOUN: 459 (59.3%)
+    PROPN: 144 (18.6%)
+    ADJ: 83 (10.7%)
+    VERB: 42 (5.4%)
+    ADP: 27 (3.5%)
+  Sentiment POS distribution (top 5):
+    ADJ: 233 (45.8%)
+    VERB: 71 (13.9%)
+    NOUN: 66 (13.0%)
+    ADV: 57 (11.2%)
+    PROPN: 23 (4.5%)
+
+
+============================================================
+  403.Restaurant15/test
+============================================================
+  Sentences:          322
+  Total annotations:  485
+  Avg ann/sentence:   1.51
+
+  Sentence length (tokens):
+    Min: 2, Max: 63, Mean: 15.6, Median: 13
+
+  Annotations per sentence:
+    Single: 210 (65%)
+    Multi:  112 (35%)
+    Max:    5
+
+  Polarity distribution:
+    positive: 317 (65.4%)
+    negative: 143 (29.5%)
+    neutral: 25 (5.2%)
+
+  Aspect span length (words):
+    Min: 1, Max: 12, Mean: 1.48, Median: 1
+    Distribution: 1w=348, 2w=81, 3w=35, 4w=13, 5w=5
+  Sentiment span length (words):
+    Min: 1, Max: 6, Mean: 1.19, Median: 1
+    Distribution: 1w=421, 2w=47, 3w=12, 4w=2, 5w=2
+
+  Aspect POS distribution (top 5):
+    NOUN: 229 (52.6%)
+    PROPN: 103 (23.7%)
+    ADJ: 46 (10.6%)
+    VERB: 22 (5.1%)
+    ADP: 12 (2.8%)
+  Sentiment POS distribution (top 5):
+    ADJ: 151 (41.0%)
+    VERB: 72 (19.6%)
+    NOUN: 48 (13.0%)
+    ADV: 34 (9.2%)
+    PART: 22 (6.0%)
+
+
+============================================================
+  404.Restaurant16/test
+============================================================
+  Sentences:          326
+  Total annotations:  514
+  Avg ann/sentence:   1.58
+
+  Sentence length (tokens):
+    Min: 2, Max: 78, Mean: 14.7, Median: 12
+
+  Annotations per sentence:
+    Single: 192 (59%)
+    Multi:  134 (41%)
+    Max:    5
+
+  Polarity distribution:
+    positive: 407 (79.2%)
+    negative: 78 (15.2%)
+    neutral: 29 (5.6%)
+
+  Aspect span length (words):
+    Min: 1, Max: 9, Mean: 1.41, Median: 1
+    Distribution: 1w=385, 2w=85, 3w=23, 4w=13, 5w=5
+  Sentiment span length (words):
+    Min: 1, Max: 6, Mean: 1.18, Median: 1
+    Distribution: 1w=460, 2w=29, 3w=14, 4w=7, 5w=3
+
+  Aspect POS distribution (top 5):
+    NOUN: 225 (53.8%)
+    PROPN: 107 (25.6%)
+    VERB: 28 (6.7%)
+    ADJ: 27 (6.5%)
+    ADP: 13 (3.1%)
+  Sentiment POS distribution (top 5):
+    ADJ: 148 (44.6%)
+    VERB: 49 (14.8%)
+    NOUN: 41 (12.3%)
+    ADV: 26 (7.8%)
+    PART: 16 (4.8%)
+
+
+============================================================
+  401.Laptop14/test
+============================================================
+  Sentences:          328
+  Total annotations:  543
+  Avg ann/sentence:   1.66
+
+  Sentence length (tokens):
+    Min: 3, Max: 71, Mean: 15.8, Median: 14
+
+  Annotations per sentence:
+    Single: 184 (56%)
+    Multi:  144 (44%)
+    Max:    6
+
+  Polarity distribution:
+    positive: 364 (67.0%)
+    negative: 116 (21.4%)
+    neutral: 63 (11.6%)
+
+  Aspect span length (words):
+    Min: 1, Max: 6, Mean: 1.53, Median: 1
+    Distribution: 1w=323, 2w=175, 3w=30, 4w=9, 5w=4
+  Sentiment span length (words):
+    Min: 1, Max: 5, Mean: 1.19, Median: 1
+    Distribution: 1w=474, 2w=42, 3w=22, 4w=4, 5w=1
+
+  Aspect POS distribution (top 5):
+    NOUN: 302 (58.4%)
+    PROPN: 80 (15.5%)
+    VERB: 63 (12.2%)
+    ADP: 23 (4.4%)
+    ADJ: 21 (4.1%)
+  Sentiment POS distribution (top 5):
+    ADJ: 127 (32.7%)
+    VERB: 83 (21.4%)
+    ADV: 48 (12.4%)
+    NOUN: 38 (9.8%)
+    PART: 38 (9.8%)
+
+
+============================================================
+  electronics/train
+============================================================
+  Sentences:          1395
+  Total annotations:  5292
+  Avg ann/sentence:   3.79
+
+  Sentence length (tokens):
+    Min: 13, Max: 244, Mean: 61.2, Median: 47
+
+  Annotations per sentence:
+    Single: 155 (11%)
+    Multi:  1240 (89%)
+    Max:    16
+
+  Polarity distribution:
+    positive: 4159 (78.6%)
+    negative: 941 (17.8%)
+    neutral: 192 (3.6%)
+
+  Implicit/NULL:
+    Aspects:    2143 (40.5%)
+    Sentiments: 0 (0.0%)
+
+  Aspect span length (words):
+    Min: 1, Max: 2, Mean: 1.23, Median: 1
+    Distribution: 1w=2420, 2w=729
+  Sentiment span length (words):
+    Min: 1, Max: 2, Mean: 1.67, Median: 2
+    Distribution: 1w=1764, 2w=3528
+
+  Aspect POS distribution (top 5):
+    NOUN: 1086 (59.4%)
+    PROPN: 249 (13.6%)
+    VERB: 240 (13.1%)
+    ADJ: 137 (7.5%)
+    NUM: 29 (1.6%)
+  Sentiment POS distribution (top 5):
+    VERB: 1460 (23.5%)
+    NOUN: 1249 (20.1%)
+    ADJ: 1110 (17.9%)
+    ADV: 1015 (16.3%)
+    AUX: 297 (4.8%)
+
+
+============================================================
+  beauty/train
+============================================================
+  Sentences:          535
+  Total annotations:  2221
+  Avg ann/sentence:   4.15
+
+  Sentence length (tokens):
+    Min: 11, Max: 248, Mean: 58.8, Median: 43
+
+  Annotations per sentence:
+    Single: 46 (9%)
+    Multi:  489 (91%)
+    Max:    15
+
+  Polarity distribution:
+    positive: 1828 (82.3%)
+    negative: 305 (13.7%)
+    neutral: 88 (4.0%)
+
+  Implicit/NULL:
+    Aspects:    968 (43.6%)
+    Sentiments: 0 (0.0%)
+
+  Aspect span length (words):
+    Min: 1, Max: 2, Mean: 1.25, Median: 1
+    Distribution: 1w=934, 2w=319
+  Sentiment span length (words):
+    Min: 1, Max: 2, Mean: 1.67, Median: 2
+    Distribution: 1w=728, 2w=1493
+
+  Aspect POS distribution (top 5):
+    NOUN: 364 (54.2%)
+    PROPN: 150 (22.3%)
+    VERB: 76 (11.3%)
+    ADJ: 58 (8.6%)
+    ADV: 7 (1.0%)
+  Sentiment POS distribution (top 5):
+    VERB: 662 (23.0%)
+    NOUN: 589 (20.5%)
+    ADJ: 562 (19.6%)
+    ADV: 479 (16.7%)
+    PROPN: 124 (4.3%)
+
+
+============================================================
+  fashion/train
+============================================================
+  Sentences:          851
+  Total annotations:  3241
+  Avg ann/sentence:   3.81
+
+  Sentence length (tokens):
+    Min: 14, Max: 233, Mean: 53.8, Median: 41
+
+  Annotations per sentence:
+    Single: 71 (8%)
+    Multi:  780 (92%)
+    Max:    19
+
+  Polarity distribution:
+    positive: 2445 (75.4%)
+    negative: 646 (19.9%)
+    neutral: 150 (4.6%)
+
+  Implicit/NULL:
+    Aspects:    1423 (43.9%)
+    Sentiments: 0 (0.0%)
+
+  Aspect span length (words):
+    Min: 1, Max: 2, Mean: 1.19, Median: 1
+    Distribution: 1w=1479, 2w=339
+  Sentiment span length (words):
+    Min: 1, Max: 2, Mean: 1.65, Median: 2
+    Distribution: 1w=1146, 2w=2095
+
+  Aspect POS distribution (top 5):
+    NOUN: 641 (63.3%)
+    VERB: 123 (12.2%)
+    PROPN: 118 (11.7%)
+    ADJ: 80 (7.9%)
+    NUM: 26 (2.6%)
+  Sentiment POS distribution (top 5):
+    ADJ: 834 (21.7%)
+    VERB: 811 (21.1%)
+    NOUN: 793 (20.6%)
+    ADV: 631 (16.4%)
+    PROPN: 143 (3.7%)
+
+
+============================================================
+  home/train
+============================================================
+  Sentences:          1050
+  Total annotations:  3852
+  Avg ann/sentence:   3.67
+
+  Sentence length (tokens):
+    Min: 19, Max: 236, Mean: 62.2, Median: 49
+
+  Annotations per sentence:
+    Single: 120 (11%)
+    Multi:  930 (89%)
+    Max:    17
+
+  Polarity distribution:
+    positive: 2965 (77.0%)
+    negative: 758 (19.7%)
+    neutral: 129 (3.3%)
+
+  Implicit/NULL:
+    Aspects:    1649 (42.8%)
+    Sentiments: 0 (0.0%)
+
+  Aspect span length (words):
+    Min: 1, Max: 2, Mean: 1.24, Median: 1
+    Distribution: 1w=1671, 2w=532
+  Sentiment span length (words):
+    Min: 1, Max: 2, Mean: 1.67, Median: 2
+    Distribution: 1w=1267, 2w=2585
+
+  Aspect POS distribution (top 5):
+    NOUN: 824 (59.4%)
+    VERB: 203 (14.6%)
+    PROPN: 193 (13.9%)
+    ADJ: 98 (7.1%)
+    NUM: 28 (2.0%)
+  Sentiment POS distribution (top 5):
+    VERB: 1074 (22.8%)
+    NOUN: 1044 (22.1%)
+    ADJ: 919 (19.5%)
+    ADV: 734 (15.6%)
+    AUX: 214 (4.5%)
+
+
+============================================================
+  book/test
+============================================================
+  Sentences:          325
+  Total annotations:  1068
+  Avg ann/sentence:   3.29
+
+  Sentence length (tokens):
+    Min: 9, Max: 239, Mean: 55.4, Median: 41
+
+  Annotations per sentence:
+    Single: 52 (16%)
+    Multi:  273 (84%)
+    Max:    16
+
+  Polarity distribution:
+    positive: 866 (81.1%)
+    negative: 161 (15.1%)
+    neutral: 41 (3.8%)
+
+  Implicit/NULL:
+    Aspects:    404 (37.8%)
+    Sentiments: 0 (0.0%)
+
+  Aspect span length (words):
+    Min: 1, Max: 2, Mean: 1.25, Median: 1
+    Distribution: 1w=498, 2w=166
+  Sentiment span length (words):
+    Min: 1, Max: 2, Mean: 1.68, Median: 2
+    Distribution: 1w=347, 2w=721
+
+  Aspect POS distribution (top 5):
+    NOUN: 251 (57.6%)
+    PROPN: 98 (22.5%)
+    VERB: 42 (9.6%)
+    ADJ: 29 (6.7%)
+    NUM: 6 (1.4%)
+  Sentiment POS distribution (top 5):
+    VERB: 352 (23.9%)
+    ADJ: 301 (20.4%)
+    NOUN: 285 (19.3%)
+    ADV: 234 (15.9%)
+    PRON: 57 (3.9%)
+
+
+============================================================
+  grocery/test
+============================================================
+  Sentences:          353
+  Total annotations:  1281
+  Avg ann/sentence:   3.63
+
+  Sentence length (tokens):
+    Min: 17, Max: 209, Mean: 55.6, Median: 42
+
+  Annotations per sentence:
+    Single: 50 (14%)
+    Multi:  303 (86%)
+    Max:    13
+
+  Polarity distribution:
+    positive: 1059 (82.7%)
+    negative: 170 (13.3%)
+    neutral: 52 (4.1%)
+
+  Implicit/NULL:
+    Aspects:    514 (40.1%)
+    Sentiments: 0 (0.0%)
+
+  Aspect span length (words):
+    Min: 1, Max: 2, Mean: 1.28, Median: 1
+    Distribution: 1w=553, 2w=214
+  Sentiment span length (words):
+    Min: 1, Max: 2, Mean: 1.61, Median: 2
+    Distribution: 1w=494, 2w=787
+
+  Aspect POS distribution (top 5):
+    NOUN: 314 (59.6%)
+    PROPN: 91 (17.3%)
+    VERB: 53 (10.1%)
+    ADJ: 44 (8.3%)
+    NUM: 7 (1.3%)
+  Sentiment POS distribution (top 5):
+    ADJ: 355 (22.1%)
+    VERB: 325 (20.2%)
+    NOUN: 308 (19.2%)
+    ADV: 255 (15.9%)
+    PROPN: 75 (4.7%)
+
+
+============================================================
+  pet/test
+============================================================
+  Sentences:          340
+  Total annotations:  1104
+  Avg ann/sentence:   3.25
+
+  Sentence length (tokens):
+    Min: 15, Max: 234, Mean: 64.3, Median: 48
+
+  Annotations per sentence:
+    Single: 66 (19%)
+    Multi:  274 (81%)
+    Max:    12
+
+  Polarity distribution:
+    positive: 835 (75.6%)
+    negative: 205 (18.6%)
+    neutral: 64 (5.8%)
+
+  Implicit/NULL:
+    Aspects:    523 (47.4%)
+    Sentiments: 0 (0.0%)
+
+  Aspect span length (words):
+    Min: 1, Max: 2, Mean: 1.23, Median: 1
+    Distribution: 1w=450, 2w=131
+  Sentiment span length (words):
+    Min: 1, Max: 2, Mean: 1.66, Median: 2
+    Distribution: 1w=379, 2w=725
+
+  Aspect POS distribution (top 5):
+    NOUN: 236 (59.7%)
+    VERB: 57 (14.4%)
+    PROPN: 54 (13.7%)
+    ADJ: 26 (6.6%)
+    NUM: 12 (3.0%)
+  Sentiment POS distribution (top 5):
+    VERB: 367 (23.9%)
+    NOUN: 307 (20.0%)
+    ADJ: 260 (16.9%)
+    ADV: 252 (16.4%)
+    PRON: 92 (6.0%)
+
+
+============================================================
+  toy/test
+============================================================
+  Sentences:          354
+  Total annotations:  1431
+  Avg ann/sentence:   4.04
+
+  Sentence length (tokens):
+    Min: 19, Max: 224, Mean: 63.1, Median: 50
+
+  Annotations per sentence:
+    Single: 33 (9%)
+    Multi:  321 (91%)
+    Max:    14
+
+  Polarity distribution:
+    positive: 1065 (74.4%)
+    negative: 316 (22.1%)
+    neutral: 50 (3.5%)
+
+  Implicit/NULL:
+    Aspects:    611 (42.7%)
+    Sentiments: 0 (0.0%)
+
+  Aspect span length (words):
+    Min: 1, Max: 2, Mean: 1.24, Median: 1
+    Distribution: 1w=623, 2w=197
+  Sentiment span length (words):
+    Min: 1, Max: 2, Mean: 1.62, Median: 2
+    Distribution: 1w=550, 2w=881
+
+  Aspect POS distribution (top 5):
+    NOUN: 380 (64.4%)
+    VERB: 83 (14.1%)
+    ADJ: 49 (8.3%)
+    PROPN: 47 (8.0%)
+    ADP: 8 (1.4%)
+  Sentiment POS distribution (top 5):
+    VERB: 386 (21.5%)
+    ADJ: 372 (20.7%)
+    NOUN: 345 (19.2%)
+    ADV: 304 (17.0%)
+    ADP: 71 (4.0%)
+
+
+============================================================
+  Overlap Analysis
+============================================================
+  402.Restaurant14/train ∩ 402.Restaurant14/test: 1 sentences (0.2% of smaller set)
+  402.Restaurant14/train ∩ 403.Restaurant15/test: 0 sentences (0.0% of smaller set)
+  402.Restaurant14/train ∩ 404.Restaurant16/test: 0 sentences (0.0% of smaller set)
+  402.Restaurant14/train ∩ 401.Laptop14/test: 0 sentences (0.0% of smaller set)
+  402.Restaurant14/train ∩ electronics/train: 0 sentences (0.0% of smaller set)
+  402.Restaurant14/train ∩ beauty/train: 0 sentences (0.0% of smaller set)
+  402.Restaurant14/train ∩ fashion/train: 0 sentences (0.0% of smaller set)
+  402.Restaurant14/train ∩ home/train: 0 sentences (0.0% of smaller set)
+  402.Restaurant14/train ∩ book/test: 0 sentences (0.0% of smaller set)
+  402.Restaurant14/train ∩ grocery/test: 0 sentences (0.0% of smaller set)
+  402.Restaurant14/train ∩ pet/test: 0 sentences (0.0% of smaller set)
+  402.Restaurant14/train ∩ toy/test: 0 sentences (0.0% of smaller set)
+  402.Restaurant14/test ∩ 403.Restaurant15/test: 0 sentences (0.0% of smaller set)
+  402.Restaurant14/test ∩ 404.Restaurant16/test: 0 sentences (0.0% of smaller set)
+  402.Restaurant14/test ∩ 401.Laptop14/test: 0 sentences (0.0% of smaller set)
+  402.Restaurant14/test ∩ electronics/train: 0 sentences (0.0% of smaller set)
+  402.Restaurant14/test ∩ beauty/train: 0 sentences (0.0% of smaller set)
+  402.Restaurant14/test ∩ fashion/train: 0 sentences (0.0% of smaller set)
+  402.Restaurant14/test ∩ home/train: 0 sentences (0.0% of smaller set)
+  402.Restaurant14/test ∩ book/test: 0 sentences (0.0% of smaller set)
+  402.Restaurant14/test ∩ grocery/test: 0 sentences (0.0% of smaller set)
+  402.Restaurant14/test ∩ pet/test: 0 sentences (0.0% of smaller set)
+  402.Restaurant14/test ∩ toy/test: 0 sentences (0.0% of smaller set)
+  403.Restaurant15/test ∩ 404.Restaurant16/test: 1 sentences (0.3% of smaller set)
+  403.Restaurant15/test ∩ 401.Laptop14/test: 0 sentences (0.0% of smaller set)
+  403.Restaurant15/test ∩ electronics/train: 0 sentences (0.0% of smaller set)
+  403.Restaurant15/test ∩ beauty/train: 0 sentences (0.0% of smaller set)
+  403.Restaurant15/test ∩ fashion/train: 0 sentences (0.0% of smaller set)
+  403.Restaurant15/test ∩ home/train: 0 sentences (0.0% of smaller set)
+  403.Restaurant15/test ∩ book/test: 0 sentences (0.0% of smaller set)
+  403.Restaurant15/test ∩ grocery/test: 0 sentences (0.0% of smaller set)
+  403.Restaurant15/test ∩ pet/test: 0 sentences (0.0% of smaller set)
+  403.Restaurant15/test ∩ toy/test: 0 sentences (0.0% of smaller set)
+  404.Restaurant16/test ∩ 401.Laptop14/test: 0 sentences (0.0% of smaller set)
+  404.Restaurant16/test ∩ electronics/train: 0 sentences (0.0% of smaller set)
+  404.Restaurant16/test ∩ beauty/train: 0 sentences (0.0% of smaller set)
+  404.Restaurant16/test ∩ fashion/train: 0 sentences (0.0% of smaller set)
+  404.Restaurant16/test ∩ home/train: 0 sentences (0.0% of smaller set)
+  404.Restaurant16/test ∩ book/test: 0 sentences (0.0% of smaller set)
+  404.Restaurant16/test ∩ grocery/test: 0 sentences (0.0% of smaller set)
+  404.Restaurant16/test ∩ pet/test: 0 sentences (0.0% of smaller set)
+  404.Restaurant16/test ∩ toy/test: 0 sentences (0.0% of smaller set)
+  401.Laptop14/test ∩ electronics/train: 0 sentences (0.0% of smaller set)
+  401.Laptop14/test ∩ beauty/train: 0 sentences (0.0% of smaller set)
+  401.Laptop14/test ∩ fashion/train: 0 sentences (0.0% of smaller set)
+  401.Laptop14/test ∩ home/train: 0 sentences (0.0% of smaller set)
+  401.Laptop14/test ∩ book/test: 0 sentences (0.0% of smaller set)
+  401.Laptop14/test ∩ grocery/test: 0 sentences (0.0% of smaller set)
+  401.Laptop14/test ∩ pet/test: 0 sentences (0.0% of smaller set)
+  401.Laptop14/test ∩ toy/test: 0 sentences (0.0% of smaller set)
+  electronics/train ∩ beauty/train: 0 sentences (0.0% of smaller set)
+  electronics/train ∩ fashion/train: 0 sentences (0.0% of smaller set)
+  electronics/train ∩ home/train: 0 sentences (0.0% of smaller set)
+  electronics/train ∩ book/test: 0 sentences (0.0% of smaller set)
+  electronics/train ∩ grocery/test: 0 sentences (0.0% of smaller set)
+  electronics/train ∩ pet/test: 0 sentences (0.0% of smaller set)
+  electronics/train ∩ toy/test: 0 sentences (0.0% of smaller set)
+  beauty/train ∩ fashion/train: 0 sentences (0.0% of smaller set)
+  beauty/train ∩ home/train: 0 sentences (0.0% of smaller set)
+  beauty/train ∩ book/test: 0 sentences (0.0% of smaller set)
+  beauty/train ∩ grocery/test: 0 sentences (0.0% of smaller set)
+  beauty/train ∩ pet/test: 0 sentences (0.0% of smaller set)
+  beauty/train ∩ toy/test: 0 sentences (0.0% of smaller set)
+  fashion/train ∩ home/train: 0 sentences (0.0% of smaller set)
+  fashion/train ∩ book/test: 0 sentences (0.0% of smaller set)
+  fashion/train ∩ grocery/test: 0 sentences (0.0% of smaller set)
+  fashion/train ∩ pet/test: 0 sentences (0.0% of smaller set)
+  fashion/train ∩ toy/test: 0 sentences (0.0% of smaller set)
+  home/train ∩ book/test: 0 sentences (0.0% of smaller set)
+  home/train ∩ grocery/test: 0 sentences (0.0% of smaller set)
+  home/train ∩ pet/test: 0 sentences (0.0% of smaller set)
+  home/train ∩ toy/test: 0 sentences (0.0% of smaller set)
+  book/test ∩ grocery/test: 0 sentences (0.0% of smaller set)
+  book/test ∩ pet/test: 0 sentences (0.0% of smaller set)
+  book/test ∩ toy/test: 0 sentences (0.0% of smaller set)
+  grocery/test ∩ pet/test: 0 sentences (0.0% of smaller set)
+  grocery/test ∩ toy/test: 0 sentences (0.0% of smaller set)
+  pet/test ∩ toy/test: 0 sentences (0.0% of smaller set)
+
+
+============================================================
+  Vocabulary Overlap (token-level)
+============================================================
+
+  Aspect token overlap (% of row vocabulary found in column):
+                 402.Restaura 402.Restaura 403.Restaura 404.Restaura 401.Laptop14 electronics/ beauty/train fashion/trai home/train book/test grocery/test pet/test toy/test
+    402.Restaura        —     31.0     20.3     19.6      3.7      9.4      6.8      9.3     12.2      3.0     12.2      5.8      6.8  (n=765)
+    402.Restaura     50.2        —     24.6     27.3      4.7      7.2      6.1      8.9     12.1      3.8     13.6      5.7      4.9  (n=472)
+    403.Restaura     54.8     41.0        —     33.2      4.6      8.1      6.4     10.2     13.8      3.2     12.7      6.7      6.0  (n=283)
+    404.Restaura     54.9     47.3     34.4        —      5.1     11.0      8.8     12.1     14.7      2.6     12.8      4.8      9.9  (n=273)
+    401.Laptop14      8.7      6.8      4.0      4.3        —     37.8     12.1     21.1     27.6      6.5     11.1     11.1     17.0  (n=323)
+    electronics/      6.6      3.1      2.1      2.7     11.1        —     11.7     23.6     30.7      5.5      8.3     10.8     14.2  (n=1099)
+    beauty/train     12.0      6.7      4.1      5.5      9.0     29.7        —     26.0     26.0      7.8     17.1     13.6     14.5  (n=434)
+    fashion/trai     10.2      6.1      4.2      4.8      9.8     37.4     16.3        —     33.9      6.9     11.3     15.6     18.2  (n=693)
+      home/train     10.2      6.3      4.3      4.4      9.8     37.1     12.4     25.9        —      5.8     11.2     14.8     16.7  (n=908)
+       book/test      6.9      5.4      2.7      2.1      6.3     17.9     10.1     14.3     15.8        —      8.4     10.1     14.3  (n=335)
+    grocery/test     25.5     17.5      9.9      9.6      9.9     24.9     20.3     21.4     27.9      7.7        —     16.7     15.6  (n=365)
+        pet/test     14.0      8.6      6.1      4.1     11.5     37.9     18.8     34.4     42.7     10.8     19.4        —     25.2  (n=314)
+        toy/test     11.9      5.3      3.9      6.2     12.6     35.7     14.4     28.8     34.8     11.0     13.0     18.1        —  (n=437)
+
+  Opinion token overlap (% of row vocabulary found in column):
+                 402.Restaura 402.Restaura 403.Restaura 404.Restaura 401.Laptop14 electronics/ beauty/train fashion/trai home/train book/test grocery/test pet/test toy/test
+    402.Restaura        —     33.1     21.7     24.1     19.7     42.0     33.7     36.9     40.2     25.9     30.4     25.4     26.8  (n=704)
+    402.Restaura     63.1        —     29.5     32.8     23.6     45.3     40.4     40.7     42.5     31.2     36.6     29.0     30.9  (n=369)
+    403.Restaura     57.1     40.7        —     38.1     25.0     47.4     39.2     43.3     45.9     29.9     38.4     30.6     31.7  (n=268)
+    404.Restaura     67.2     47.8     40.3        —     25.3     49.4     40.3     47.4     47.8     36.0     40.7     35.2     37.5  (n=253)
+    401.Laptop14     47.3     29.6     22.8     21.8        —     69.0     46.9     57.1     60.9     33.0     39.8     38.4     44.9  (n=294)
+    electronics/     15.4      8.7      6.6      6.5     10.6        —     28.3     37.4     43.3     19.3     20.3     23.5     23.9  (n=1922)
+    beauty/train     22.3     14.0      9.9      9.6     13.0     51.1        —     44.6     48.7     25.5     31.4     31.3     31.2  (n=1065)
+    fashion/trai     19.7     11.4      8.8      9.1     12.7     54.4     36.0        —     50.4     23.5     26.9     29.1     31.3  (n=1321)
+      home/train     17.7      9.8      7.7      7.6     11.2     52.0     32.4     41.6        —     21.2     23.8     26.6     27.5  (n=1602)
+       book/test     24.6     15.5     10.8     12.3     13.1     50.1     36.7     42.0     45.9        —     32.4     29.8     35.0  (n=741)
+    grocery/test     28.5     18.0     13.7     13.7     15.6     52.0     44.4     47.2     50.8     31.9        —     36.0     35.9  (n=752)
+        pet/test     24.4     14.6     11.2     12.1     15.4     61.5     45.3     52.4     58.0     30.1     36.9        —     39.3  (n=735)
+        toy/test     23.7     14.3     10.7     11.9     16.6     57.6     41.7     51.8     55.2     32.5     33.9     36.3        —  (n=797)
+

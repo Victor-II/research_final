@@ -192,6 +192,74 @@ def overlap_analysis(file_data: dict[str, list[dict]]):
     print()
 
 
+def _get_token_vocab(examples: list[dict], key: str) -> set[str]:
+    """Get token-level vocabulary (individual words from spans)."""
+    tokens = set()
+    for ex in examples:
+        for ann in ex["annotations"]:
+            val = ann.get(key)
+            if val and val not in ("NULL", "IMPLICIT", "NONE"):
+                for w in val.lower().split():
+                    tokens.add(w)
+    return tokens
+
+
+def vocabulary_overlap(file_data: dict[str, list[dict]]):
+    """Analyze aspect and opinion vocabulary overlap between datasets."""
+    names = list(file_data.keys())
+    if len(names) < 2:
+        return
+
+    print(f"\n{'='*60}")
+    print(f"  Vocabulary Overlap (token-level)")
+    print(f"{'='*60}")
+
+    # compute vocabs
+    aspect_vocabs = {name: _get_token_vocab(exs, "aspect") for name, exs in file_data.items()}
+    opinion_vocabs = {name: _get_token_vocab(exs, "sentiment") for name, exs in file_data.items()}
+
+    # print aspect overlap matrix (% of row seen in column)
+    short = [n[:12] for n in names]
+    w = 8
+
+    print(f"\n  Aspect token overlap (% of row vocabulary found in column):")
+    print(f"  {'':>14}", end="")
+    for s in short:
+        print(f" {s:>{w}}", end="")
+    print()
+
+    for i, name in enumerate(names):
+        v = aspect_vocabs[name]
+        print(f"  {short[i]:>14}", end="")
+        for j, other in enumerate(names):
+            if i == j:
+                print(f" {'—':>{w}}", end="")
+            else:
+                ov = aspect_vocabs[other]
+                pct = 100 * len(v & ov) / len(v) if v else 0
+                print(f" {pct:>{w}.1f}", end="")
+        print(f"  (n={len(v)})")
+
+    print(f"\n  Opinion token overlap (% of row vocabulary found in column):")
+    print(f"  {'':>14}", end="")
+    for s in short:
+        print(f" {s:>{w}}", end="")
+    print()
+
+    for i, name in enumerate(names):
+        v = opinion_vocabs[name]
+        print(f"  {short[i]:>14}", end="")
+        for j, other in enumerate(names):
+            if i == j:
+                print(f" {'—':>{w}}", end="")
+            else:
+                ov = opinion_vocabs[other]
+                pct = 100 * len(v & ov) / len(v) if v else 0
+                print(f" {pct:>{w}.1f}", end="")
+        print(f"  (n={len(v)})")
+    print()
+
+
 def main():
     parser = argparse.ArgumentParser(description="Dataset statistics")
     parser.add_argument("files", nargs="+", help="Data files to analyze")
@@ -221,6 +289,7 @@ def main():
 
     if len(args.files) > 1:
         overlap_analysis(file_data)
+        vocabulary_overlap(file_data)
 
 
 if __name__ == "__main__":

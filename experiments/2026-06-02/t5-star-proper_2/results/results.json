@@ -1,0 +1,47 @@
+{
+  "train_loss": [],
+  "val_loss": [],
+  "val": [],
+  "test": [
+    {
+      "data": "downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/402.Restaurant14/test.txt",
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.7361835245046924,
+          "recall": 0.710261569416499,
+          "f1": 0.722990271377368
+        }
+      }
+    },
+    {
+      "data": "downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/403.Restaurant15/test.txt",
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.5725047080979284,
+          "recall": 0.6268041237113402,
+          "f1": 0.5984251968503937
+        }
+      }
+    },
+    {
+      "data": "downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/404.Restaurant16/test.txt",
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.6896551724137931,
+          "recall": 0.7392996108949417,
+          "f1": 0.7136150234741785
+        }
+      }
+    },
+    {
+      "data": "downloads/ABSADatasets/datasets/aste_datasets/400.SemEval/401.Laptop14/test.txt",
+      "aspect+sentiment+polarity": {
+        "micro": {
+          "precision": 0.5289256198347108,
+          "recall": 0.4731977818853974,
+          "f1": 0.4995121951219513
+        }
+      }
+    }
+  ]
+}

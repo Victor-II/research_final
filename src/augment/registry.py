@@ -62,4 +62,23 @@ def apply_augmentations(examples: list[dict], cfg: dict) -> list[dict]:
             seed=cfg.get("seed", 42),
         )
 
+    if aug_cfg.get("opinion_synonyms"):
+        import json as _json
+        o = aug_cfg["opinion_synonyms"]
+        with open(o["data"]) as f:
+            syn_data = _json.load(f)
+        # convert to canonical format and append
+        fraction = o.get("fraction", 1.0)
+        if fraction < 1.0:
+            import random as _rnd
+            rng = _rnd.Random(cfg.get("seed", 42))
+            n_keep = max(1, int(len(syn_data) * fraction))
+            syn_data = rng.sample(syn_data, n_keep)
+        for entry in syn_data:
+            examples.append({
+                "sentence": entry["sentence"],
+                "tokens": entry["tokens"],
+                "annotations": entry["annotations"],
+            })
+
     return examples
