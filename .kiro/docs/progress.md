@@ -372,9 +372,9 @@ Saved to: `downloads/opinion_synonyms_rest14.json`
 |---|---|---|---|---|
 | nl-baseline (5-seed avg) | 0.7218±0.005 | 0.6023±0.004 | 0.6798±0.010 | 0.5247±0.012 |
 | nl-opinion-aug (fraction=1.0) | 0.7034 | 0.5711 | 0.6597 | 0.4722 |
-| nl-opinion-aug (fraction=0.2) | RUNNING | | | |
+| nl-opinion-aug (fraction=0.2) | 0.7071 | 0.5753 | 0.6716 | 0.4862 |
 
-fraction=1.0 result: augmentation actively hurts (-5 points OOD, -2 points ID). The LLM-generated sentences introduce distributional shift that dilutes the clean training signal. Testing with smaller fraction (0.2) to see if a lighter augmentation dose helps or if the noise is inherent.
+Both fractions hurt performance across the board. Less augmentation = less damage, but still well below baseline. The LLM-generated sentences introduce distributional mismatch (tokenization, sentence structure) that degrades the model. This isn't a dosage problem — even 20% augmentation hurts. Opinion vocabulary expansion via LLM paraphrasing does not help OOD generalisation. Negative result.
 
 ### Annotation Quality Issues (for dissertation error analysis)
 
