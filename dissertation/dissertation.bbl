@@ -1,3 +1,235 @@
-\begin{thebibliography}{}
+\begin{thebibliography}{10}
+
+\bibitem{chen2021bidirectional}
+Shaowei Chen, Yu~Wang, Jie Liu, and Yuelin Wang.
+\newblock Bidirectional machine reading comprehension for aspect sentiment
+  triplet extraction.
+\newblock In {\em Proceedings of the AAAI Conference on Artificial
+  Intelligence}, volume~35, pages 12666--12674, 2021.
+
+\bibitem{chia2022rethinking}
+Yew~Ken Chia, Lidong Bing, et~al.
+\newblock Domain-expanded {ASTE}: Rethinking generalization in aspect sentiment
+  triplet extraction.
+\newblock In {\em Proceedings of the 1st Workshop on Social Influence in
+  Conversations (SICon), EMNLP}, 2024.
+
+\bibitem{chung2022scaling}
+Hyung~Won Chung, Le~Hou, Shayne Longpre, et~al.
+\newblock Scaling instruction-finetuned language models.
+\newblock In {\em Journal of Machine Learning Research}, volume~25, pages
+  1--53, 2024.
+
+\bibitem{conneau2020unsupervised}
+Alexis Conneau, Kartik Khandelwal, Naman Goyal, et~al.
+\newblock Unsupervised cross-lingual representation learning at scale.
+\newblock In {\em Proceedings of the 58th Annual Meeting of the ACL}, pages
+  8440--8451, 2020.
+
+\bibitem{ding2024llm_aug_survey}
+Bosheng Ding, Chengwei Qin, et~al.
+\newblock Data augmentation using {LLMs}: Data perspectives, learning paradigms
+  and challenges.
+\newblock In {\em Findings of ACL 2024}, pages 1679--1705, 2024.
+
+\bibitem{foal2023}
+others.
+\newblock Fine-grained contrastive learning for cross-domain aspect sentiment
+  triplet extraction.
+\newblock 2023.
+
+\bibitem{tfmt2024}
+others.
+\newblock Table-filling via mean teacher for cross-domain aspect sentiment
+  triplet extraction.
+\newblock {\em arXiv preprint arXiv:2407.21052}, 2024.
+
+\bibitem{dot2025}
+others.
+\newblock Dynamic order template prediction for generative aspect-based
+  sentiment analysis.
+\newblock In {\em Proceedings of the 63rd Annual Meeting of the ACL (Short
+  Papers)}, pages 614--626, 2025.
+
+\bibitem{gou2023mvp}
+Zhibin Gou, Qingyan Guo, and Yujiu Yang.
+\newblock Multi-view prompting for aspect-based sentiment analysis.
+\newblock In {\em Proceedings of the 61st Annual Meeting of the ACL}, 2023.
+
+\bibitem{st_scorer2024}
+Ruiqiang Guo et~al.
+\newblock Self-training with pseudo-label scorer for aspect sentiment quad
+  prediction.
+\newblock In {\em Proceedings of the 62nd Annual Meeting of the ACL}, pages
+  11862--11875, 2024.
+
+\bibitem{hussein2018survey}
+Doaa Mohey El-Din~Mohamed Hussein.
+\newblock A survey on sentiment analysis challenges.
+\newblock {\em Journal of King Saud University -- Engineering Sciences},
+  30(4):330--338, 2018.
+
+\bibitem{aste_transformer2024}
+Marcin Kope{\'c} et~al.
+\newblock {ASTE-Transformer}: Modelling dependencies in aspect-sentiment
+  triplet extraction.
+\newblock In {\em Findings of EMNLP 2024}, pages 2324--2339, 2024.
+
+\bibitem{liu2015sentiment}
+Bing Liu.
+\newblock Sentiment analysis: Mining opinions, sentiments, and emotions.
+\newblock 2015.
+
+\bibitem{liu2019roberta}
+Yinhan Liu, Myle Ott, Naman Goyal, et~al.
+\newblock {RoBERTa}: A robustly optimized {BERT} pretraining approach.
+\newblock {\em arXiv preprint arXiv:1907.11692}, 2019.
+
+\bibitem{peng2020knowing}
+Haiyun Peng, Lu~Xu, Lidong Bing, Fei Huang, Wei Lu, and Luo Si.
+\newblock Knowing what, how and why: A near complete solution for aspect-based
+  sentiment analysis.
+\newblock In {\em Proceedings of the AAAI Conference on Artificial
+  Intelligence}, volume~34, pages 8600--8607, 2020.
+
+\bibitem{pontiki2016semeval}
+Maria Pontiki, Dimitrios Galanis, Haris Papageorgiou, et~al.
+\newblock {SemEval}-2016 task 5: Aspect based sentiment analysis.
+\newblock In {\em Proceedings of the 10th International Workshop on Semantic
+  Evaluation}, pages 19--30, 2016.
+
+\bibitem{pontiki2015semeval}
+Maria Pontiki, Dimitrios Galanis, Harris Papageorgiou, Suresh Manandhar, and
+  Ion Androutsopoulos.
+\newblock {SemEval}-2015 task 12: Aspect based sentiment analysis.
+\newblock In {\em Proceedings of the 9th International Workshop on Semantic
+  Evaluation}, pages 486--495, 2015.
+
+\bibitem{pontiki2014semeval}
+Maria Pontiki, Dimitris Galanis, John Pavlopoulos, Harris Papageorgiou, Ion
+  Androutsopoulos, and Suresh Manandhar.
+\newblock {SemEval}-2014 task 4: Aspect based sentiment analysis.
+\newblock In {\em Proceedings of the 8th International Workshop on Semantic
+  Evaluation}, pages 27--35, 2014.
+
+\bibitem{raffel2020exploring}
+Colin Raffel, Noam Shazeer, Adam Roberts, Katherine Lee, Sharan Narang, Michael
+  Matena, Yanqi Zhou, Wei Li, and Peter~J Liu.
+\newblock Exploring the limits of transfer learning with a unified text-to-text
+  transformer.
+\newblock {\em Journal of Machine Learning Research}, 21(140):1--67, 2020.
+
+\bibitem{scaria2023instructabsa}
+Kevin Scaria, Himanshu Gupta, Sahil Goyal, Saurabh~Arjun Sawant, Swaroop
+  Mishra, and Chitta Baral.
+\newblock {InstructABSA}: Instruction learning for aspect based sentiment
+  analysis.
+\newblock In {\em Proceedings of NAACL}, 2023.
+
+\bibitem{sennrich2016backtranslation}
+Rico Sennrich, Barry Haddow, and Alexandra Birch.
+\newblock Improving neural machine translation models with monolingual data.
+\newblock In {\em Proceedings of the 54th Annual Meeting of the ACL}, pages
+  86--96, 2016.
+
+\bibitem{veyseh2024llm_absa}
+Amir Pouran~Ben Veyseh et~al.
+\newblock Large language models for aspect-based sentiment analysis.
+\newblock {\em arXiv preprint arXiv:2310.18025}, 2024.
+
+\bibitem{wang2022contrastive_aug}
+Bin Wang, Liang Ding, Qihuang Zhong, Xin Li, and Dacheng Tao.
+\newblock A contrastive cross-channel data augmentation framework for
+  aspect-based sentiment analysis.
+\newblock In {\em Proceedings of COLING 2022}, 2022.
+
+\bibitem{wei2019eda}
+Jason Wei and Kai Zou.
+\newblock {EDA}: Easy data augmentation techniques for boosting performance on
+  text classification tasks.
+\newblock In {\em Proceedings of EMNLP-IJCNLP}, pages 6382--6388, 2019.
+
+\bibitem{wu2020grid}
+Zhen Wu, Chengcan Ying, Fei Zhao, Zhifang Fan, Xinyu Dai, and Rui Xia.
+\newblock Grid tagging scheme for aspect-oriented fine-grained opinion
+  extraction.
+\newblock In {\em Findings of the Association for Computational Linguistics:
+  EMNLP 2020}, pages 2576--2585, 2020.
+
+\bibitem{xie2025star}
+Zhiyuan Xie et~al.
+\newblock {STAR}: Stepwise task augmentation with relation learning for {ASQP}.
+\newblock In {\em Proceedings of AAAI}, 2025.
+
+\bibitem{xu2021learning}
+Lu~Xu, Yew~Ken Chia, and Lidong Bing.
+\newblock Learning span-level interactions for aspect sentiment triplet
+  extraction.
+\newblock In {\em Proceedings of the 59th Annual Meeting of the Association for
+  Computational Linguistics}, pages 4755--4766, 2021.
+
+\bibitem{xu2020position}
+Lu~Xu, Hao Li, Wei Lu, and Lidong Bing.
+\newblock Position-aware tagging for aspect sentiment triplet extraction.
+\newblock In {\em Proceedings of the 2020 Conference on EMNLP}, pages
+  2339--2349, 2020.
+
+\bibitem{xu2023dmaste}
+Ting Xu, Huiyun Yang, Zhen Wu, Jiaze Chen, Fei Zhao, and Xinyu Dai.
+\newblock Measuring your {ASTE} models in the wild: A diversified multi-domain
+  dataset for aspect sentiment triplet extraction.
+\newblock In {\em Findings of the Association for Computational Linguistics:
+  ACL 2023}, 2023.
+
+\bibitem{yan2021unified}
+Hang Yan, Junqi Dai, Tuo Ji, Xipeng Qiu, and Zheng Zhang.
+\newblock A unified generative framework for aspect-based sentiment analysis.
+\newblock In {\em Proceedings of the 59th Annual Meeting of the ACL}, pages
+  2416--2429, 2021.
+
+\bibitem{yu2023crossdomain_aug}
+Jianfei Yu, Qiankun Zhao, and Rui Xia.
+\newblock Cross-domain data augmentation with domain-adaptive language modeling
+  for aspect-based sentiment analysis.
+\newblock In {\em Proceedings of the 61st Annual Meeting of the ACL}, 2023.
+
+\bibitem{btfccl2025}
+Chen Zhang et~al.
+\newblock Boundary-driven table-filling with cross-granularity contrastive
+  learning for {ASTE}.
+\newblock In {\em Proceedings of AAAI}, 2025.
+
+\bibitem{zhang2019aspect}
+Chen Zhang, Qianlong Li, and Dawei Song.
+\newblock Aspect-based sentiment classification with aspect-specific graph
+  convolutional networks.
+\newblock In {\em Proceedings of the 2019 Conference on EMNLP-IJCNLP}, pages
+  4568--4578, 2019.
+
+\bibitem{zhang2021aspect}
+Wenxuan Zhang, Yang Deng, Xin Li, Yifei Yuan, Lidong Bing, and Wai Lam.
+\newblock Aspect sentiment quad prediction as paraphrase generation.
+\newblock In {\em Proceedings of the 2021 Conference on EMNLP}, pages
+  9209--9219, 2021.
+
+\bibitem{zhang2021towards}
+Wenxuan Zhang, Xin Li, Yang Deng, Lidong Bing, and Wai Lam.
+\newblock Towards generative aspect-based sentiment analysis.
+\newblock In {\em Proceedings of the 59th Annual Meeting of the ACL (Short
+  Papers)}, pages 504--510, 2021.
+
+\bibitem{zhong2024iterative}
+Qihuang Zhong, Haiyun Li, Luyao Zhuang, Juhua Liu, and Bo~Du.
+\newblock Iterative data generation with large language models for aspect-based
+  sentiment analysis.
+\newblock {\em IEEE Transactions on Affective Computing}, 2024.
+
+\bibitem{zhou2021melm}
+Ran Zhou, Xin Li, Ruidan He, Lidong Bing, Erik Cambria, Luo Si, and Chunyan
+  Miao.
+\newblock Melm: Data augmentation with masked entity language modeling for
+  low-resource ner.
+\newblock In {\em Proceedings of the 60th Annual Meeting of the ACL}, pages
+  2251--2262, 2022.
 
 \end{thebibliography}

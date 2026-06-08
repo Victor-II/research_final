@@ -1,0 +1,91 @@
+\begin{tikzpicture}[
+    node distance=0.4cm,
+    box/.style={draw, rounded corners=2pt, fill=#1, text=white, font=\footnotesize\bfseries, align=left, inner sep=4pt},
+    box/.default=blue!60!black,
+    optbox/.style={box=orange!80!black},
+    evalbox/.style={box=green!50!black},
+    classbox/.style={box=purple!60!black},
+    llmbox/.style={box=red!60!black},
+    smallbox/.style={draw, rounded corners=2pt, fill=blue!15, font=\scriptsize, align=left, inner sep=3pt},
+    arr/.style={->, >=stealth, thick, color=black!70},
+]
+
+% DATA SOURCES
+\node[box, minimum width=12cm] (data) {
+\textbf{DATA SOURCES}\\[2pt]
+English: SemEval ASTE — Rest14 (train), Rest14/15/16/Laptop14 (test)\\
+Romanian: eMAG phone reviews — 27,630 train / 3,093 test, GPT-4 annotated, 11 categories
+};
+
+% CANONICAL
+\node[box=black!70, below=of data, minimum width=12cm] (canonical) {
+\textbf{CANONICAL FORMAT}: \{sentence, tokens, annotations[\{aspect, opinion, polarity, category\}]\}
+};
+\draw[arr] (data) -- (canonical);
+
+% THREE PATHS SPLIT
+\node[below=0.5cm of canonical] (split) {};
+
+% GENERATIVE (left)
+\node[box, below=0.8cm of canonical, minimum width=3.5cm, xshift=-4.3cm] (gen) {
+\textbf{GENERATIVE PATH}\\[2pt]
+NL format conversion\\
+(Romanian templates)\\[3pt]
+FLAN-T5-base (250M)\\
+lr=3e-4, cosine, 12 ep.\\
+Greedy decoding
+};
+
+% CLASSIFIER (middle)
+\node[classbox, below=0.8cm of canonical, minimum width=4cm] (cls) {
+\textbf{CLASSIFIER PATH}\\[2pt]
+Tokenise + Encode:\\
+├ RoBERT-base (114M, RO)\\
+├ bert-ro-cased (110M, RO)\\
+└ XLM-R-base (278M, multi)\\[3pt]
+Classification heads:\\
+├ Polarity (linear)\\
+└ Category (linear)\\[2pt]
+lr=2e-5, 8 epochs, early stop
+};
+
+% LLM (right)
+\node[llmbox, below=0.8cm of canonical, minimum width=3.8cm, xshift=4.3cm] (llm) {
+\textbf{LLM INFERENCE PATH}\\[2pt]
+Demo retrieval:\\
+\quad 3× BM25 + 3× SimCSE\\[2pt]
+Prompt construction:\\
+├ 0-shot (task + taxonomy)\\
+└ 6-shot (+ 6 examples)\\[3pt]
+Generation (4-bit quant.):\\
+├ Gemma2 27B\\
+├ Qwen2.5 32B\\
+└ Command-R 35B
+};
+
+\draw[arr] (canonical.south) -- ++(0,-0.3) -| (gen.north);
+\draw[arr] (canonical.south) -- ++(0,-0.3) -| (cls.north);
+\draw[arr] (canonical.south) -- ++(0,-0.3) -| (llm.north);
+
+% PARSING
+\node[box=black!70, below=3.8cm of canonical, minimum width=12cm] (parse) {
+\textbf{OUTPUT PARSING}\\[1pt]
+├ Generative: regex template matching (NL format)\\
+├ Classifier: argmax per head (polarity, category)\\
+└ LLM: regex parsing, same strict protocol (malformed → score 0)
+};
+\draw[arr] (gen.south) -- ++(0,-0.2) -| ([xshift=-3cm]parse.north);
+\draw[arr] (cls.south) -- ++(0,-0.2) -| (parse.north);
+\draw[arr] (llm.south) -- ++(0,-0.2) -| ([xshift=3cm]parse.north);
+
+% EVALUATION
+\node[evalbox, below=of parse, minimum width=12cm] (eval) {
+\textbf{EVALUATION}\\[1pt]
+English ASTE: Exact-match triplet micro-F1 | Lenient F1 (token overlap + LCS)\\
+\hspace{2.6cm} Soft F1 (embedding cosine) | Avg. overlap + match rate\\[2pt]
+Romanian: Polarity + Category pair F1 | Polarity F1 | Category F1\\[2pt]
+Cross-method comparison: fine-tuned (110--278M) vs LLM (27--35B)
+};
+\draw[arr] (parse) -- (eval);
+
+\end{tikzpicture}

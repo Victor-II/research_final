@@ -1,0 +1,101 @@
+\begin{tikzpicture}[
+    node distance=0.4cm,
+    box/.style={draw, rounded corners=2pt, fill=#1, text=white, font=\footnotesize\bfseries, align=left, inner sep=4pt, minimum width=8cm},
+    box/.default=blue!60!black,
+    optbox/.style={box=orange!80!black},
+    evalbox/.style={box=green!50!black},
+    modelbox/.style={box=purple!60!black},
+    smallbox/.style={draw, rounded corners=2pt, fill=blue!15, font=\scriptsize, align=left, inner sep=3pt},
+    arr/.style={->, >=stealth, thick, color=black!70},
+    label/.style={font=\scriptsize\itshape, color=black!60},
+]
+
+% DATA SOURCES
+\node[box] (data) {
+\textbf{DATA SOURCES}\\[2pt]
+SemEval ASTE: Rest14 (train), Rest14/15/16/Laptop14 (test)\\
+DMASTE: 4 source domains (electronics, beauty, fashion, home) → 4 target (book, grocery, pet, toy)
+};
+
+% CANONICAL
+\node[box=black!70, below=of data, minimum width=8cm] (canonical) {
+\textbf{CANONICAL FORMAT}\\[1pt]
+\{sentence, tokens, annotations[\{aspect, opinion, polarity\}]\}
+};
+\draw[arr] (data) -- (canonical);
+
+% AUGMENTATION
+\node[optbox, below=of canonical, minimum width=8cm] (aug) {
+\textbf{AUGMENTATION} (optional)\\[1pt]
+├ Aspect masking (configurable fraction, replace with <extra\_id>)\\
+├ Duplication (controlled data multiplication)\\
+└ Cross-domain data mixing (DMASTE fractions added to Rest14)
+};
+\draw[arr] (canonical) -- (aug);
+
+% SYNTAX
+\node[optbox, below=of aug, minimum width=8cm] (syntax) {
+\textbf{SYNTAX ENRICHMENT} (optional)\\[1pt]
+├ Compact dependency (separate Syntax: line, content words only)\\
+├ Compact POS (POS tags for content words)\\
+└ Inline (dep. or POS annotations mixed into input tokens)
+};
+\draw[arr] (aug) -- (syntax);
+
+% FORMAT CONVERSION
+\node[box, below=of syntax, minimum width=8cm] (format) {
+\textbf{GENERATIVE FORMAT CONVERSION}\\[1pt]
+├ Task subset: full triplet | singles | pairs\\
+│\quad └ Curriculum: waypoint interpolation across epochs\\
+├ Output format:\\
+│\quad ├ Structured: [aspect, opinion, polarity]\\
+│\quad ├ NL: ``\{aspect\} is described as \{opinion\}, expressing a \{polarity\} sentiment''\\
+│\quad └ MvP markers: [A] x [O] y [S] z [SSEP]\\
+├ Multi-ordering: 6 permutations of element order\\
+└ STAR: pairwise sub-task decomposition (7× data)
+};
+\draw[arr] (syntax) -- (format);
+
+% PER-EPOCH
+\node[smallbox, below=0.3cm of format] (epoch) {Per-epoch re-randomisation (all above re-executed each epoch with different seed)};
+\draw[arr] (format) -- (epoch);
+
+% MODELS
+\node[box, below=0.3cm of epoch, minimum width=5.5cm, xshift=-1.5cm] (t5) {
+\textbf{FLAN-T5-base} (250M)\\[1pt]
+AdamW, lr=3e-4, cosine, 30 epochs\\
+Label smoothing=0.05, greedy decoding
+};
+\node[modelbox, below=0.3cm of epoch, minimum width=3.8cm, xshift=3.2cm] (roberta) {
+\textbf{RoBERTa BASELINE} (125M)\\[1pt]
+BIO tagger + biaffine scorer\\
++ polarity classifier
+};
+\draw[arr] (epoch.south) -- ++(0,-0.15) -| (t5.north);
+\draw[arr] (epoch.south) -- ++(0,-0.15) -| (roberta.north);
+
+% PARSING
+\node[box=black!70, below=0.6cm of t5.south east, anchor=north, minimum width=8cm, xshift=0.5cm] (parse) {
+\textbf{OUTPUT PARSING}\\[1pt]
+├ NL: regex template matching\\
+├ Structured: bracket/comma splitting\\
+├ MvP: [SSEP] separator + marker extraction\\
+└ Malformed outputs → score 0 (strict, no partial credit)
+};
+\draw[arr] (t5.south) -- ++(0,-0.3) -| (parse.north west);
+\draw[arr] (roberta.south) -- ++(0,-0.3) -| (parse.north east);
+
+% EVALUATION
+\node[evalbox, below=of parse, minimum width=8cm] (eval) {
+\textbf{EVALUATION}\\[1pt]
+├ Exact-match micro P/R/F1 (primary metric)\\
+├ Macro P/R/F1\\
+├ Lenient F1 (token overlap, threshold=0.8)\\
+├ Lenient F1 (longest common subsequence, threshold=0.8)\\
+├ Soft F1 (embedding cosine similarity, aspect key, all-MiniLM-L6-v2)\\
+├ Average token overlap + LCS overlap + match rate\\
+└ Multi-seed protocol: 5 seeds (42, 123, 456, 789, 1337), mean ± std
+};
+\draw[arr] (parse) -- (eval);
+
+\end{tikzpicture}

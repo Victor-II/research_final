@@ -63,6 +63,16 @@ All dataset loaders produce dicts with: `sentence`, `tokens`, `annotations` (lis
 - Don't use markdown headers in short responses
 - If something looks wrong, flag it and ask before changing it
 
+## Academic writing tone (CRITICAL — applies to all dissertation/report writing)
+- Humble, relaxed, no overstatements, no exaggerations, no bold statements, no absolutes
+- Every claim must be verifiable in the literature — no statement should come out of thin air
+- We did not invent anything new. We tested a bunch of already-established techniques in a cross-domain setting, most of which did not produce great results for OOD, and a few which did. That's what we did. It's an empirical study.
+- No overly big words, no grandiose language
+- "We observed" not "we discovered"; "the results suggest" not "we prove"; "in our experiments" not "conclusively"
+- Negative results are reported matter-of-factly, not apologetically
+- Positive results are reported with appropriate caveats (seed count, confidence intervals, dataset-specific)
+- Do not oversell contributions — frame them honestly as empirical findings in a controlled setup
+
 ## Development setup
 - Working directly on the Ubuntu PC (no remote access / SSH)
 - venv at `/home/victor-ii/research/research_final/venv`

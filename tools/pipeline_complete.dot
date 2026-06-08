@@ -1,0 +1,147 @@
+digraph pipeline_full {
+    rankdir=TB;
+    splines=ortho;
+    nodesep=0.6;
+    ranksep=0.7;
+    fontname="Helvetica";
+    node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=11, margin="0.2,0.12"];
+    edge [color="#555555", arrowsize=0.8, penwidth=1.2];
+
+    // DATA
+    subgraph cluster_data {
+        label=<<font color="#1565c0"><b>DATA SOURCES</b></font>>;
+        labelloc=t;
+        style="rounded";
+        color="#90caf9";
+        fontname="Helvetica";
+        fontsize=11;
+        margin=12;
+
+        semeval [label=<
+<b>SemEval ASTE</b><br align="left"/>
+Rest14/15/16, Laptop14<br align="left"/>
+        >, fillcolor="#e3f2fd"];
+        dmaste [label=<
+<b>DMASTE</b><br align="left"/>
+8 Amazon review domains<br align="left"/>
+        >, fillcolor="#e3f2fd"];
+        emag [label=<
+<b>eMAG Romanian</b><br align="left"/>
+GPT-4 annotated, 11 cat.<br align="left"/>
+        >, fillcolor="#f3e5f5"];
+    }
+
+    // CANONICAL
+    canonical [label=<
+<font color="#37474f"><b>CANONICAL FORMAT</b></font><br align="left"/><br align="left"/>
+«{sentence, tokens, annotations[{aspect, opinion, polarity, category}]}»<br align="left"/>
+    >, fillcolor="#eceff1"];
+
+    semeval -> canonical;
+    dmaste -> canonical;
+    emag -> canonical;
+
+    // SPLIT
+    split [label="", shape=point, width=0.01, height=0.01];
+    canonical -> split [arrowhead=none];
+
+    // === GENERATIVE PATH (with re-randomisation cluster) ===
+    subgraph cluster_rerandom {
+        label=<<b>↻ Re-randomised every epoch</b>>;
+        labelloc=t;
+        labeljust=c;
+        style="rounded,dashed";
+        color="#1565c0";
+        fontname="Helvetica";
+        fontsize=11;
+        fontcolor="#1565c0";
+        penwidth=1.5;
+        margin=16;
+
+        gen_aug [label=<
+<font color="#e65100"><b>AUGMENTATION (optional)</b></font><br align="left"/><br align="left"/>
+├  Aspect masking<br align="left"/>
+├  Duplication / NLPaug<br align="left"/>
+└  Cross-domain mixing<br align="left"/>
+        >, fillcolor="#fff8e1", style="rounded,filled,dashed"];
+
+        gen_syntax [label=<
+<font color="#e65100"><b>SYNTAX ENRICHMENT (optional)</b></font><br align="left"/><br align="left"/>
+├  Compact dep. | Compact POS<br align="left"/>
+└  Inline dep. | Inline POS<br align="left"/>
+        >, fillcolor="#fff8e1", style="rounded,filled,dashed"];
+
+        gen_format [label=<
+<font color="#283593"><b>FORMAT CONVERSION</b></font><br align="left"/><br align="left"/>
+├  Task subset (+ curriculum waypoints)<br align="left"/>
+├  Output: Structured | NL | MvP<br align="left"/>
+├  Multi-ordering (6 perms)<br align="left"/>
+└  STAR decomposition (7×)<br align="left"/>
+        >, fillcolor="#e8eaf6"];
+    }
+
+    gen_model [label=<
+<font color="#2e7d32"><b>FLAN-T5-base (250M)</b></font><br align="left"/><br align="left"/>
+Train: AdamW, cosine, ls=0.05<br align="left"/>
+Infer: greedy decoding<br align="left"/>
+    >, fillcolor="#e8f5e9"];
+
+    // === CLASSIFIER PATH ===
+    cls [label=<
+<font color="#6a1b9a"><b>CLASSIFIER</b></font><br align="left"/><br align="left"/>
+Encoders:<br align="left"/>
+├  RoBERT-base (114M, RO)<br align="left"/>
+├  bert-ro-cased (110M, RO)<br align="left"/>
+├  XLM-R-base (278M, multi)<br align="left"/>
+└  RoBERTa-base (125M, EN)<br align="left"/><br align="left"/>
+Heads: Polarity + Category<br align="left"/>
+    >, fillcolor="#ede7f6"];
+
+    // === LLM PATH ===
+    llm [label=<
+<font color="#c62828"><b>LLM INFERENCE</b></font><br align="left"/><br align="left"/>
+Demo retrieval: 3× BM25 + 3× SimCSE<br align="left"/>
+Prompt: 0-shot | 6-shot<br align="left"/><br align="left"/>
+Models (4-bit quantised):<br align="left"/>
+├  Gemma2 27B<br align="left"/>
+├  Qwen2.5 32B<br align="left"/>
+└  Command-R 35B<br align="left"/>
+    >, fillcolor="#fbe9e7"];
+
+    // EDGES from split
+    split -> gen_aug;
+    split -> cls;
+    split -> llm;
+
+    gen_aug -> gen_syntax;
+    gen_syntax -> gen_format;
+    gen_format -> gen_model;
+
+    // PARSING
+    parse [label=<
+<font color="#37474f"><b>OUTPUT PARSING</b></font><br align="left"/><br align="left"/>
+├  NL regex | Structured brackets | MvP markers<br align="left"/>
+├  Classifier argmax<br align="left"/>
+└  LLM regex (malformed → 0)<br align="left"/>
+    >, fillcolor="#eceff1"];
+
+    gen_model -> parse;
+    cls -> parse;
+    llm -> parse;
+
+    // EVALUATION
+    eval [label=<
+<font color="#2e7d32"><b>EVALUATION</b></font><br align="left"/><br align="left"/>
+├  Exact-match micro P/R/F1<br align="left"/>
+├  Macro P/R/F1<br align="left"/>
+├  Lenient F1 (token overlap + LCS, τ=0.8)<br align="left"/>
+├  Soft F1 (embedding cosine, aspect key)<br align="left"/>
+├  Avg. overlap + match rate<br align="left"/>
+└  Romanian: Pair F1, Polarity F1, Category F1<br align="left"/>
+    >, fillcolor="#e8f5e9"];
+
+    parse -> eval;
+
+    // Layout
+    {rank=same; gen_aug; cls; llm;}
+}

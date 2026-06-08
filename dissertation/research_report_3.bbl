@@ -1,0 +1,152 @@
+\begin{thebibliography}{10}
+
+\bibitem{liu2015sentiment}
+B.~Liu, {\em Sentiment Analysis: Mining Opinions, Sentiments, and Emotions}.
+\newblock Cambridge University Press, 2015.
+
+\bibitem{hussein2018survey}
+D.~M. E.-D.~M. Hussein, ``A survey on sentiment analysis challenges,'' {\em
+  Journal of King Saud University -- Engineering Sciences}, vol.~30, no.~4,
+  pp.~330--338, 2018.
+
+\bibitem{pontiki2014semeval}
+M.~Pontiki, D.~Galanis, J.~Pavlopoulos, H.~Papageorgiou, I.~Androutsopoulos,
+  and S.~Manandhar, ``Semeval-2014 task 4: Aspect based sentiment analysis,''
+  in {\em Proceedings of the 8th International Workshop on Semantic Evaluation
+  (SemEval 2014)}, pp.~27--35, 2014.
+
+\bibitem{peng2020knowing}
+H.~Peng, L.~Xu, L.~Bing, F.~Huang, W.~Lu, and L.~Si, ``Knowing what, how and
+  why: A near complete solution for aspect-based sentiment analysis,'' in {\em
+  Proceedings of the AAAI Conference on Artificial Intelligence}, vol.~34,
+  pp.~8600--8607, 2020.
+
+\bibitem{xu2020position}
+L.~Xu, H.~Li, W.~Lu, and L.~Bing, ``Position-aware tagging for aspect sentiment
+  triplet extraction,'' in {\em Proceedings of the 2020 Conference on Empirical
+  Methods in Natural Language Processing (EMNLP)}, pp.~2339--2349, 2020.
+
+\bibitem{raffel2020exploring}
+C.~Raffel, N.~Shazeer, A.~Roberts, K.~Lee, S.~Narang, M.~Matena, Y.~Zhou,
+  W.~Li, and P.~J. Liu, ``Exploring the limits of transfer learning with a
+  unified text-to-text transformer,'' {\em Journal of Machine Learning
+  Research}, vol.~21, no.~140, pp.~1--67, 2020.
+
+\bibitem{zhang2021towards}
+W.~Zhang, X.~Li, Y.~Deng, L.~Bing, and W.~Lam, ``Towards generative
+  aspect-based sentiment analysis,'' in {\em Proceedings of the 59th Annual
+  Meeting of the Association for Computational Linguistics (ACL)},
+  pp.~504--510, 2021.
+
+\bibitem{gou2023mvp}
+Z.~Gou, Q.~Guo, and Y.~Yang, ``Mvp: Multi-view prompting improves aspect
+  sentiment tuple prediction,'' in {\em Proceedings of the 61st Annual Meeting
+  of the Association for Computational Linguistics (ACL)}, pp.~4380--4397,
+  2023.
+
+\bibitem{zhang2021aspect}
+W.~Zhang, Y.~Deng, X.~Li, Y.~Yuan, L.~Bing, and W.~Lam, ``Aspect sentiment quad
+  prediction as paraphrase generation,'' in {\em Proceedings of the 2021
+  Conference on Empirical Methods in Natural Language Processing (EMNLP)},
+  pp.~9209--9219, 2021.
+
+\bibitem{xie2025star}
+W.~Lai, H.~Xie, G.~Xu, and Q.~Li, ``{STAR}: Stepwise task augmentation with
+  relation learning for aspect sentiment quad prediction,'' {\em arXiv preprint
+  arXiv:2501.16093}, 2025.
+
+\bibitem{chia2022rethinking}
+Y.~K. Chia, H.~Chen, W.~Han, G.~Chen, S.~M. Aljunied, S.~Poria, and L.~Bing,
+  ``Domain-expanded {ASTE}: Rethinking generalization in aspect sentiment
+  triplet extraction,'' in {\em Proceedings of the Second Workshop on Social
+  Influence in Conversations (SICon 2024)}, pp.~152--165, 2024.
+
+\bibitem{zhang2019aspect}
+C.~Zhang, Q.~Li, and D.~Song, ``Aspect-based sentiment classification with
+  aspect-specific graph convolutional networks,'' in {\em Proceedings of the
+  2019 Conference on Empirical Methods in Natural Language Processing (EMNLP)},
+  pp.~4568--4578, 2019.
+
+\bibitem{pontiki2015semeval}
+M.~Pontiki, D.~Galanis, H.~Papageorgiou, S.~Manandhar, and I.~Androutsopoulos,
+  ``Semeval-2015 task 12: Aspect based sentiment analysis,'' in {\em
+  Proceedings of the 9th International Workshop on Semantic Evaluation (SemEval
+  2015)}, pp.~486--495, 2015.
+
+\bibitem{pontiki2016semeval}
+M.~Pontiki, D.~Galanis, H.~Papageorgiou, I.~Androutsopoulos, S.~Manandhar,
+  M.~Al-Smadi, M.~Al-Ayyoub, Y.~Zhao, B.~Qin, O.~De~Clercq, {\em et~al.},
+  ``Semeval-2016 task 5: Aspect based sentiment analysis,'' in {\em Proceedings
+  of the 10th International Workshop on Semantic Evaluation (SemEval 2016)},
+  pp.~19--30, 2016.
+
+\bibitem{xu2021learning}
+L.~Xu, Y.~K. Chia, and L.~Bing, ``Learning span-level interactions for aspect
+  sentiment triplet extraction,'' in {\em Proceedings of the 59th Annual
+  Meeting of the Association for Computational Linguistics (ACL)},
+  pp.~4755--4766, 2021.
+
+\bibitem{wu2020grid}
+Z.~Wu, C.~Ying, F.~Zhao, Z.~Fan, X.~Dai, and R.~Xia, ``Grid tagging scheme for
+  aspect-oriented fine-grained opinion extraction,'' in {\em Findings of the
+  Association for Computational Linguistics: EMNLP 2020}, pp.~2576--2585, 2020.
+
+\bibitem{btfccl2025}
+Q.~Li, W.~Wen, and J.~Qin, ``Boundary-driven table-filling with
+  cross-granularity contrastive learning for aspect sentiment triplet
+  extraction,'' {\em arXiv preprint arXiv:2502.01942}, 2025.
+
+\bibitem{dot2025}
+Y.~Jun and H.~Lee, ``Dynamic order template prediction for generative
+  aspect-based sentiment analysis,'' in {\em Proceedings of the 63rd Annual
+  Meeting of the Association for Computational Linguistics (Volume 2: Short
+  Papers)}, pp.~614--626, 2025.
+
+\bibitem{xu2023dmaste}
+T.~Xu, H.~Yang, Z.~Wu, J.~Chen, F.~Zhao, and X.~Dai, ``Measuring your {ASTE}
+  models in the wild: A diversified multi-domain dataset for aspect sentiment
+  triplet extraction,'' in {\em Findings of the Association for Computational
+  Linguistics: ACL 2023}, pp.~8466--8479, 2023.
+
+\bibitem{chung2022scaling}
+H.~W. Chung, L.~Hou, S.~Longpre, B.~Zoph, Y.~Tay, W.~Fedus, Y.~Li, X.~Wang,
+  M.~Dehghani, S.~Brahma, {\em et~al.}, ``Scaling instruction-finetuned
+  language models,'' {\em Journal of Machine Learning Research}, vol.~25,
+  no.~70, pp.~1--53, 2024.
+
+\bibitem{wei2019eda}
+J.~Wei and K.~Zou, ``Eda: Easy data augmentation techniques for boosting
+  performance on text classification tasks,'' in {\em Proceedings of the 2019
+  Conference on Empirical Methods in Natural Language Processing (EMNLP)},
+  pp.~6382--6388, 2019.
+
+\bibitem{sennrich2016backtranslation}
+R.~Sennrich, B.~Haddow, and A.~Birch, ``Improving neural machine translation
+  models with monolingual data,'' in {\em Proceedings of the 54th Annual
+  Meeting of the Association for Computational Linguistics (ACL)}, pp.~86--96,
+  2016.
+
+\bibitem{zhou2022melm}
+R.~Zhou, X.~Li, R.~He, L.~Bing, E.~Cambria, L.~Si, and C.~Miao, ``Melm: Data
+  augmentation with masked entity language modeling for low-resource ner,'' in
+  {\em Proceedings of the 60th Annual Meeting of the Association for
+  Computational Linguistics (ACL)}, pp.~2251--2262, 2022.
+
+\bibitem{wang2022contrastive_aug}
+B.~Wang, L.~Ding, Q.~Zhong, X.~Li, and D.~Tao, ``A contrastive cross-channel
+  data augmentation framework for aspect-based sentiment analysis,'' in {\em
+  Proceedings of the 29th International Conference on Computational Linguistics
+  (COLING)}, pp.~6691--6704, 2022.
+
+\bibitem{yu2023crossdomain_aug}
+J.~Yu, Q.~Zhao, and R.~Xia, ``Cross-domain data augmentation with
+  domain-adaptive language modeling for aspect-based sentiment analysis,'' in
+  {\em Proceedings of the 61st Annual Meeting of the Association for
+  Computational Linguistics (ACL)}, pp.~1456--1470, 2023.
+
+\bibitem{liu2019roberta}
+Y.~Liu, M.~Ott, N.~Goyal, J.~Du, M.~Joshi, D.~Chen, O.~Levy, M.~Lewis,
+  L.~Zettlemoyer, and V.~Stoyanov, ``Roberta: A robustly optimized bert
+  pretraining approach,'' {\em arXiv preprint arXiv:1907.11692}, 2019.
+
+\end{thebibliography}

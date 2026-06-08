@@ -1,33 +1,111 @@
 \babel@toc {english}{}\relax 
 \thispagestyle {empty}
 \contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.1}%
-\contentsline {section}{\numberline {1.1}Motivation}{2}{section.1.1}%
+\contentsline {section}{\numberline {1.1}Motivation}{1}{section.1.1}%
 \contentsline {section}{\numberline {1.2}Objectives}{2}{section.1.2}%
 \contentsline {section}{\numberline {1.3}Contributions}{2}{section.1.3}%
 \contentsline {section}{\numberline {1.4}Structure of the thesis}{3}{section.1.4}%
 \contentsline {chapter}{\numberline {2}State of the Art}{4}{chapter.2}%
-\contentsline {chapter}{\numberline {3}Methodology}{5}{chapter.3}%
-\contentsline {section}{\numberline {3.1}Task Formulation}{5}{section.3.1}%
-\contentsline {section}{\numberline {3.2}Output Format Design}{5}{section.3.2}%
-\contentsline {subsection}{\numberline {3.2.1}Structured Output}{5}{subsection.3.2.1}%
-\contentsline {subsection}{\numberline {3.2.2}Natural-Language Output}{6}{subsection.3.2.2}%
-\contentsline {subsection}{\numberline {3.2.3}Template Augmentation (MvP-style)}{6}{subsection.3.2.3}%
-\contentsline {subsection}{\numberline {3.2.4}STAR-style Data Multiplication}{7}{subsection.3.2.4}%
-\contentsline {section}{\numberline {3.3}Syntactic Enrichment}{7}{section.3.3}%
-\contentsline {subsection}{\numberline {3.3.1}dep-compact}{8}{subsection.3.3.1}%
-\contentsline {subsection}{\numberline {3.3.2}pos-compact}{8}{subsection.3.3.2}%
-\contentsline {subsection}{\numberline {3.3.3}dep-inline and pos-inline}{8}{subsection.3.3.3}%
-\contentsline {section}{\numberline {3.4}Data Augmentation Strategies}{8}{section.3.4}%
-\contentsline {subsection}{\numberline {3.4.1}Cross-Domain Data Mixing}{8}{subsection.3.4.1}%
-\contentsline {subsection}{\numberline {3.4.2}Aspect Masking}{8}{subsection.3.4.2}%
-\contentsline {subsection}{\numberline {3.4.3}Curriculum Learning}{9}{subsection.3.4.3}%
-\contentsline {section}{\numberline {3.5}Evaluation Framework}{9}{section.3.5}%
-\contentsline {subsection}{\numberline {3.5.1}Metrics}{9}{subsection.3.5.1}%
-\contentsline {subsection}{\numberline {3.5.2}Evaluation Protocol}{9}{subsection.3.5.2}%
-\contentsline {subsection}{\numberline {3.5.3}Strict Output Parsing}{10}{subsection.3.5.3}%
-\contentsline {chapter}{\numberline {4}Implementation}{11}{chapter.4}%
-\contentsline {chapter}{\numberline {5}Experimental Results}{12}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Discussions}{12}{section.5.1}%
-\contentsline {chapter}{\numberline {6}Conclusions}{13}{chapter.6}%
-\contentsline {chapter}{\numberline {7}Annex}{14}{chapter.7}%
-\contentsline {chapter}{Bibliography}{14}{chapter.7}%
+\contentsline {section}{\numberline {2.1}ABSA Task Formulations}{4}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Discriminative Approaches to ASTE}{5}{section.2.2}%
+\contentsline {subsection}{\numberline {2.2.1}Span-Based Methods}{5}{subsection.2.2.1}%
+\contentsline {subsection}{\numberline {2.2.2}Table-Filling Methods}{5}{subsection.2.2.2}%
+\contentsline {subsection}{\numberline {2.2.3}Transformer-Based Methods}{5}{subsection.2.2.3}%
+\contentsline {subsection}{\numberline {2.2.4}Reading Comprehension Approaches}{6}{subsection.2.2.4}%
+\contentsline {subsection}{\numberline {2.2.5}Summary}{6}{subsection.2.2.5}%
+\contentsline {section}{\numberline {2.3}Generative Approaches to ABSA}{6}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}GAS: Generative Aspect-Based Sentiment Analysis}{6}{subsection.2.3.1}%
+\contentsline {subsection}{\numberline {2.3.2}Paraphrase: Natural-Language Output}{6}{subsection.2.3.2}%
+\contentsline {subsection}{\numberline {2.3.3}MvP: Multi-View Prompting}{7}{subsection.2.3.3}%
+\contentsline {subsection}{\numberline {2.3.4}STAR: Stepwise Task Augmentation}{7}{subsection.2.3.4}%
+\contentsline {subsection}{\numberline {2.3.5}DOT: Dynamic Order Template}{7}{subsection.2.3.5}%
+\contentsline {subsection}{\numberline {2.3.6}InstructABSA}{7}{subsection.2.3.6}%
+\contentsline {subsection}{\numberline {2.3.7}Summary}{8}{subsection.2.3.7}%
+\contentsline {section}{\numberline {2.4}Large Language Models for ABSA}{8}{section.2.4}%
+\contentsline {subsection}{\numberline {2.4.1}Zero-Shot and Few-Shot Evaluation}{8}{subsection.2.4.1}%
+\contentsline {subsection}{\numberline {2.4.2}Fine-Tuned LLMs}{8}{subsection.2.4.2}%
+\contentsline {subsection}{\numberline {2.4.3}Relevance to Our Work}{8}{subsection.2.4.3}%
+\contentsline {section}{\numberline {2.5}Cross-Domain ABSA}{9}{section.2.5}%
+\contentsline {subsection}{\numberline {2.5.1}Discriminative Domain Adaptation}{9}{subsection.2.5.1}%
+\contentsline {subsection}{\numberline {2.5.2}The DMASTE Benchmark}{9}{subsection.2.5.2}%
+\contentsline {subsection}{\numberline {2.5.3}Domain-Expanded ASTE}{10}{subsection.2.5.3}%
+\contentsline {section}{\numberline {2.6}Data Augmentation for ABSA}{10}{section.2.6}%
+\contentsline {subsection}{\numberline {2.6.1}Traditional Augmentation}{10}{subsection.2.6.1}%
+\contentsline {subsection}{\numberline {2.6.2}LLM-Based Augmentation}{11}{subsection.2.6.2}%
+\contentsline {subsection}{\numberline {2.6.3}Relevance to Our Negative Results}{11}{subsection.2.6.3}%
+\contentsline {section}{\numberline {2.7}Pre-trained Seq2Seq Models}{12}{section.2.7}%
+\contentsline {chapter}{\numberline {3}Methodology}{13}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Task Formulation}{13}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Output Representation}{13}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Structured Output}{13}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}Natural-Language Output}{14}{subsection.3.2.2}%
+\contentsline {section}{\numberline {3.3}Input Representation}{15}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}Compact Dependency Annotations}{15}{subsection.3.3.1}%
+\contentsline {subsection}{\numberline {3.3.2}Compact Part-of-Speech Annotations}{15}{subsection.3.3.2}%
+\contentsline {subsection}{\numberline {3.3.3}Inline Annotations}{15}{subsection.3.3.3}%
+\contentsline {section}{\numberline {3.4}Training Strategies}{16}{section.3.4}%
+\contentsline {subsection}{\numberline {3.4.1}Multi-Ordering Training}{16}{subsection.3.4.1}%
+\contentsline {subsection}{\numberline {3.4.2}Sub-task Decomposition}{17}{subsection.3.4.2}%
+\contentsline {subsection}{\numberline {3.4.3}Curriculum Learning}{17}{subsection.3.4.3}%
+\contentsline {subsection}{\numberline {3.4.4}Aspect Masking}{17}{subsection.3.4.4}%
+\contentsline {subsection}{\numberline {3.4.5}Cross-Domain Data Mixing}{17}{subsection.3.4.5}%
+\contentsline {subsection}{\numberline {3.4.6}Opinion Synonym Augmentation}{18}{subsection.3.4.6}%
+\contentsline {section}{\numberline {3.5}Evaluation Framework}{18}{section.3.5}%
+\contentsline {subsection}{\numberline {3.5.1}Metrics}{18}{subsection.3.5.1}%
+\contentsline {subsection}{\numberline {3.5.2}Evaluation Protocol}{19}{subsection.3.5.2}%
+\contentsline {chapter}{\numberline {4}Implementation}{20}{chapter.4}%
+\contentsline {section}{\numberline {4.1}System Architecture}{20}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Model Architecture}{20}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}FLAN-T5 (Primary Model)}{20}{subsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.2.2}RoBERTa Span Extraction (Baseline)}{21}{subsection.4.2.2}%
+\contentsline {subsection}{\numberline {4.2.3}XLM-R (Multilingual Baseline)}{21}{subsection.4.2.3}%
+\contentsline {subsection}{\numberline {4.2.4}LLM Inference (Baseline)}{21}{subsection.4.2.4}%
+\contentsline {section}{\numberline {4.3}Training Configuration}{22}{section.4.3}%
+\contentsline {section}{\numberline {4.4}Data Pipeline}{23}{section.4.4}%
+\contentsline {subsection}{\numberline {4.4.1}Loading and Canonical Format}{23}{subsection.4.4.1}%
+\contentsline {subsection}{\numberline {4.4.2}Augmentation Chain}{23}{subsection.4.4.2}%
+\contentsline {subsection}{\numberline {4.4.3}Generative Format Conversion}{23}{subsection.4.4.3}%
+\contentsline {subsection}{\numberline {4.4.4}Per-Epoch Re-randomisation}{24}{subsection.4.4.4}%
+\contentsline {section}{\numberline {4.5}Evaluation Infrastructure}{24}{section.4.5}%
+\contentsline {subsection}{\numberline {4.5.1}Output Parsing}{24}{subsection.4.5.1}%
+\contentsline {subsection}{\numberline {4.5.2}Distributed Evaluation}{24}{subsection.4.5.2}%
+\contentsline {subsection}{\numberline {4.5.3}Aggregation Tools}{24}{subsection.4.5.3}%
+\contentsline {section}{\numberline {4.6}Datasets}{25}{section.4.6}%
+\contentsline {subsection}{\numberline {4.6.1}SemEval ASTE}{25}{subsection.4.6.1}%
+\contentsline {subsection}{\numberline {4.6.2}DMASTE}{25}{subsection.4.6.2}%
+\contentsline {subsection}{\numberline {4.6.3}Romanian ABSA (eMAG)}{26}{subsection.4.6.3}%
+\contentsline {subsection}{\numberline {4.6.4}Data Quality Considerations}{26}{subsection.4.6.4}%
+\contentsline {chapter}{\numberline {5}Experimental Results}{27}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Output Format: The Main Finding}{27}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Syntactic Enrichment}{28}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Training Strategies: Negative Results}{28}{section.5.3}%
+\contentsline {subsection}{\numberline {5.3.1}Multi-Ordering Training (MvP-style)}{28}{subsection.5.3.1}%
+\contentsline {subsection}{\numberline {5.3.2}Curriculum Learning}{29}{subsection.5.3.2}%
+\contentsline {subsection}{\numberline {5.3.3}Aspect Masking}{29}{subsection.5.3.3}%
+\contentsline {subsection}{\numberline {5.3.4}Cross-Domain Data Mixing}{30}{subsection.5.3.4}%
+\contentsline {subsection}{\numberline {5.3.5}Opinion Synonym Augmentation}{30}{subsection.5.3.5}%
+\contentsline {subsection}{\numberline {5.3.6}Decoding Strategies}{31}{subsection.5.3.6}%
+\contentsline {section}{\numberline {5.4}DMASTE Cross-Domain Benchmark}{31}{section.5.4}%
+\contentsline {section}{\numberline {5.5}Cross-Method Comparison}{32}{section.5.5}%
+\contentsline {subsection}{\numberline {5.5.1}In-Domain Benchmark Results}{32}{subsection.5.5.1}%
+\contentsline {subsection}{\numberline {5.5.2}Out-of-Domain Comparison}{32}{subsection.5.5.2}%
+\contentsline {section}{\numberline {5.6}Romanian ABSA}{34}{section.5.6}%
+\contentsline {section}{\numberline {5.7}Error Analysis}{34}{section.5.7}%
+\contentsline {subsection}{\numberline {5.7.1}Error Distribution}{35}{subsection.5.7.1}%
+\contentsline {subsection}{\numberline {5.7.2}Polarity Confusion}{36}{subsection.5.7.2}%
+\contentsline {subsection}{\numberline {5.7.3}Annotation Quality Issues}{36}{subsection.5.7.3}%
+\contentsline {section}{\numberline {5.8}Data Analysis}{37}{section.5.8}%
+\contentsline {subsection}{\numberline {5.8.1}Vocabulary Overlap and Performance}{37}{subsection.5.8.1}%
+\contentsline {subsection}{\numberline {5.8.2}Linguistic Differences Between Domains}{38}{subsection.5.8.2}%
+\contentsline {section}{\numberline {5.9}Discussion}{42}{section.5.9}%
+\contentsline {subsection}{\numberline {5.9.1}Why Does NL Format Help OOD?}{42}{subsection.5.9.1}%
+\contentsline {subsection}{\numberline {5.9.2}Why Do Most Interventions Fail?}{42}{subsection.5.9.2}%
+\contentsline {chapter}{\numberline {6}Conclusions}{44}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Summary}{44}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Limitations}{44}{section.6.2}%
+\contentsline {section}{\numberline {6.3}Future Work}{45}{section.6.3}%
+\contentsline {chapter}{\numberline {7}Annex}{46}{chapter.7}%
+\contentsline {section}{\numberline {7.1}Per-Seed Results}{46}{section.7.1}%
+\contentsline {section}{\numberline {7.2}Example Model Outputs}{46}{section.7.2}%
+\contentsline {section}{\numberline {7.3}Input/Output Format Examples}{47}{section.7.3}%
+\contentsline {chapter}{Bibliography}{47}{lstnumber.-10.2}%

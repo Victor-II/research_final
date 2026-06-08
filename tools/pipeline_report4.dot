@@ -1,0 +1,97 @@
+digraph pipeline_r4 {
+    rankdir=TB;
+    splines=ortho;
+    nodesep=0.6;
+    ranksep=0.7;
+    fontname="Helvetica";
+    node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=11, margin="0.2,0.12"];
+    edge [color="#555555", arrowsize=0.8, penwidth=1.2];
+
+    // DATA
+    data [label=<
+<font color="#1565c0"><b>DATA SOURCES</b></font><br align="left"/><br align="left"/>
+English: SemEval ASTE — Rest14 (train), all 4 test sets<br align="left"/>
+Romanian: eMAG — 27,630 train / 3,093 test, GPT-4 annotated, 11 categories<br align="left"/>
+    >, fillcolor="#e3f2fd"];
+
+    // CANONICAL
+    canonical [label=<
+<font color="#37474f"><b>CANONICAL FORMAT</b></font><br align="left"/><br align="left"/>
+«{sentence, tokens, annotations[{aspect, opinion, polarity, category}]}»<br align="left"/>
+    >, fillcolor="#eceff1"];
+
+    data -> canonical;
+
+    // SPLIT
+    split [label="", shape=point, width=0.01, height=0.01];
+    canonical -> split [arrowhead=none];
+
+    // GENERATIVE
+    gen [label=<
+<font color="#2e7d32"><b>GENERATIVE PATH</b></font><br align="left"/><br align="left"/>
+NL format conversion (Romanian templates)<br align="left"/>
+FLAN-T5-base (250M), lr=3e-4, cosine, 12 epochs<br align="left"/>
+Greedy decoding<br align="left"/>
+    >, fillcolor="#e8f5e9"];
+
+    // CLASSIFIER
+    cls [label=<
+<font color="#6a1b9a"><b>CLASSIFIER PATH</b></font><br align="left"/><br align="left"/>
+Tokenise + Encode:<br align="left"/>
+├  RoBERT-base (114M, Romanian)<br align="left"/>
+├  bert-ro-cased (110M, Romanian)<br align="left"/>
+└  XLM-R-base (278M, multilingual)<br align="left"/><br align="left"/>
+Classification heads:<br align="left"/>
+├  Polarity (linear)<br align="left"/>
+└  Category (linear)<br align="left"/><br align="left"/>
+lr=2e-5, 8 epochs, early stopping<br align="left"/>
+    >, fillcolor="#ede7f6"];
+
+    // LLM
+    llm [label=<
+<font color="#c62828"><b>LLM INFERENCE PATH</b></font><br align="left"/><br align="left"/>
+Demo retrieval: 3× BM25 + 3× SimCSE<br align="left"/><br align="left"/>
+Prompt construction:<br align="left"/>
+├  0-shot (task desc. + category taxonomy)<br align="left"/>
+└  6-shot (+ 6 retrieved examples)<br align="left"/><br align="left"/>
+Generation (ollama, 4-bit quantised):<br align="left"/>
+├  Gemma2 27B<br align="left"/>
+├  Qwen2.5 32B<br align="left"/>
+└  Command-R 35B<br align="left"/>
+    >, fillcolor="#fbe9e7"];
+
+    split -> gen;
+    split -> cls;
+    split -> llm;
+
+    // PARSING
+    parse [label=<
+<font color="#37474f"><b>OUTPUT PARSING</b></font><br align="left"/><br align="left"/>
+├  Generative: regex template matching (NL format)<br align="left"/>
+├  Classifier: argmax per head<br align="left"/>
+└  LLM: regex parsing (malformed → score 0)<br align="left"/>
+    >, fillcolor="#eceff1"];
+
+    gen -> parse;
+    cls -> parse;
+    llm -> parse;
+
+    // EVALUATION
+    eval [label=<
+<font color="#2e7d32"><b>EVALUATION</b></font><br align="left"/><br align="left"/>
+English ASTE:<br align="left"/>
+├  Exact-match triplet micro-F1<br align="left"/>
+├  Lenient F1 (token overlap + LCS, τ=0.8)<br align="left"/>
+├  Soft F1 (embedding cosine, aspect key)<br align="left"/>
+└  Avg. overlap + match rate<br align="left"/><br align="left"/>
+Romanian:<br align="left"/>
+├  Polarity + Category pair F1<br align="left"/>
+├  Polarity F1<br align="left"/>
+└  Category F1<br align="left"/>
+    >, fillcolor="#e8f5e9"];
+
+    parse -> eval;
+
+    // Layout
+    {rank=same; gen; cls; llm;}
+}

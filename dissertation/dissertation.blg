@@ -3,46 +3,47 @@ Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: dissertation.aux
 The style file: plain.bst
 Database file #1: bibliographyDizertatie.bib
-Warning--I didn't find a database entry for "Allen2020"
-You've used 0 entries,
+Warning--empty booktitle in foal2023
+Warning--empty journal in liu2015sentiment
+You've used 37 entries,
             2118 wiz_defined-function locations,
-            499 strings with 4037 characters,
-and the built_in function-call counts, 18 in all, are:
-= -- 0
-> -- 0
-< -- 0
-+ -- 0
-- -- 0
-* -- 2
-:= -- 7
-add.period$ -- 0
-call.type$ -- 0
-change.case$ -- 0
+            678 strings with 11190 characters,
+and the built_in function-call counts, 16188 in all, are:
+= -- 1558
+> -- 801
+< -- 24
++ -- 318
+- -- 278
+* -- 1038
+:= -- 2454
+add.period$ -- 111
+call.type$ -- 37
+change.case$ -- 236
 chr.to.int$ -- 0
-cite$ -- 0
-duplicate$ -- 0
-empty$ -- 1
-format.name$ -- 0
-if$ -- 1
+cite$ -- 39
+duplicate$ -- 702
+empty$ -- 1282
+format.name$ -- 278
+if$ -- 3557
 int.to.chr$ -- 0
-int.to.str$ -- 0
-missing$ -- 0
-newline$ -- 3
-num.names$ -- 0
-pop$ -- 0
+int.to.str$ -- 37
+missing$ -- 37
+newline$ -- 188
+num.names$ -- 74
+pop$ -- 331
 preamble$ -- 1
-purify$ -- 0
+purify$ -- 199
 quote$ -- 0
-skip$ -- 1
+skip$ -- 587
 stack$ -- 0
-substring$ -- 0
-swap$ -- 0
-text.length$ -- 0
+substring$ -- 992
+swap$ -- 279
+text.length$ -- 24
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 0
-warning$ -- 0
-while$ -- 0
-width$ -- 0
-write$ -- 2
-(There was 1 warning)
+type$ -- 148
+warning$ -- 2
+while$ -- 141
+width$ -- 39
+write$ -- 396
+(There were 2 warnings)

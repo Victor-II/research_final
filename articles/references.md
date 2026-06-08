@@ -177,3 +177,154 @@
 - **Knowledge-Augmented GCN for ASTE**
   2025 — GCN with knowledge augmentation for aspect-opinion interactions.
   https://www.mdpi.com/2076-3417/16/3/1250
+
+
+## NEW — Added from Literature Search (2026-06-xx)
+
+### Generative ABSA — Recent Methods (2024-2026)
+
+- **DOT: Dynamic Order Template Prediction for Generative ABSA**
+  ACL 2025 (Short Papers) — Improves on MvP by dynamically selecting which element orderings to use per instance based on entropy, rather than exhaustively generating all orderings. Reduces inference cost while maintaining or improving F1. Directly relevant to our template augmentation / MvP comparison.
+  https://aclanthology.org/2025.acl-short.48/
+
+- **DS2-ABSA: Dual-Stream Data Synthesis with Label Refinement for Few-Shot ABSA**
+  ACL 2025 (Long Papers) — LLM-based dual-stream data synthesis for few-shot ABSA. Generates data via both label-to-text and text-to-label streams, with a label refinement step to filter noise. Very relevant to our LLM augmentation experiments (opinion synonyms).
+  https://acl.ldc.upenn.edu/2025.acl-long.752/
+
+- **LLM-MvP: Multi-view Prompting Large Language Models for ABSA**
+  arXiv 2026 — Extends the MvP multi-view prompting to LLMs directly (without fine-tuning). Closes the gap between few-shot prompting and fine-tuned models. Good context for our LLM comparison section.
+  https://arxiv.org/abs/2605.28058
+
+- **Self-Training with Pseudo-Label Scorer for ASQP**
+  ACL 2024 (Long Papers) — Self-training framework with a scorer to assess quality of pseudo-labels for generative ASQP. Uses unlabeled data to improve T5/BART-based models. Achieves SOTA on several ASQP benchmarks.
+  https://acl.ldc.upenn.edu/2024.acl-long.640/
+
+- **ADA: Adaptive Data Augmentation for Aspect Sentiment Quad Prediction**
+  2024 — Addresses polarity imbalance in ASQP through targeted augmentation of minority classes.
+  https://arxiv.org/abs/2401.06394
+
+- **Gen-mABSA-T5: A Multilingual Zero-Shot Generative Framework for ABSA**
+  BLP Workshop 2025 — T5-based multilingual generative ABSA, zero-shot cross-lingual transfer. Relevant to our Romanian experiments.
+  https://acl.ldc.upenn.edu/2025.banglalp-1.12/
+
+### ASTE — Discriminative SOTA (2024-2025)
+
+- **ASTE-Transformer: Modelling Dependencies in ASTE**
+  EMNLP 2024 Findings — Novel transformer-inspired layers that model dependencies between phrases for ASTE. Achieves competitive or better results than table-filling methods. Pre-training further improves. Important for our cross-method comparison.
+  https://aclanthology.org/2024.findings-emnlp.129/
+
+- **DeBERTa Enhanced Syntactic-Semantic ASTE**
+  arXiv 2025 — Uses DeBERTa with syntactic and semantic enrichment for ASTE. Relevant to our syntax experiments with RoBERTa.
+  https://arxiv.org/abs/2511.10577
+
+- **A Transitional Approach for Efficient ASTE**
+  arXiv 2024 — Unified framework for AOPE and ASTE avoiding pipeline error propagation. Claims +6.98% F1 over SOTA.
+  https://ar5iv.labs.arxiv.org/html/2412.00208
+
+- **Near Ultimate Minimalist Contrastive Grid Tagging Scheme for ASTE**
+  arXiv 2024 — Minimalist grid tagging approach with contrastive learning. Reports competitive F1 on standard benchmarks.
+  https://ar5iv.labs.arxiv.org/html/2406.11234
+
+### Cross-Domain ASTE (2024-2025)
+
+- **TFMT: Table-Filling via Mean Teacher for Cross-domain ASTE**
+  arXiv 2024 — Table-filling + mean teacher for pseudo-label generation on unlabeled target domain data. Semi-supervised cross-domain ASTE. Uses DMASTE benchmark. Directly comparable to our work.
+  https://arxiv.org/abs/2407.21052
+
+- **FOAL: Fine-grained Contrastive Learning for Cross-domain ASTE**
+  arXiv 2023 — Contrastive learning with fine-grained category alignment to reduce domain discrepancy in ASTE. Discriminative approach requiring target domain data.
+  https://arxiv.org/abs/2311.10373
+
+- **Prototype-Regularized Federated Learning for Cross-Domain ASTE**
+  arXiv 2026 — Federated learning approach allowing cross-domain knowledge sharing without data sharing. Novel angle on cross-domain ASTE.
+  https://arxiv.org/html/2604.09123v1
+
+- **Source-free Domain Adaptation for ABSA**
+  LREC-COLING 2024 — Domain adaptation without access to source data at adaptation time. Different setting from ours (we do zero-shot OOD without any target data) but relevant.
+  https://acl.ldc.upenn.edu/2024.lrec-main.1310/
+
+- **Zero-Shot Cross-Domain ABSA via Domain-Contextualized Chain-of-Thought Reasoning**
+  EMNLP 2025 Findings — LLM-based cross-domain ABSA using CoT prompting with domain context. No fine-tuning required. Directly relevant to our LLM experiments.
+  https://acl.ldc.upenn.edu/2025.findings-emnlp.245/
+
+### LLMs for ABSA (2024-2026)
+
+- **Large Language Models for Aspect-Based Sentiment Analysis**
+  arXiv 2024 (Scaria et al.) — Comprehensive evaluation of GPT-3.5 and GPT-4 on ABSA. Zero-shot, few-shot, and fine-tuned settings. Fine-tuned GPT-3.5 achieves 83.8 F1 on joint ATE+ATSC (SemEval 2014). GPT-4 matches SOTA in 6-shot. Important context for our LLM comparison. Note: evaluates ATE/ATSC subtasks, not full ASTE triplets.
+  https://arxiv.org/abs/2310.18025
+
+- **InstructABSA: Instruction Learning for ABSA**
+  NAACL 2023 — Instruction tuning for ATE, ATSC, AOPE subtasks. Tk-Instruct-based (11B params). SOTA on several SemEval subtasks, outperforming 7x larger models. Important baseline for instruction-tuned ABSA.
+  https://arxiv.org/abs/2302.08624
+
+- **LLaMA-Based Models for ABSA**
+  WASSA Workshop 2024 — Fine-tuning LLaMA for compound ABSA tasks. Shows that fine-tuned LLMs can approach specialized models. Relevant to the LLM fine-tuning vs small model debate.
+  https://acl.ldc.upenn.edu/2024.wassa-1.6/
+
+- **Heuristic-enhanced Candidates Selection for GPTs on Few-Shot ABSA**
+  arXiv 2024 — Proposes candidate selection strategies to improve GPT few-shot performance on ABSA. Shows that vanilla GPT few-shot underperforms PLM-based methods on fine-grained tasks.
+  https://arxiv.org/abs/2404.06063
+
+- **Sentiment Analysis in the Age of Generative AI**
+  2024 Survey — Broad survey on LLMs for sentiment analysis. Finds LLMs sometimes surpass traditional transfer learning for classification but struggle with fine-grained extraction.
+  https://www.researchgate.net/publication/378743627
+
+### LLM-Based Data Augmentation for NLP (2024-2025)
+
+- **Data Augmentation using LLMs: Data Perspectives, Learning Paradigms and Challenges**
+  ACL 2024 Findings — Comprehensive survey of LLM-based augmentation across NLP tasks. Categorizes approaches and identifies when LLM augmentation helps vs hurts. Key reference for our augmentation experiments section.
+  https://aclanthology.org/2024.findings-acl.97
+
+- **Empowering Large Language Models for Textual Data Augmentation**
+  ACL 2024 Findings — Framework for using LLMs as data augmenters with quality control. Shows augmentation helps most in low-resource settings, less in full-data regimes. Consistent with our negative augmentation results.
+  https://aclanthology.org/2024.findings-acl.756/
+
+- **Exploring ChatGPT-Based Augmentation Strategies for Contrastive ABSA**
+  IEEE Intelligent Systems 2025 — Three augmentation strategies using ChatGPT (context-focused, aspect-focused, combined) + contrastive learning. Shows augmentation helps for ATSC (classification) but does not evaluate on extraction or OOD settings.
+  https://www.computer.org/csdl/magazine/ex/2025/01/10897267/24uGPgXHRkY
+
+- **CKG: Improving ABSA with ChatGPT Augmentation and Knowledge-Enhanced GCN**
+  PLoS ONE 2024 — ChatGPT text augmentation + knowledge graph-enhanced GCN for ABSA. Shows modest improvements in in-domain ATSC settings.
+  https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0301508
+
+- **Aspect-Based Sentiment Analysis with Dual Contrastive Learning and LLMs Data Augmentation**
+  Springer 2025 — LLM-generated context-aware augmented samples + dual contrastive learning. In-domain improvements on ABSA classification.
+  https://link.springer.com/chapter/10.1007/978-981-96-9994-0_13
+
+### Pre-trained Models & Instruction Tuning
+
+- **Scaling Instruction-Finetuned Language Models (FLAN-T5)**
+  Chung et al., 2022/2024 — Instruction tuning across 1800+ tasks. FLAN-T5 achieves strong few-shot performance comparable to much larger models. Foundation for our choice of FLAN-T5-base over plain T5-base.
+  https://arxiv.org/abs/2210.11416
+
+### Surveys & Overviews
+
+- **A Unified Review of ASTE Methods in ABSA**
+  Springer Knowledge and Information Systems, 2025 — Comprehensive survey of ASTE methods, covering discriminative, generative, and hybrid approaches. Good for the State of the Art chapter structure.
+  https://link.springer.com/article/10.1007/s10115-025-02519-x
+
+### Cross-Lingual ABSA (for Romanian context)
+
+- **Improving Cross-lingual ABSA with LLM Data Augmentation**
+  arXiv 2025 — Trains ABSA model, gets predictions on unlabeled target language data, then uses LLM to generate better-aligned sentences from noisy predictions. Semi-supervised cross-lingual approach. Relevant to our Romanian experiments showing that fine-tuned FLAN-T5 matches large LLMs.
+  https://arxiv.org/html/2508.09515v1
+
+- **Cross-lingual Transfer Strategies for ABSA**
+  arXiv 2026 — Systematic comparison of cross-lingual transfer strategies for ABSA. Covers translate-train, translate-test, and multilingual model approaches. Relevant context for our XLM-R Romanian results.
+  https://arxiv.org/html/2604.26619v1
+
+### Key Comparison Numbers (for fairness check)
+
+Published ASTE F1 scores (in-domain, standard benchmarks):
+- BTF-CCL (AAAI 2025): Rest14=75.88, Lap14=63.29, Rest15=67.68, Rest16=73.80
+- Span-ASTE (ACL 2021): Rest14=72.89, Lap14=62.40
+- GAS (ACL 2021): Rest14=~70, Lap14=~58
+- MvP (ACL 2023): Rest14=76.08 (multi-task, 10 datasets), Lap14=~66
+- STAR (AAAI 2025): Primarily ASQP, gains mainly in low-resource
+- Paraphrase (EMNLP 2021): Rest14=~72, Lap14=~60
+
+Published OOD numbers:
+- Chia et al. (2024, Domain-Expanded ASTE): Generative methods drop ~14.6 points OOD, discriminative ~16.8. ChatGPT has smallest gap (7.4 points) but worst in-domain.
+- DMASTE (ACL 2023 Findings): Span-ASTE multi-source avg=45.42, GAS multi-source avg=~39
+
+NOTE: Most methods above are evaluated ONLY in-domain. Our contribution is evaluating them in OOD settings. MvP's 76.08 uses multi-task training on 10 datasets (unfair for OOD comparison). Our single-dataset MvP replication gets 72.80 (fair comparison).

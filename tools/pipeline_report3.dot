@@ -1,0 +1,119 @@
+digraph pipeline_r3 {
+    rankdir=TB;
+    splines=ortho;
+    nodesep=0.6;
+    ranksep=0.7;
+    fontname="Helvetica";
+    node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=11, margin="0.2,0.12"];
+    edge [color="#555555", arrowsize=0.8, penwidth=1.2];
+
+    // DATA
+    data [label=<
+<font color="#1565c0"><b>DATA SOURCES</b></font><br align="left"/><br align="left"/>
+SemEval ASTE: Rest14 (train), Rest14/15/16/Laptop14 (test)<br align="left"/>
+DMASTE: 4 source → 4 target domains<br align="left"/>
+    >, fillcolor="#e3f2fd"];
+
+    // CANONICAL
+    canonical [label=<
+<font color="#37474f"><b>CANONICAL FORMAT</b></font><br align="left"/><br align="left"/>
+«{sentence, tokens, annotations[{aspect, opinion, polarity}]}»<br align="left"/>
+    >, fillcolor="#eceff1"];
+
+    // RE-RANDOMISE cluster
+    subgraph cluster_rerandom {
+        label=<<b>↻ Re-randomised every epoch</b>>;
+        labelloc=t;
+        labeljust=c;
+        style="rounded,dashed";
+        color="#1565c0";
+        fontname="Helvetica";
+        fontsize=11;
+        fontcolor="#1565c0";
+        penwidth=1.5;
+        margin=16;
+
+        // AUGMENTATION
+        aug [label=<
+<font color="#e65100"><b>AUGMENTATION (optional)</b></font><br align="left"/><br align="left"/>
+├  Aspect masking (configurable fraction)<br align="left"/>
+├  Duplication (controlled ablation)<br align="left"/>
+└  Cross-domain data mixing (DMASTE fractions)<br align="left"/>
+        >, fillcolor="#fff8e1", style="rounded,filled,dashed"];
+
+        // SYNTAX
+        syntax [label=<
+<font color="#e65100"><b>SYNTAX ENRICHMENT (optional)</b></font><br align="left"/><br align="left"/>
+├  Compact dependency (separate Syntax: line)<br align="left"/>
+├  Compact POS (POS tags, separate line)<br align="left"/>
+└  Inline (annotations mixed into input tokens)<br align="left"/>
+        >, fillcolor="#fff8e1", style="rounded,filled,dashed"];
+
+        // FORMAT CONVERSION
+        format [label=<
+<font color="#283593"><b>GENERATIVE FORMAT CONVERSION</b></font><br align="left"/><br align="left"/>
+├  Task subset: full triplet | singles | pairs<br align="left"/>
+│    └  Curriculum: waypoint interpolation across epochs<br align="left"/>
+├  Output format:<br align="left"/>
+│    ├  Structured: «[aspect, opinion, polarity]»<br align="left"/>
+│    ├  NL: «{aspect} is described as {opinion}, ...»<br align="left"/>
+│    └  MvP markers: «[A] x [O] y [S] z [SSEP]»<br align="left"/>
+├  Multi-ordering: 6 permutations of element order<br align="left"/>
+└  STAR: pairwise sub-task decomposition (7× data)<br align="left"/>
+        >, fillcolor="#e8eaf6"];
+    }
+
+    // MODELS
+    subgraph cluster_models {
+        label=<<b>MODELS</b>>;
+        labelloc=t;
+        style="rounded";
+        color="#666666";
+        fontname="Helvetica";
+        fontsize=10;
+        margin=12;
+
+        t5 [label=<
+<font color="#2e7d32"><b>FLAN-T5-base (250M)</b></font><br align="left"/><br align="left"/>
+AdamW, lr=3e-4, cosine schedule, 30 epochs<br align="left"/>
+Label smoothing = 0.05, greedy decoding<br align="left"/>
+        >, fillcolor="#e8f5e9"];
+
+        roberta [label=<
+<font color="#6a1b9a"><b>RoBERTa BASELINE (125M)</b></font><br align="left"/><br align="left"/>
+BIO tagger + biaffine scorer + polarity classifier<br align="left"/>
+        >, fillcolor="#f3e5f5"];
+    }
+
+    // PARSING
+    parse [label=<
+<font color="#37474f"><b>OUTPUT PARSING</b></font><br align="left"/><br align="left"/>
+├  NL: regex template matching<br align="left"/>
+├  Structured: bracket/comma splitting<br align="left"/>
+├  MvP: [SSEP] + marker extraction<br align="left"/>
+└  Malformed → score 0 (strict, no partial credit)<br align="left"/>
+    >, fillcolor="#eceff1"];
+
+    // EVALUATION
+    eval [label=<
+<font color="#2e7d32"><b>EVALUATION</b></font><br align="left"/><br align="left"/>
+├  Exact-match micro P/R/F1 (primary)<br align="left"/>
+├  Macro P/R/F1<br align="left"/>
+├  Lenient F1 (token overlap, threshold=0.8)<br align="left"/>
+├  Lenient F1 (LCS, threshold=0.8)<br align="left"/>
+├  Soft F1 (embedding cosine, aspect key)<br align="left"/>
+├  Avg. token overlap + LCS overlap + match rate<br align="left"/>
+└  Multi-seed: 5 seeds, mean ± std<br align="left"/>
+    >, fillcolor="#e8f5e9"];
+
+    // EDGES
+    data -> canonical;
+    canonical -> aug;
+    aug -> syntax;
+    syntax -> format;
+    format -> t5;
+    format -> roberta;
+    t5 -> parse;
+    roberta -> parse;
+    parse -> eval;
+}

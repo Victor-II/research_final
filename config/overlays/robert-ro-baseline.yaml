@@ -1,0 +1,55 @@
+name: "robert-ro-baseline"
+
+model:
+  type: "classifier"
+  name: "readerbench/RoBERT-base"
+  learning_rate: 0.00002
+  weight_decay: 0.01
+  max_length: 256
+  batch_size: 16
+  val_batch_size: 32
+  warmup_ratio: 0.06
+  categories: ["experience", "durability", "performance", "battery",
+               "price_quality", "design", "camera", "audio",
+               "software", "brand", "service"]
+  polarities: ["positive", "negative", "neutral"]
+
+trainer:
+  max_epochs: 8
+  precision: "bf16-mixed"
+  accumulate_grad_batches: 1
+  gradient_clip_val: 1.0
+  log_every_n_steps: 1
+  early_stopping_patience: 3
+  deterministic: true
+  num_workers: 11
+
+data:
+  train_file: "downloads/emag_ro/ror-train-gpt4_1.csv"
+  train_fraction: 1.0
+  filter_implicit: false
+
+eval:
+  val_split: 0.1
+  data: null
+  scopes:
+    - keys: ["polarity", "category"]
+      metrics: [micro_f1]
+    - keys: ["polarity"]
+      metrics: [micro_f1, macro_f1]
+    - keys: ["category"]
+      metrics: [micro_f1]
+
+test:
+  scopes:
+    - keys: ["polarity", "category"]
+      metrics: [micro_f1]
+    - keys: ["polarity"]
+      metrics: [micro_f1, macro_f1]
+    - keys: ["category"]
+      metrics: [micro_f1]
+  datasets:
+    - data: "downloads/emag_ro/emag-phone-review-test.csv"
+      tasks: ["polarity", "category"]
+
+seed: 42

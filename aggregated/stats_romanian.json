@@ -1,0 +1,108 @@
+[
+  {
+    "label": "ror-train-gpt4_1",
+    "sentences": 27630,
+    "annotations": 90778,
+    "avg_annotations_per_sentence": 3.29,
+    "vocab_size": 65188,
+    "sentence_length_words": {
+      "min": 5,
+      "max": 309,
+      "mean": 43.5,
+      "median": 23.0,
+      "p25": 10.0,
+      "p75": 55.0,
+      "p95": 158.0
+    },
+    "polarity_distribution": {
+      "positive": 65704,
+      "negative": 20522,
+      "neutral": 4552
+    },
+    "category_distribution": {
+      "experience": 23342,
+      "performance": 10398,
+      "battery": 9343,
+      "price_quality": 9142,
+      "camera": 7928,
+      "design": 5793,
+      "software": 4993,
+      "brand": 4643,
+      "service": 3466,
+      "durability": 3133,
+      "audio": 2690,
+      "quality": 2440,
+      "accessories": 2160,
+      "compatibility": 1307
+    },
+    "implicit_aspects": 90778,
+    "implicit_opinions": 90778,
+    "sentence_length_tokens": {
+      "min": 6,
+      "max": 879,
+      "mean": 73.6,
+      "median": 39.0,
+      "p25": 19.0,
+      "p75": 92.0,
+      "p95": 266.0
+    },
+    "annotations_per_sentence": {
+      "single": 4537,
+      "multi": 23093,
+      "max": 13
+    }
+  },
+  {
+    "label": "emag-phone-review-test",
+    "sentences": 3093,
+    "annotations": 9478,
+    "avg_annotations_per_sentence": 3.06,
+    "vocab_size": 14294,
+    "sentence_length_words": {
+      "min": 5,
+      "max": 301,
+      "mean": 36.1,
+      "median": 19,
+      "p25": 9.0,
+      "p75": 43.0,
+      "p95": 133.0
+    },
+    "polarity_distribution": {
+      "positive": 6908,
+      "negative": 1743,
+      "neutral": 827
+    },
+    "category_distribution": {
+      "experience": 2716,
+      "performance": 1030,
+      "price_quality": 985,
+      "battery": 903,
+      "camera": 715,
+      "software": 715,
+      "design": 604,
+      "brand": 474,
+      "service": 410,
+      "audio": 284,
+      "durability": 281,
+      "accessories": 211,
+      "quality": 104,
+      "compatibility": 46
+    },
+    "implicit_aspects": 9478,
+    "implicit_opinions": 9478,
+    "sentence_length_tokens": {
+      "min": 6,
+      "max": 522,
+      "mean": 61.3,
+      "median": 33,
+      "p25": 17.0,
+      "p75": 73.0,
+      "p95": 217.4
+    },
+    "annotations_per_sentence": {
+      "single": 602,
+      "multi": 2491,
+      "max": 11
+    }
+  }
+]

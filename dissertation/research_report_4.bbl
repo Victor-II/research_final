@@ -1,0 +1,140 @@
+\begin{thebibliography}{10}
+
+\bibitem{xu2023dmaste}
+T.~Xu, H.~Yang, Z.~Wu, J.~Chen, F.~Zhao, and X.~Dai, ``Measuring your {ASTE}
+  models in the wild: A diversified multi-domain dataset for aspect sentiment
+  triplet extraction,'' in {\em Findings of the Association for Computational
+  Linguistics: ACL 2023}, pp.~8466--8479, 2023.
+
+\bibitem{masala2020robert}
+M.~Masala, S.~Ruseti, and M.~Dascalu, ``Robert--a romanian bert model,'' in
+  {\em Proceedings of the 28th International Conference on Computational
+  Linguistics (COLING)}, pp.~6626--6637, 2020.
+
+\bibitem{dumitrescu2020birth}
+S.~Dumitrescu, A.-M. Avram, and S.~Pyysalo, ``The birth of romanian bert,'' in
+  {\em Findings of the Association for Computational Linguistics: EMNLP 2020},
+  pp.~4324--4328, 2020.
+
+\bibitem{conneau2020unsupervised}
+A.~Conneau, K.~Khandelwal, N.~Goyal, V.~Chaudhary, G.~Wenzek, F.~Guzm{\'a}n,
+  E.~Grave, M.~Ott, L.~Zettlemoyer, and V.~Stoyanov, ``Unsupervised
+  cross-lingual representation learning at scale,'' in {\em Proceedings of the
+  58th Annual Meeting of the Association for Computational Linguistics (ACL)},
+  pp.~8440--8451, 2020.
+
+\bibitem{veyseh2024llm_absa}
+P.~F. Simmering and P.~Huoviala, ``Large language models for aspect-based
+  sentiment analysis,'' {\em arXiv preprint arXiv:2310.18025}, 2023.
+
+\bibitem{smid2024multilingual_llm_absa}
+J.~{\v{S}}m{\'\i}d, V.~Pr{\v{e}}nosil, and J.~Sido, ``Evaluating zero-shot
+  multilingual aspect-based sentiment analysis with large language models,''
+  {\em arXiv preprint arXiv:2412.12564}, 2024.
+
+\bibitem{smid2025czech_absa}
+J.~{\v{S}}m{\'\i}d and V.~Pr{\v{e}}nosil, ``Large language models for czech
+  aspect-based sentiment analysis,'' in {\em arXiv preprint arXiv:2508.07860},
+  2025.
+
+\bibitem{fewshot_crosslingual_absa2025}
+J.~{\v{S}}m{\'\i}d, V.~Pr{\v{e}}nosil, and J.~Sido, ``Few-shot cross-lingual
+  aspect-based sentiment analysis with sequence-to-sequence models,'' in {\em
+  arXiv preprint arXiv:2508.07866}, 2025.
+
+\bibitem{crosslingual_transfer_absa2026}
+Anonymous, ``Cross-lingual transfer strategies for aspect-based sentiment
+  analysis,'' {\em arXiv preprint arXiv:2604.26619}, 2026.
+
+\bibitem{aldeen2023chatgpt}
+M.~Aldeen, J.~Luo, A.~Lian, V.~Zheng, A.~Hong, P.~Yetukuri, and L.~Cheng,
+  ``Chatgpt vs. human annotators: A comprehensive analysis of chatgpt for text
+  annotation,'' in {\em 2023 International Conference on Machine Learning and
+  Applications (ICMLA)}, pp.~602--609, IEEE, 2023.
+
+\bibitem{chung2022scaling}
+H.~W. Chung, L.~Hou, S.~Longpre, B.~Zoph, Y.~Tay, W.~Fedus, Y.~Li, X.~Wang,
+  M.~Dehghani, S.~Brahma, {\em et~al.}, ``Scaling instruction-finetuned
+  language models,'' {\em Journal of Machine Learning Research}, vol.~25,
+  no.~70, pp.~1--53, 2024.
+
+\bibitem{zhang2021aspect}
+W.~Zhang, Y.~Deng, X.~Li, Y.~Yuan, L.~Bing, and W.~Lam, ``Aspect sentiment quad
+  prediction as paraphrase generation,'' in {\em Proceedings of the 2021
+  Conference on Empirical Methods in Natural Language Processing (EMNLP)},
+  pp.~9209--9219, 2021.
+
+\bibitem{team2024gemma}
+G.~Team, M.~Riviere, S.~Pathak, P.~G. Sessa, C.~Hardin, S.~Bhupatiraju,
+  L.~Hussenot, T.~Mesnard, B.~Shahriari, A.~Ram{\'e}, {\em et~al.}, ``Gemma 2:
+  Improving open language models at a practical size,'' {\em arXiv preprint
+  arXiv:2408.00118}, 2024.
+
+\bibitem{hui2024qwen2}
+A.~Yang, B.~Yang, B.~Zhang, B.~Hui, B.~Zheng, B.~Yu, C.~Li, D.~Liu, F.~Huang,
+  {\em et~al.}, ``Qwen2.5 technical report,'' {\em arXiv preprint
+  arXiv:2412.15115}, 2024.
+
+\bibitem{cohere2024commandr}
+{Cohere}, ``Command r: Retrieval-augmented generation at production scale.''
+  \url{https://docs.cohere.com/docs/command-r}, 2024.
+
+\bibitem{velankar2022mono}
+A.~Velankar, H.~Patil, A.~Gore, S.~Salunke, and R.~Joshi, ``Mono vs
+  multilingual bert for hate speech detection and text classification: A case
+  study in marathi,'' in {\em Proceedings of the AACL-IJCNLP 2022 Workshop on
+  Computational Approaches to Language Data Adaptability}, pp.~121--128, 2022.
+
+\bibitem{tanvir2023bangla}
+M.~A. Hasan, S.~Das, A.~Anjum, F.~Alam, A.~Anjum, A.~Sarker, and S.~R.~H.
+  Noori, ``Zero- and few-shot prompting with {LLMs}: A comparative study with
+  fine-tuned models for bangla sentiment analysis,'' {\em arXiv preprint
+  arXiv:2308.10783}, 2023.
+
+\bibitem{chang2023multilinguality}
+T.~A. Chang, C.~Arnett, Z.~Tu, and B.~K. Bergen, ``When is multilinguality a
+  curse? language modeling for 250 high- and low-resource languages,'' in {\em
+  Proceedings of the 2024 Conference on Empirical Methods in Natural Language
+  Processing (EMNLP)}, pp.~4074--4096, 2024.
+
+\bibitem{pfeiffer2024breaking}
+T.~Blevins, T.~Limisiewicz, S.~Gururangan, M.~Li, H.~Gonen, N.~A. Smith, and
+  L.~Zettlemoyer, ``Breaking the curse of multilinguality with cross-lingual
+  expert language models,'' in {\em Proceedings of the 2024 Conference on
+  Empirical Methods in Natural Language Processing (EMNLP)}, pp.~10822--10837,
+  2024.
+
+\bibitem{berard2026capacity}
+A.~B{\'e}rard {\em et~al.}, ``Capacity constraints and the multilingual penalty
+  for lexical disambiguation,'' {\em arXiv preprint arXiv:2602.05035}, 2026.
+
+\bibitem{minarro2019quantitative}
+J.~A. Mi{\~n}arro-Gim{\'e}nez, R.~Cornet, M.-C. Jaulent, H.~Dewenter, S.~Thun,
+  K.~R. G{\o}eg, D.~Karlsson, and S.~Schulz, ``Quantitative analysis of manual
+  annotation of clinical text samples,'' {\em International Journal of Medical
+  Informatics}, vol.~123, pp.~37--48, 2019.
+
+\bibitem{pontiki2014semeval}
+M.~Pontiki, D.~Galanis, J.~Pavlopoulos, H.~Papageorgiou, I.~Androutsopoulos,
+  and S.~Manandhar, ``Semeval-2014 task 4: Aspect based sentiment analysis,''
+  in {\em Proceedings of the 8th International Workshop on Semantic Evaluation
+  (SemEval 2014)}, pp.~27--35, 2014.
+
+\bibitem{li2021implicit}
+B.~Z. Li, M.~Nye, and J.~Andreas, ``Implicit representations of meaning in
+  neural language models,'' in {\em Proceedings of the 59th Annual Meeting of
+  the Association for Computational Linguistics and the 11th International
+  Joint Conference on Natural Language Processing (Volume 1: Long Papers)},
+  pp.~1813--1827, 2021.
+
+\bibitem{sun2025implicit}
+Y.~Sun, Q.~Huang, A.~K. Tung, and J.~Yu, ``Text embeddings should capture
+  implicit semantics, not just surface meaning,'' {\em arXiv preprint
+  arXiv:2506.08354}, 2025.
+
+\bibitem{hu2004mining}
+M.~Hu and B.~Liu, ``Mining and summarizing customer reviews,'' in {\em
+  Proceedings of the Tenth ACM SIGKDD International Conference on Knowledge
+  Discovery and Data Mining}, pp.~168--177, 2004.
+
+\end{thebibliography}
