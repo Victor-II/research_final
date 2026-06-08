@@ -135,3 +135,6 @@ fix e
 }
 
 
+run latex:
+`bibtex <file.tex> && pdflatex -interaction=nonstopmode <file.tex>`
+
