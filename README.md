@@ -138,3 +138,32 @@ fix e
 run latex:
 `bibtex <file.tex> && pdflatex -interaction=nonstopmode <file.tex>`
 
+
+FEEDBACK pentru report_3
+
+[x] acesta merge in related work, este prea mult descris pentru introduction
+
+[x] pune Out of domain si in paranteza OOD din moment ce nu se prezentat in introducere pana acum cu numele intreg, apoi poti pune peste tot direct OOD
+
+[x] Asemenea, prima oara cand introduci un concept, abstractul este o exceptie, acolo pui doar denumirea intreaga, trebuie sa pui de ex Aspect Term Extraction (ATE), Aspect Sentiment Triplet Extraction ( ASTE), acesta deja a fost definit in introducere, putem sa punem abrevierile.
+
+[x] Nu inteleg de ce este important sa previzam conferintele la care au fost acceptate, deja este scris in referinte, este posibil sa se dea flag la acest lucru. Daca template-ul sface acest lucru, atunci este ok.
+
+[x] Suna putin a bragging, nu ar trebui sa spunem cat am obtinut noi, ci ceva de genul "noi am facut diferit in modul acesta" si e suficient. De exemplu la paragraful urmator este ok ca spui ca noua ne merge prost asta, pentru cazul nostru specific, dar incercam sa nu discutam numerele aici.
+
+[x] 6 - pune mai bine \label{} la subsectiunile unde se foloseste un singur seed, astfel poti sa spui direct "The following ablation studies are using only the 42 seed .... " si le dai referinta cu \ref{}. Este foarte vag, nu se intelege care este seed-ul folosit, care sunt ablatiile care folosesc acel seed.
+
+[x] 7 - trebuie motivat mai mult, de ce crezi ca nu merge, care este trade-ul dintre overfit si intreruperea learning rate decay, de ce facem asta, avem un tabel in care sa aratam cum merge pe 0.05, 0.1 and so on? Daca da, il referentiem.
+
+[x] 8 - In caz ca aici a dat flag de AI, motivul ar fi ca lor le place sa zica "chestia asta este importanta / usoara / etc", In cazul in care da, poti reformula doar prin " This implementation do not require specialised architectures used in published discriminative methods", nu mai enumeram care nu ar fi. Si published discriminative models suna putin ciudat, sigur sunt si paper-uri publicate care nu folosesc... trebuie regandita pe acolo.
+the 
+[x] 9 - Este suficient sa specifici doar " The full pipeline", fara sa enumeri care sunt componentele. Un approach mai bun ar fi aici sa incepi cu Figure 1 shows si sa descrii vizual cum se ce se intampla acolo, ideal ar fi sa faci asa la fiecare imagine, fiindca oamenilor le este mai usor sa inteleaga din scris decat sa incerce sa faca legaturile in imagine.
+
+[x] 10 - Vezi daca poti face tabele si sa voresti pe tabele, ar intelege cititorul mai bine de unde vin valorile si cum.
+
+[ ] 11 - Ar merge si cate o mica introducere a metodei, 2 randuri in care sa explici ce este curriculum learning for example. Dar merge oriunde e un concept.
+
+[ ] 12 - Asumarile acestea sunt foarte directe, ar trebui ceva de genul " We conclude from Table 7 that the masking actually hurts the ood, we tried making it 20% and with dep., the (metrica folosita dar nu a fost explicata, ar trebui specificat in captionul tabelului ce metrica folosim) droped on every dataset used", iar daca ai ai avea si o explicatie de ce crezi ca se intampla acest lucru, ar fi fain de pus "we assume that is from.... " (acest lucru se aplica peste tot unde nu este explicat si doar pus tabelul si o concluzie directa)
+
+[ ] 13 - citeaza paper-ul
+
