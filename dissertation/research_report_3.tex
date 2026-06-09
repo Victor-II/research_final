@@ -220,7 +220,21 @@ The second stage couples the extracted aspects and opinions producing valid trip
 mistakes in span extraction of the first stage propagate to the pairing stage and cannot be recovered. 
 Subsequent work moved toward end-to-end approaches to avoid this vulnerability.
 
-Among end-to-end discriminative methods, Span-ASTE~\cite{xu2021learning} enumerated candidate spans for aspects and opinions, used a dual-channel pruning strategy to filter them, and then classified sentiment relations for each span pair. It achieved approximately 72--73 F1 on the Rest14 benchmark with a BERT encoder. Wu et al.~\cite{wu2020grid} proposed the Grid Tagging Scheme (GTS), encoding sentence structure as a 2D table where cells indicate aspect spans, opinion spans, and their sentiment relations. More recently, BTF-CCL~\cite{btfccl2025} combined table-filling with boundary-driven detection and cross-granularity contrastive learning, reaching 75.88 F1 on Rest14, the highest reported discriminative result. These methods require specialised architectures (GCN layers, table structures, contrastive objectives) to push performance beyond 73 F1. Importantly, none of them report OOD evaluation results in their publications.
+Among end-to-end discriminative methods, Span-ASTE~\cite{xu2021learning} enumerated candidate spans 
+for aspects and opinions, used a dual-channel pruning strategy to filter them, and then classified 
+sentiment relations for each span pair. It achieved approximately 72--73 F1 on the Rest14 benchmark 
+with a BERT encoder. Wu et al.~\cite{wu2020grid} proposed the Grid Tagging Scheme (GTS), encoding 
+sentence structure as a 2D table where cells indicate aspect spans, opinion spans, and their sentiment 
+relations. 
+
+More recently, BTF-CCL~\cite{btfccl2025} combined table-filling with boundary-driven 
+detection and cross-granularity contrastive learning, reaching 75.88 F1 on Rest14, the highest 
+reported discriminative result. 
+
+These methods require specialised architectures (GCN layers, table 
+structures, contrastive objectives) to push performance beyond 73 F1. 
+
+Importantly, none of them report OOD evaluation results in their publications.
 
 Zhang et al.~\cite{zhang2021towards} (ACL 2021) took a different direction by reformulating ABSA as a text generation problem. Their GAS framework showed that T5, when given a sentence and asked to generate a structured representation of triplets, could approach discriminative methods without any task-specific architecture. The model simply generates text like \texttt{[food, delicious, positive]} given an input sentence. While GAS underperformed Span-ASTE by approximately 3 F1 points on Rest14 at the time of publication, the simplicity of the approach was appealing: a single seq2seq model, no special layers, no enumeration of candidate spans. In our experiments, our structured baseline follows the same principle and achieves 69.3 F1 on Rest14 (averaged across 5 random seeds), consistent with the original GAS results.
 
@@ -246,11 +260,15 @@ Finally, Zhang et al.~\cite{zhang2019aspect} explored syntactic enrichment for a
 
 \chapter{Methodology}\label{ch:methodology}
 
-This chapter describes the methods we evaluated for OOD generalisation in generative ABSA. The approach is to formulate ASTE as a seq2seq problem and then vary different aspects of the training setup (output representation, input representation, and training strategies) while keeping everything else constant to isolate each intervention's effect.
+This chapter presents the various methods we experimented with. The performance of each is discussed in the Results~\ref{ch:results} Chapter.
 
 \section{Task Formulation}
 
-We formulate ASTE as a sequence-to-sequence generation problem, following GAS~\cite{zhang2021towards} and the Paraphrase framework~\cite{zhang2021aspect}. Given an input sentence $x$, the model generates a text sequence $y$ encoding all sentiment triplets $(a_i, o_i, p_i)$ present in the sentence, where $a_i$ is an aspect term, $o_i$ is an opinion term, and $p_i \in \{\text{positive}, \text{negative}, \text{neutral}\}$ is the sentiment polarity.
+Our formulation of ASTE is largely based on GAS~\cite{zhang2021towards} 
+and the Paraphrase framework~\cite{zhang2021aspect}. Presented with an input sentence $x$, the model is expected to produce 
+a text sequence $y$ encoding all triplets $(a_i, o_i, p_i)$ present in the sentence, where 
+$a_i$ is an aspect term, $o_i$ is an opinion term, and $p_i \in \{\text{positive}, \text{negative}, 
+\text{neutral}\}$ is the sentiment polarity. The format used to encode the triplets is discussed in the following section.
 
 The input follows a structured prompt format:
 
@@ -310,16 +328,30 @@ Implicit opinion & \texttt{\{aspect\} carries an implied \{polarity\} opinion} \
 \end{tabular}
 \end{table}
 
-Multiple triplets within the same sentence are joined with semicolons. The rationale for natural-language output is that it aligns with the pre-training objective: FLAN-T5 was trained to generate fluent English, not bracketed structures. Additionally, the template words (``is described as'', ``expressing a'') act as structural delimiters that constrain the output space, potentially reducing the likelihood of malformed outputs on unfamiliar inputs.
+If an input sentence contains more than one triplet or pair, semicolons are used in the target 
+to separate them, so for a sentence that has the pairs [``food'', ``delicious''] and
+ [``staff'', ``horrible''] the expected output would be 
+ ``food is described as delicious; staff is described as horrible''. 
+ Exempt from this rule are templates of singular tasks: 
+ given a sentence with multiple aspects such as ``food'', ``staff'' and ``ambiance'', the expected output is
+ ``the aspects discussed are food, staff and ambiance''.
+
+The intuition for this output format is its resemblance to spoken language, which aligns much better to the tasks the model was alredy pre-trained for.
 
 
 \section{Input Representation}\label{sec:syntax}
 
-We investigate whether augmenting the input with syntactic annotations improves cross-domain transfer. The intuition is that aspect-opinion relationships are often encoded in syntactic structure: ``delicious pizza'' and ``responsive touchscreen'' share the same dependency relation regardless of domain. We evaluate three modes:
+We investigate whether the addition of syntactic annotations, such as dependency tree or POS, to the input prompt leads to increased performance in cross-domain evaluation. 
+Since aspect-opinion relationships are often encoded in the syntactic 
+structure: ``delicious pizza'' and ``responsive touchscreen'', we hope this additional 
+information will encourage the model to be less reliant on domain-specific words and 
+phrases and focus more on syntactic structure, which can transfer better between domains. 
+We evaluate four methods:
 
 \subsection{Compact Dependency Annotations}
 
-A \texttt{Syntax:} line is appended containing content words (nouns, verbs, adjectives, adverbs) with their dependency head and relation:
+This method appends a lighter version of the SpaCy-generated dependency tree to the input prompt, focused only on nouns, verbs, adjectives and adverbs. 
+We don't use the full dependency tree for two reasons: to avoid increasing the maximum input length and to avoid overwhelming the model with information that's irrelevant to the task.
 
 \begin{lstlisting}
 Task: aspect-extraction, sentiment-extraction, polarity-inference
@@ -329,7 +361,7 @@ Syntax: staff->was:nsubj horrible->was:acomp
 
 \subsection{Compact POS Annotations}
 
-A lighter alternative with only POS tags for content words:
+This method is identical to previous one, except that instead of the dependency tree we use POS tags.
 
 \begin{lstlisting}
 Syntax: staff/NOUN was/AUX horrible/ADJ
@@ -344,11 +376,27 @@ Annotations are mixed directly into the input tokens (\texttt{staff/nsubj was ho
 
 \subsection{Multi-Ordering Training}
 
-The model is trained with multiple element orderings for the same triplet. Each ordering uses a different natural-language template, determined by the task name sequence in the input prompt. For the full triplet, all 6 permutations of (aspect, opinion, polarity) are used. At inference time, predictions from multiple orderings can be aggregated via majority voting. This is functionally equivalent to MvP's element-order prompting~\cite{gou2023mvp}, but encoded through template variation rather than explicit markers.
+This method is functionally equivalent to MvP's element-order prompting~\cite{gou2023mvp}, however it 
+bears notable differences relating to the input and output format. While MvP appends markers to 
+the input sentence to indicate the expected order of predictions, we enforce this order via the
+``Task:'' line. Moreover, instead of a structured output format, we use natural language templates for 
+all 6 possible permutations of ASTE --- add ref to annex and upload all permutations. 
+
+% The model is trained with multiple element orderings for the same triplet. Each ordering uses 
+% a different natural-language template, determined by the task name sequence in the input prompt. 
+% For the full triplet, all 6 permutations of (aspect, opinion, polarity) are used. At inference time,
+%  predictions from multiple orderings can be aggregated via majority voting. 
+%  This is functionally equivalent to MvP's element-order prompting~\cite{gou2023mvp}, 
+%  but encoded through template variation rather than explicit markers.
 
 \subsection{Sub-task Decomposition}
 
-Following STAR~\cite{xie2025star}, we train on decomposed sub-tasks alongside the full triplet task. For each training example, additional instances are generated for all pairwise combinations (aspect+opinion, aspect+polarity, opinion+polarity), yielding 7$\times$ data multiplication. The hypothesis is that element-level patterns learned from sub-tasks transfer better across domains.
+Following STAR~\cite{xie2025star}, we train on decomposed sub-tasks alongside the full triplet task.
+ For each training example, additional instances are generated for all pairwise combinations 
+ (aspect+opinion, aspect+polarity, opinion+polarity) as well as individual tasks, yielding 7$\times$ data multiplication. 
+ The hypothesis is that element-level patterns learned from sub-tasks transfer better across domains.
+
+ - we did not generate more samples, we used replace: true;
 
 \subsection{Curriculum Learning}
 
