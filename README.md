@@ -161,9 +161,9 @@ the
 
 [x] 10 - Vezi daca poti face tabele si sa voresti pe tabele, ar intelege cititorul mai bine de unde vin valorile si cum.
 
-[ ] 11 - Ar merge si cate o mica introducere a metodei, 2 randuri in care sa explici ce este curriculum learning for example. Dar merge oriunde e un concept.
+[x] 11 - Ar merge si cate o mica introducere a metodei, 2 randuri in care sa explici ce este curriculum learning for example. Dar merge oriunde e un concept.
 
-[ ] 12 - Asumarile acestea sunt foarte directe, ar trebui ceva de genul " We conclude from Table 7 that the masking actually hurts the ood, we tried making it 20% and with dep., the (metrica folosita dar nu a fost explicata, ar trebui specificat in captionul tabelului ce metrica folosim) droped on every dataset used", iar daca ai ai avea si o explicatie de ce crezi ca se intampla acest lucru, ar fi fain de pus "we assume that is from.... " (acest lucru se aplica peste tot unde nu este explicat si doar pus tabelul si o concluzie directa)
+[x] 12 - Asumarile acestea sunt foarte directe, ar trebui ceva de genul " We conclude from Table 7 that the masking actually hurts the ood, we tried making it 20% and with dep., the (metrica folosita dar nu a fost explicata, ar trebui specificat in captionul tabelului ce metrica folosim) droped on every dataset used", iar daca ai avea si o explicatie de ce crezi ca se intampla acest lucru, ar fi fain de pus "we assume that is from.... " (acest lucru se aplica peste tot unde nu este explicat si doar pus tabelul si o concluzie directa)
 
-[ ] 13 - citeaza paper-ul
+[x] 13 - citeaza paper-ul
 

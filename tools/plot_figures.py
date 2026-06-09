@@ -80,7 +80,7 @@ def r3_polarity_distribution(out_dir):
         vals = [data[l][pol] for l in labels]
         bars = ax.barh(y, vals, left=left, color=POLARITY_COLORS[pol], label=pol.capitalize(), height=0.6)
         for i, (bar, v) in enumerate(zip(bars, vals)):
-            if v > 5:
+            if v >= 15:
                 ax.text(left[i] + v / 2, y[i], f"{v:.0f}%", ha="center", va="center", fontsize=8, color="white", fontweight="bold")
         left += vals
 

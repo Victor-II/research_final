@@ -179,21 +179,24 @@ The issue is that nearly all evaluation in this area is ID: models are trained a
 
 This work was motivated by a straightforward question: among the various techniques proposed for generative ABSA (output format design~\cite{zhang2021aspect}, syntactic enrichment~\cite{zhang2019aspect}, data augmentation, and task decomposition~\cite{xie2025star}), which ones actually help when the model faces data from a different domain?
 
-None of these techniques were designed with out-of-domain (OOD) generalisation as their primary goal. Natural-language output templates were proposed to align generation with the pre-training objective~\cite{zhang2021aspect}. Multi-view prompting was designed to improve ID accuracy through ensemble diversity~\cite{gou2023mvp}. Syntactic enrichment aims to capture structural patterns that might transfer across domains~\cite{zhang2019aspect}. But their actual impact on OOD performance had not been measured in a controlled way.
+None of the techniques mentioned above were designed with out-of-domain (OOD) generalisation in mind, at least not as the main goal. 
+Specifically, natural-language output templates were proposed to better align the generation with the pre-training tasks~\cite{zhang2021aspect}, 
+multi-view prompting was designed to leverage the intuition of human-like problemsolving processes from different views.~\cite{gou2023mvp} and 
+syntactic enrichment aims to capture structural patterns that might transfer across domains, and reduce reliance on vocabulary~\cite{zhang2019aspect}. 
+Their actual impact on OOD performance however, has not been measured in a controlled way in their respective papers.
 
-The approach we take is empirical. Rather than proposing a new architecture, we test existing training strategies in a cross-domain setting, keeping everything else constant to isolate each intervention's contribution.
-
+In this work, rather than proposing a new architecture, we take an empirical approach by test existing training strategies in a cross-domain setting, and measuring each method's contribution.
 
 \section{Objectives}
 
 The objectives of this report are:
 
 \begin{enumerate}
-    \item Measure the impact of output format (structured vs.\ natural-language templates) on OOD generalisation, with multi-seed statistical validation.
+    \item Measure the impact of the output format (structured vs.\ natural-language) on OOD data, with multi-seed statistical validation.
 
-    \item Test whether syntactic enrichment of model inputs (dependency parsing, POS information) helps cross-domain transfer.
+    \item Test whether adding syntactic information to model inputs such as dependency trees and POS annotations helps cross-domain transfer.
 
-    \item Evaluate training-time strategies (multi-ordering training, sub-task decomposition, curriculum learning, aspect masking, cross-domain data mixing) for their effect on OOD performance.
+    \item Evaluate training-time strategies such as multi-ordering training, sub-task decomposition, curriculum learning, aspect masking and cross-domain data mixing for their effect on OOD performance.
 
     \item Validate findings on two benchmarks: SemEval ASTE (restaurant $\rightarrow$ laptop transfer) and DMASTE (multi-domain Amazon reviews with 4 held-out target domains).
 \end{enumerate}
@@ -209,7 +212,13 @@ The remainder of this report is organised as follows. Chapter~\ref{ch:relatedwor
 
 The task of aspect-based sentiment analysis was formalised through a series of shared tasks at SemEval. Pontiki et al.~\cite{pontiki2014semeval, pontiki2015semeval, pontiki2016semeval} organised evaluation campaigns from 2014 to 2016 that defined the core sub-problems: aspect term extraction (identifying what is being discussed), opinion term extraction (identifying what is said), and aspect-level sentiment classification (determining polarity). These shared tasks produced the benchmark datasets, restaurant and laptop reviews with token-level annotations, that the field still uses today. The formulations were initially addressed as separate sub-problems, each solved independently.
 
-The move toward joint formulations began with the observation that aspects, opinions, and sentiments are interdependent, and that solving them together avoids error propagation. Peng et al.~\cite{peng2020knowing} introduced the ASTE (ASTE) task, which requires extracting (aspect, opinion, polarity) triplets from text. Their approach used a two-stage pipeline: the first stage jointly extracts aspect terms with their polarities and opinion terms using separate tagging schemes, while the second stage couples the extracted aspects and opinions into valid triplets. This pipeline architecture suffers from a well-known issue: errors in span extraction propagate to the pairing stage and cannot be recovered. Subsequent work moved toward end-to-end approaches to avoid this.
+The shift toward joint task formulations was due to the observation that aspects, opinions, and sentiments are interdependent, 
+and that solving them together avoids the error propagation problem. Peng et al.~\cite{peng2020knowing} introduced the ASTE task, 
+which requires extracting (aspect, opinion, polarity) triplets from text. To this end, they poposed a two-stage pipeline comprised of an extration stage and a coupling stage.
+The first stage jointly extracts aspect terms, their polarities and opinion terms using separate tagging schemes. 
+The second stage couples the extracted aspects and opinions producing valid triplets. Due to the multi-stage nature, the architecture is prone to error propagation: 
+mistakes in span extraction of the first stage propagate to the pairing stage and cannot be recovered. 
+Subsequent work moved toward end-to-end approaches to avoid this vulnerability.
 
 Among end-to-end discriminative methods, Span-ASTE~\cite{xu2021learning} enumerated candidate spans for aspects and opinions, used a dual-channel pruning strategy to filter them, and then classified sentiment relations for each span pair. It achieved approximately 72--73 F1 on the Rest14 benchmark with a BERT encoder. Wu et al.~\cite{wu2020grid} proposed the Grid Tagging Scheme (GTS), encoding sentence structure as a 2D table where cells indicate aspect spans, opinion spans, and their sentiment relations. More recently, BTF-CCL~\cite{btfccl2025} combined table-filling with boundary-driven detection and cross-granularity contrastive learning, reaching 75.88 F1 on Rest14, the highest reported discriminative result. These methods require specialised architectures (GCN layers, table structures, contrastive objectives) to push performance beyond 73 F1. Importantly, none of them report OOD evaluation results in their publications.
 
