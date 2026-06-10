@@ -1,0 +1,273 @@
+{
+  "n_sentences": 328,
+  "n_gold_triplets": 543,
+  "n_pred_triplets": 497,
+  "n_correct": 282,
+  "triplet_f1": 0.5423076923071709,
+  "aspect_errors": {
+    "spurious": {
+      "count": 115,
+      "pct": 81.6
+    },
+    "boundary": {
+      "count": 20,
+      "pct": 14.2
+    },
+    "hallucination": {
+      "count": 5,
+      "pct": 3.5
+    },
+    "paraphrase": {
+      "count": 1,
+      "pct": 0.7
+    }
+  },
+  "opinion_errors": {
+    "spurious": {
+      "count": 73,
+      "pct": 68.2
+    },
+    "boundary": {
+      "count": 33,
+      "pct": 30.8
+    },
+    "hallucination": {
+      "count": 1,
+      "pct": 0.9
+    }
+  },
+  "polarity_errors": 126,
+  "triplet_patterns": {
+    "aspect+opinion+polarity": {
+      "count": 71,
+      "pct": 33.0
+    },
+    "aspect": {
+      "count": 58,
+      "pct": 27.0
+    },
+    "polarity": {
+      "count": 33,
+      "pct": 15.3
+    },
+    "opinion": {
+      "count": 26,
+      "pct": 12.1
+    },
+    "aspect+polarity": {
+      "count": 12,
+      "pct": 5.6
+    },
+    "opinion+polarity": {
+      "count": 10,
+      "pct": 4.7
+    },
+    "duplicate": {
+      "count": 5,
+      "pct": 2.3
+    }
+  },
+  "missed_aspects": {
+    "unseen": {
+      "count": 254,
+      "pct": 97.3
+    },
+    "seen": {
+      "count": 7,
+      "pct": 2.7
+    }
+  },
+  "missed_opinions": {
+    "unseen": {
+      "count": 131,
+      "pct": 50.2
+    },
+    "seen": {
+      "count": 130,
+      "pct": 49.8
+    }
+  },
+  "examples": {
+    "aspect": {
+      "boundary": [
+        {
+          "sentence": "Enjoy using Microsoft Office !",
+          "type": "boundary",
+          "pred": "using Microsoft Office",
+          "gold": "Microsoft Office"
+        },
+        {
+          "sentence": "It is very easy to integrate bluetooth devices , and USB devices are recognized almost instantly .",
+          "type": "boundary",
+          "pred": "bluetooth devices",
+          "gold": "integrate bluetooth devices"
+        },
+        {
+          "sentence": "I had the same reasons as most PC users : the price , the overbearing restrictions of OSX and lack of support for games .",
+          "type": "boundary",
+          "pred": "games",
+          "gold": "support for games"
+        },
+        {
+          "sentence": "the hardware problems have been so bad , i ca n't wait till it completely dies in 3 years , TOPS !",
+          "type": "boundary",
+          "pred": "hardware problems",
+          "gold": "hardware"
+        },
+        {
+          "sentence": "Easy to customize setting and even create your own bookmarks .",
+          "type": "boundary",
+          "pred": "setting",
+          "gold": "customize setting"
+        }
+      ],
+      "spurious": [
+        {
+          "sentence": "Other than not being a fan of click pads ( industry standard these days ) and the lousy internal speakers , it 's hard for me to find things about this notebook I do n't like , especially considering the $ 350 price tag .",
+          "type": "spurious",
+          "pred": "notebook",
+          "gold": null
+        },
+        {
+          "sentence": "It 's fast , light , and simple to use .",
+          "type": "spurious",
+          "pred": "fast",
+          "gold": null
+        },
+        {
+          "sentence": "It 's fast , light , and simple to use .",
+          "type": "spurious",
+          "pred": "light",
+          "gold": null
+        },
+        {
+          "sentence": "Luckily , for all of us contemplating the decision , the Mac Mini is priced just right .",
+          "type": "spurious",
+          "pred": "Mac Mini",
+          "gold": null
+        },
+        {
+          "sentence": "I 've had my computer for 2 weeks already and it works perfectly .",
+          "type": "spurious",
+          "pred": "computer",
+          "gold": null
+        }
+      ],
+      "paraphrase": [
+        {
+          "sentence": "Its the best , its got the looks , super easy to use and love all you can do with the trackpad ! ..",
+          "type": "paraphrase",
+          "pred": "trackspad",
+          "gold": "trackpad"
+        }
+      ],
+      "hallucination": [
+        {
+          "sentence": "It came in brand new and works perfectly .",
+          "type": "hallucination",
+          "pred": "a positive sentiment",
+          "gold": null
+        },
+        {
+          "sentence": "It came in brand new and works perfectly .",
+          "type": "hallucination",
+          "pred": "a positive sentiment",
+          "gold": null
+        },
+        {
+          "sentence": "The Like New condition of the iMac MC309LL/A on Amazon is at $ 900+ level only , and it is a Quad-Core 2.5 GHz CPU ( similar to the $ 799 Mini ) , with Radeon HD 6750M 512MB graphic card ( this mini is integrated Intel 4000 card ) , and it even comes with wireless Apple Keyboard and Mouse , all put together in neat and nice package .",
+          "type": "hallucination",
+          "pred": "graphics card",
+          "gold": null
+        },
+        {
+          "sentence": "I was considering buying the Air , but in reality , this one has a more powerful performance and seems much more convenient , even though it 's about .20 inch thicker and 2 lbs heavier .",
+          "type": "hallucination",
+          "pred": "thickness",
+          "gold": null
+        },
+        {
+          "sentence": "I was considering buying the Air , but in reality , this one has a more powerful performance and seems much more convenient , even though it 's about .20 inch thicker and 2 lbs heavier .",
+          "type": "hallucination",
+          "pred": "weight",
+          "gold": null
+        }
+      ]
+    },
+    "opinion": {
+      "boundary": [
+        {
+          "sentence": "Made interneting ( part of my business ) very difficult to maintain .",
+          "type": "boundary",
+          "pred": "difficult to maintain",
+          "gold": "difficult"
+        },
+        {
+          "sentence": "This thing is awesome , everything always works , everything is always easy to set up , everything is compatible , its literally everything I could ask for .",
+          "type": "boundary",
+          "pred": "easy to set up",
+          "gold": "easy"
+        },
+        {
+          "sentence": "The Mountain Lion OS is not hard to figure out if you are familiar with Microsoft Windows .",
+          "type": "boundary",
+          "pred": "not hard to figure out",
+          "gold": "not hard"
+        },
+        {
+          "sentence": "The durability of the laptop will make it worth the money .",
+          "type": "boundary",
+          "pred": "worth the money",
+          "gold": "worth"
+        },
+        {
+          "sentence": "Well designed and fast .",
+          "type": "boundary",
+          "pred": "Well designed",
+          "gold": "Well"
+        }
+      ],
+      "spurious": [
+        {
+          "sentence": "Other than not being a fan of click pads ( industry standard these days ) and the lousy internal speakers , it 's hard for me to find things about this notebook I do n't like , especially considering the $ 350 price tag .",
+          "type": "spurious",
+          "pred": "do n't like",
+          "gold": null
+        },
+        {
+          "sentence": "Sure it 's not light and slim but the features make up for it 100 % .",
+          "type": "spurious",
+          "pred": "make up",
+          "gold": null
+        },
+        {
+          "sentence": "This thing is awesome , everything always works , everything is always easy to set up , everything is compatible , its literally everything I could ask for .",
+          "type": "spurious",
+          "pred": "awesome",
+          "gold": null
+        },
+        {
+          "sentence": "This thing is awesome , everything always works , everything is always easy to set up , everything is compatible , its literally everything I could ask for .",
+          "type": "spurious",
+          "pred": "compatible",
+          "gold": null
+        },
+        {
+          "sentence": "It is very easy to integrate bluetooth devices , and USB devices are recognized almost instantly .",
+          "type": "spurious",
+          "pred": "recognized",
+          "gold": null
+        }
+      ],
+      "paraphrase": [],
+      "hallucination": [
+        {
+          "sentence": "Luckily , for all of us contemplating the decision , the Mac Mini is priced just right .",
+          "type": "hallucination",
+          "pred": "priced right",
+          "gold": null
+        }
+      ]
+    }
+  }
+}

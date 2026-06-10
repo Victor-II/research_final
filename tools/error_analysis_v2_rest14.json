@@ -1,0 +1,205 @@
+{
+  "n_sentences": 492,
+  "n_gold_triplets": 994,
+  "n_pred_triplets": 989,
+  "n_correct": 719,
+  "triplet_f1": 0.7251638930909101,
+  "aspect_errors": {
+    "spurious": 81,
+    "boundary": 55,
+    "paraphrase": 4,
+    "hallucination": 1
+  },
+  "opinion_errors": {
+    "spurious": 100,
+    "boundary": 42
+  },
+  "polarity_errors": 130,
+  "triplet_patterns": {
+    "aspect+opinion+polarity": 70,
+    "opinion": 63,
+    "aspect": 63,
+    "polarity": 43,
+    "duplicate": 14,
+    "opinion+polarity": 9,
+    "aspect+polarity": 8
+  },
+  "missed_aspects": {
+    "unseen": 147,
+    "seen": 128
+  },
+  "missed_opinions": {
+    "seen": 180,
+    "unseen": 95
+  },
+  "examples": {
+    "aspect": {
+      "boundary": [
+        {
+          "sentence": "BEST spicy tuna roll , great asian salad .",
+          "type": "boundary",
+          "pred": "tuna roll",
+          "gold": "spicy tuna roll"
+        },
+        {
+          "sentence": "The portions of the food that came out were mediocre .",
+          "type": "boundary",
+          "pred": "portions",
+          "gold": "portions of the food"
+        },
+        {
+          "sentence": "The spicy mussels are a highlight .",
+          "type": "boundary",
+          "pred": "mussels",
+          "gold": "spicy mussels"
+        },
+        {
+          "sentence": "Montparnasse 's desserts -- especially the silken creme brulee and paper -- thin apple tart -- are good enough on their own to make the restaurant worth the trip .",
+          "type": "boundary",
+          "pred": "silken creme brulee",
+          "gold": "creme brulee"
+        },
+        {
+          "sentence": "Montparnasse 's desserts -- especially the silken creme brulee and paper -- thin apple tart -- are good enough on their own to make the restaurant worth the trip .",
+          "type": "boundary",
+          "pred": "paper -- thin apple tart",
+          "gold": "apple tart"
+        }
+      ],
+      "spurious": [
+        {
+          "sentence": "Certainly not the best sushi in New York , however , it is always fresh , and the place is very clean , sterile .",
+          "type": "spurious",
+          "pred": "sushi",
+          "gold": null
+        },
+        {
+          "sentence": "Certainly not the best sushi in New York , however , it is always fresh , and the place is very clean , sterile .",
+          "type": "spurious",
+          "pred": "sushi",
+          "gold": null
+        },
+        {
+          "sentence": "A nice space , as long as it does n't get too crowded and a singleminded devotion to its chosen cuisine make Mare a great choice for seafood lovers .",
+          "type": "spurious",
+          "pred": "space",
+          "gold": null
+        },
+        {
+          "sentence": "A nice space , as long as it does n't get too crowded and a singleminded devotion to its chosen cuisine make Mare a great choice for seafood lovers .",
+          "type": "spurious",
+          "pred": "space",
+          "gold": null
+        },
+        {
+          "sentence": "A nice space , as long as it does n't get too crowded and a singleminded devotion to its chosen cuisine make Mare a great choice for seafood lovers .",
+          "type": "spurious",
+          "pred": "cuisine",
+          "gold": null
+        }
+      ],
+      "paraphrase": [
+        {
+          "sentence": "They have a very good chicken with avocado and good tuna as well .",
+          "type": "paraphrase",
+          "pred": "chicken with avocado and tuna",
+          "gold": "chicken with avocado"
+        },
+        {
+          "sentence": "They have a very good chicken with avocado and good tuna as well .",
+          "type": "paraphrase",
+          "pred": "chicken with avocado and tuna",
+          "gold": "chicken with avocado"
+        },
+        {
+          "sentence": "The food is great , I love their dumplings , cold sesame noodles , chicken and shrimp dishs .",
+          "type": "paraphrase",
+          "pred": "shrimp dishes",
+          "gold": "shrimp dishs"
+        },
+        {
+          "sentence": "Creamy appetizers -- taramasalata , eggplant salad , and Greek yogurt ( with cuccumber , dill , and garlic ) taste excellent when on warm pitas .",
+          "type": "paraphrase",
+          "pred": "Greek yogurt ( with cuccumber, dill , and garlic )",
+          "gold": "Greek yogurt ( with cuccumber , dill , and garlic )"
+        }
+      ],
+      "hallucination": [
+        {
+          "sentence": "It gets crowded at lunchtime but there are lots of seats in back and everyone who works there is so nice .",
+          "type": "hallucination",
+          "pred": "staff",
+          "gold": null
+        }
+      ]
+    },
+    "opinion": {
+      "boundary": [
+        {
+          "sentence": "Harumi Sushi has the freshest and most delicious array of sushi in NYC .",
+          "type": "boundary",
+          "pred": "delicious",
+          "gold": "most delicious"
+        },
+        {
+          "sentence": "However , being foodies , we were utterly disappointed with the food .",
+          "type": "boundary",
+          "pred": "disappointed",
+          "gold": "utterly disappointed"
+        },
+        {
+          "sentence": "Sandwiches , burgers and salads , like the lemon-dressed cobb , are classic successes .",
+          "type": "boundary",
+          "pred": "successes",
+          "gold": "classic successes"
+        },
+        {
+          "sentence": "Sandwiches , burgers and salads , like the lemon-dressed cobb , are classic successes .",
+          "type": "boundary",
+          "pred": "successes",
+          "gold": "classic successes"
+        },
+        {
+          "sentence": "Sandwiches , burgers and salads , like the lemon-dressed cobb , are classic successes .",
+          "type": "boundary",
+          "pred": "successes",
+          "gold": "classic successes"
+        }
+      ],
+      "spurious": [
+        {
+          "sentence": "Certainly not the best sushi in New York , however , it is always fresh , and the place is very clean , sterile .",
+          "type": "spurious",
+          "pred": "not the best",
+          "gold": null
+        },
+        {
+          "sentence": "Certainly not the best sushi in New York , however , it is always fresh , and the place is very clean , sterile .",
+          "type": "spurious",
+          "pred": "fresh",
+          "gold": null
+        },
+        {
+          "sentence": "Certainly not the best sushi in New York , however , it is always fresh , and the place is very clean , sterile .",
+          "type": "spurious",
+          "pred": "sterile",
+          "gold": null
+        },
+        {
+          "sentence": "A nice space , as long as it does n't get too crowded and a singleminded devotion to its chosen cuisine make Mare a great choice for seafood lovers .",
+          "type": "spurious",
+          "pred": "nice",
+          "gold": null
+        },
+        {
+          "sentence": "A nice space , as long as it does n't get too crowded and a singleminded devotion to its chosen cuisine make Mare a great choice for seafood lovers .",
+          "type": "spurious",
+          "pred": "does n't get too crowded",
+          "gold": null
+        }
+      ],
+      "paraphrase": [],
+      "hallucination": []
+    }
+  }
+}
