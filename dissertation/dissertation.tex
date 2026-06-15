@@ -32,23 +32,18 @@
 
 \usepackage{perpage}
 \MakePerPage{listing}
-% \MakePerPage{footnote}
-
 
 \usepackage[perpage]{footmisc}
 
-
-
-
-\usepackage[utf8]{inputenc} % pentru suport diacritice
-\usepackage[english]{babel} % setări pentru limba română 
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
 \usepackage{amsmath}
-\renewcommand\familydefault{\sfdefault} % sans serif
+\renewcommand\familydefault{\sfdefault}
 \usepackage{color}
 \usepackage{float}
 
-\usepackage[margin=2.54cm]{geometry}	% dimensiuni pagină și margini
-\usepackage{graphicx} % support the \includegraphics command and options
+\usepackage[margin=2.54cm]{geometry}
+\usepackage{graphicx}
 
 % formatting sections and subsections
 \usepackage{textcase}
@@ -60,21 +55,20 @@
 \titleformat*{\subsubsection}{\large\bfseries}
 
 \usepackage{chngcntr}
-\counterwithout{figure}{chapter} % no chapter number in figure labels
-\counterwithout{table}{chapter} % no chapter number in table labels
-\counterwithout{equation}{chapter} % no chapter number in equation labels
+\counterwithout{figure}{chapter}
+\counterwithout{table}{chapter}
+\counterwithout{equation}{chapter}
 
-\usepackage{booktabs} % for much better looking tables
-\usepackage{url} % Useful for inserting web links nicely
+\usepackage{booktabs}
+\usepackage{url}
 \usepackage[bookmarks,unicode,hidelinks]{hyperref}
-
 
 \usepackage[titles]{tocloft}
 
-\usepackage{array} % for better arrays (eg matrices) in maths
-\usepackage{paralist} % very flexible & customisable lists (eg. enumerate/itemize, etc.)
-\usepackage{verbatim} % adds environment for commenting out blocks of text & for better verbatim
-\usepackage{subfig} % make it possible to include more than one captioned figure/table in a single float
+\usepackage{array}
+\usepackage{paralist}
+\usepackage{verbatim}
+\usepackage{subfig}
 \usepackage{enumitem}
 \setlist{noitemsep}
 
@@ -107,7 +101,7 @@ COMPUTER SCIENCE AND ENGINEERING DEPARTMENT\\}
 \newcommand{\frontPage}[6]{
 \begin{titlepage}
 \begin{center}
-{\Large #1}  % header (university, faculty, department)
+{\Large #1}
 \vspace{50pt}
 \begin{tabular}{p{6cm}p{4cm}}
 \includegraphics[scale=0.8]{figures/upb-logo.jpg} &
@@ -115,22 +109,21 @@ COMPUTER SCIENCE AND ENGINEERING DEPARTMENT\\}
 \end{tabular}
 
 \vspace{105pt}
-{\Huge #2}\\                           % diploma project text
+{\Huge #2}\\
 \vspace{40pt}
-{\Huge #3}\\ \vspace{0pt}  % project title
-% {\Large #4}\\                          % project subtitle
+{\Huge #3}\\ \vspace{0pt}
 \vspace{40pt}
-{\LARGE \Name}\\                   % student name
+{\LARGE \Name}\\
 \end{center}
 \vspace{60pt}
 \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}p{6cm}r}
-&{\large\textbf{#5}}\vspace{10pt}\\      % scientific advisor
-&{\large \AdvisorA}\\                                    % advisor name
-&{\large \AdvisorB}                                    % advisor name
+&{\large\textbf{#5}}\vspace{10pt}\\
+&{\large \AdvisorA}\\
+&{\large \AdvisorB}
 \end{tabular*}
 \vspace{20pt}
 \begin{center}
-{\large\textbf{#6}}\\                                % bucharest
+{\large\textbf{#6}}\\
 \vspace{0pt}
 {\normalsize \Year}
 \end{center}
@@ -178,20 +171,9 @@ COMPUTER SCIENCE AND ENGINEERING DEPARTMENT\\}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-%%% Puteți elimina aceste linii din lucrare, servesc numai pentru template.
-\newcommand{\worktype}[1]{[\textit{#1}] }
-\newcommand{\dezvoltare}{\worktype{Dezvoltare de produs}}
-\newcommand{\cercetare}{\worktype{Cercetare}}
-\newcommand{\ambele}{\worktype{Ambele}}
-%%%
-
-
-%%
-%%   Campurile de mai jos trebuie modificate de autor. Modificati doar continutul, nu si numele fiecarei definitii
-%%
-\newcommand{\ProjectTitleRO}{Un studiu empiric sistematic al strategiilor de antrenare pentru generalizarea în afara domeniului în analiza generativă a sentimentelor la nivel de aspect}
+\newcommand{\ProjectTitleRO}{Un studiu empiric sistematic al strategiilor de antrenare pentru generalizarea în afara domeniului și cross-lingvistică în analiza generativă a sentimentelor la nivel de aspect}
 \newcommand{\ProjectSubtitleRO}{}
-\newcommand{\ProjectTitleEN}{A Systematic Empirical Study of Training Strategies for Out-of-Domain Generalisation in Generative Aspect-Based Sentiment Analysis}
+\newcommand{\ProjectTitleEN}{A Systematic Empirical Study of Training Strategies for Out-of-Domain and Cross-Lingual Generalisation in Generative Aspect-Based Sentiment Analysis}
 \newcommand{\ProjectSubtitleEN}{}
 \newcommand{\Name}{[TO DO] FirstName SirName}
 \newcommand{\AdvisorA}{[TO DO] Adviser 1}
@@ -206,13 +188,14 @@ COMPUTER SCIENCE AND ENGINEERING DEPARTMENT\\}
 %%
 %%   Campurile aferente rezumatului
 %%
-\newcommand{\AbstractRO}{TODO
+\newcommand{\AbstractRO}{Această lucrare prezintă un studiu empiric sistematic al strategiilor de antrenare pentru generalizarea în afara domeniului în analiza generativă a sentimentelor la nivel de aspect (ABSA), cu experimente atât în engleză cât și în română. Formulăm extracția de triplete aspect-sentiment-opinie (ASTE) ca o problemă de generare secvență-la-secvență folosind FLAN-T5-base și evaluăm sistematic efectul formatului de ieșire, al îmbogățirii sintactice a intrărilor, al antrenării cu ordonări multiple, al descompunerii în sub-sarcini, al învățării prin curriculum, al mascării aspectelor, al amestecului de date inter-domeniu și al strategiilor de decodare asupra performanței cross-domain. Comparăm abordarea noastră fine-tuned cu modele lingvistice de mari dimensiuni (27--35B parametri) în configurații few-shot atât pe sarcini de extracție în engleză cât și pe sarcini de clasificare în română, și evaluăm modele monolingve, multilingve și anglofone pe un set de date ABSA românesc. Principala constatare este că șabloanele de ieșire în limbaj natural oferă cea mai mare îmbunătățire pentru generalizarea OOD (+8.6 F1 față de ieșirea structurată, 5 seed-uri, intervale de încredere non-suprapuse). Pe benchmark-ul DMASTE, modelul nostru egalează cel mai bun rezultat raportat anterior fără tehnici de adaptare la domeniu. În ambele limbi, un model fine-tuned de 250M parametri depășește consistent modele de 27--32B parametri, în timp ce modelele monolingve românești (110--114M) egalează sau depășesc un model multilingv de 278M, confirmând că fine-tuning-ul specific sarcinii și pre-antrenarea specifică limbii rămân mai eficiente decât creșterea dimensiunii modelului pentru extracția structurată de sentimente.
 
-\textbf{Cuvinte cheie: TOOD} 
+\textbf{Cuvinte cheie: analiză a sentimentelor la nivel de aspect, generalizare cross-domain, NLP multilingv, modele generative, T5, modele lingvistice de mari dimensiuni}
 }
 
-\newcommand{\AbstractEN}{ TODO
-\textbf{Keywords: TODO} 
+\newcommand{\AbstractEN}{This thesis presents a systematic empirical study of training strategies for out-of-domain generalisation in generative Aspect-Based Sentiment Analysis, with experiments spanning English and Romanian. We formulate Aspect Sentiment Triplet Extraction (ASTE) as a sequence-to-sequence problem using FLAN-T5-base and systematically evaluate the effect of output format, syntactic input enrichment, multi-ordering training, sub-task decomposition, curriculum learning, aspect masking, cross-domain data mixing, and decoding strategies on cross-domain performance. We further compare our fine-tuned approach against large language models (27--35B parameters) in few-shot settings on both English extraction and Romanian classification tasks, and evaluate monolingual, multilingual, and English-centric models on a Romanian ABSA dataset. Our main finding is that natural-language output templates provide the largest improvement for OOD generalisation (+8.6 F1 over structured output, 5 seeds, non-overlapping confidence intervals). On the DMASTE benchmark, our model matches the best previously reported cross-domain result without any domain adaptation techniques. Across both languages, a fine-tuned 250M-parameter model consistently outperforms 27--32B parameter LLMs, while monolingual Romanian models (110--114M) match or exceed a 278M multilingual model, confirming that task-specific fine-tuning and language-specific pre-training remain more effective than scaling model size for structured sentiment extraction.
+
+\textbf{Keywords: aspect-based sentiment analysis, cross-domain generalisation, multilingual NLP, generative models, T5, large language models}
 }
 
 %%
@@ -233,51 +216,42 @@ COMPUTER SCIENCE AND ENGINEERING DEPARTMENT\\}
 \thispagestyle{empty}
 \endgroup
 
-% \begingroup
-% \linespread{1}
-% \tableofcontents
-% \endgroup
-
 \AbstractPage
 \ThanksPage
 
 
-% Textul licentei incepe de aici 
+% Textul lucrarii incepe de aici 
 
 
 
 \chapter{Introduction}\label{ch:introduction}\pagestyle{fancy}
 
-Sentiment analysis has moved from classifying entire documents as positive or negative toward increasingly fine-grained formulations that try to capture the full structure of opinions in text~\cite{liu2015sentiment, hussein2018survey}. Aspect-Based Sentiment Analysis (ABSA) represents one of the more granular variants: given a review sentence, the goal is to identify which specific aspects are being discussed, what opinions are expressed about them, and whether those opinions are positive, negative, or neutral~\cite{pontiki2014semeval}. Among the joint extraction formulations, Aspect Sentiment Triplet Extraction (ASTE)~\cite{peng2020knowing, xu2020position} requires extracting (aspect term, opinion term, sentiment polarity) triplets, while the even more complex ACOS formulation adds an aspect category dimension. ASTE is the focus of this thesis as it captures the full span-level opinion structure without requiring an external category taxonomy. From ``The pizza is delicious but the service was slow'', a model should produce (pizza, delicious, positive) and (service, slow, negative).
+Sentiment analysis has gradually moved from classifying entire documents as positive or negative toward finer-grained formulations that attempt to capture the structure of opinions in text~\cite{liu2015sentiment, hussein2018survey}. Aspect-Based Sentiment Analysis (ABSA) is one such formulation: given a review sentence, the goal is to identify which aspects are being discussed, what opinions are expressed about them, and whether those opinions are positive, negative, or neutral~\cite{pontiki2014semeval}. Among the joint extraction variants, Aspect Sentiment Triplet Extraction (ASTE)~\cite{peng2020knowing, xu2020position} requires producing (aspect term, opinion term, sentiment polarity) triplets from a sentence. From ``The pizza is delicious but the service was slow'', a model should output (pizza, delicious, positive) and (service, slow, negative).
 
-Generative approaches based on sequence-to-sequence models like T5~\cite{raffel2020exploring} have become competitive with discriminative methods on ASTE, reformulating the extraction problem as text generation~\cite{zhang2021towards, yan2021unified, gou2023mvp}. The model takes a sentence as input and produces a textual representation of all triplets present in it~\cite{zhang2021aspect}. Several enhancements have been proposed, including natural-language output templates~\cite{zhang2021aspect}, multi-view prompting with element-order permutations~\cite{gou2023mvp}, and sub-task decomposition~\cite{xie2025star}, all reporting improvements on standard in-domain benchmarks.
+Generative approaches based on sequence-to-sequence models like T5~\cite{raffel2020exploring} have become a common way to address ASTE, reformulating the extraction problem as text generation~\cite{zhang2021towards, yan2021unified, gou2023mvp}. The model receives a sentence as input and produces a textual representation of all triplets present in it. Several enhancements have been proposed, including natural-language output templates~\cite{zhang2021aspect}, multi-view prompting with element-order permutations~\cite{gou2023mvp}, and sub-task decomposition~\cite{xie2025star}, all reporting improvements on in-domain benchmarks.
 
-The problem is that nearly all evaluation in this area is in-domain. Models are trained and tested on data from the same domain (typically restaurant reviews), which says little about how they would perform when encountering laptop reviews, book reviews, or any other unseen domain. The performance drop can be substantial: Chia et al.~\cite{chia2022rethinking} report degradation of 14--17 F1 points when evaluating ASTE models on out-of-domain data. For any practical deployment, this is a real concern, and it remains largely unaddressed for generative ABSA methods.
+The issue is that nearly all evaluation in this area is in-domain: models are trained and tested on data from the same source, typically restaurant reviews. This says little about how they would perform when encountering laptop reviews, book reviews, or any other domain not seen during training. The performance drop when moving to a new domain can be substantial: Chia et al.~\cite{chia2022rethinking} report degradation of 14--17 F1 points when evaluating ASTE models on out-of-domain data. For any practical deployment, this is a real concern, and it remains largely unaddressed for generative ABSA methods.
 
 
 \section{Motivation}
 
-This thesis was motivated by a straightforward question: among the various techniques proposed for generative ABSA, such as output format design~\cite{zhang2021aspect}, syntactic enrichment of inputs~\cite{zhang2019aspect}, data augmentation~\cite{zhong2024iterative}, and task decomposition~\cite{xie2025star}, which ones actually help when the model faces data from a different domain?
+This thesis was motivated by a straightforward question: among the various techniques proposed for generative ABSA, such as output format design~\cite{zhang2021aspect}, syntactic enrichment of inputs~\cite{zhang2019aspect}, data augmentation, and task decomposition~\cite{xie2025star}, which ones actually help when the model faces data from a different domain?
 
-None of these techniques were designed with out-of-domain generalisation as their primary goal. Natural-language output templates were proposed to align generation with the pre-training objective~\cite{zhang2021aspect}. Multi-view prompting was designed to improve in-domain accuracy through ensemble diversity~\cite{gou2023mvp}. Syntactic enrichment aims to capture structural patterns that might transfer across domains~\cite{zhang2019aspect}. Data augmentation increases training variety. But their actual impact on OOD performance had not been measured.
+None of these techniques were designed with out-of-domain generalisation as their primary goal. Natural-language output templates were proposed to align generation with the pre-training objective~\cite{zhang2021aspect}. Multi-view prompting was designed to improve in-domain accuracy through ensemble diversity~\cite{gou2023mvp}. Syntactic enrichment aims to capture structural patterns that might transfer across domains~\cite{zhang2019aspect}. Data augmentation increases training variety. But their actual impact on OOD performance had not been measured in a controlled way.
+
+A second question motivates the later part of this work: how does a fine-tuned 250M model compare against much larger language models that have seen far more diverse pre-training data? And do these findings extend to languages other than English where annotated ABSA data is scarce?
 
 The approach we take is empirical: rather than introducing a new architecture, we systematically evaluate existing training strategies in a controlled cross-domain setting, isolating the contribution of each intervention through consistent evaluation and multi-seed statistical validation. This includes both strategies that proved effective and those that did not, documenting negative results with sufficient detail that future work can build on them rather than repeat them.
 
 
 \section{Objectives}
 
-The objectives of this thesis are:
-
 \begin{enumerate}
-    \item Measure the impact of output format (structured vs.\ natural-language templates) on out-of-domain generalisation, with statistical validation across multiple random seeds.
+    \item Systematically evaluate which training strategies (output format, syntax enrichment, multi-ordering, sub-task decomposition, curriculum learning, aspect masking, cross-domain data mixing, decoding) improve out-of-domain generalisation in generative ASTE, with multi-seed statistical validation on SemEval and DMASTE.
     
-    \item Test whether syntactic enrichment of model inputs (dependency parsing, POS information) helps cross-domain transfer, and identify conditions under which it does or does not.
+    \item Compare fine-tuned generative models (FLAN-T5-base, 250M parameters) against large language models (27--35B) in few-shot settings and against discriminative baselines (RoBERTa, XLM-R) on both in-domain and out-of-domain data.
     
-    \item Evaluate training-time augmentation strategies, specifically multi-ordering training, cross-domain data mixing, and LLM-generated opinion paraphrases, for their effect on OOD performance.
-    
-    \item Compare across method families: discriminative models (RoBERTa, XLM-R), large language models in few-shot settings (Gemma2 27B, Qwen2.5 32B, Command-R), and our fine-tuned generative approach (FLAN-T5-base, 250M parameters).
-    
-    \item Validate findings on multiple benchmarks: SemEval ASTE (restaurant $\rightarrow$ laptop transfer), DMASTE (multi-domain Amazon reviews with 4 held-out target domains), and a Romanian ABSA dataset (eMAG phone reviews).
+    \item Evaluate the same approach on Romanian ABSA (eMAG phone reviews), comparing monolingual, multilingual, and English-centric models to determine the most effective strategy for a medium-resource language.
 \end{enumerate}
 
 
@@ -298,199 +272,52 @@ The contributions are empirical rather than architectural:
 
 \section{Structure of the thesis}
 
-The remainder of this thesis is organised as follows.
+Chapter~\ref{ch:stateoftheart} covers related work: ASTE methods (discriminative and generative), cross-domain ABSA, data augmentation, LLMs for ABSA, and multilingual models. Chapter~\ref{ch:metodology} presents the methods evaluated: output format, syntax modes, training strategies, LLM few-shot setup, and evaluation protocol. Chapter~\ref{ch:implementation} describes the system: model architectures, training configuration, data pipeline, and datasets. Chapter~\ref{ch:results} reports results on SemEval, DMASTE, and Romanian eMAG, with error analysis and discussion. Chapter~\ref{ch:conclusions} summarises findings, limitations, and future directions.
 
-Chapter~\ref{ch:stateoftheart} reviews existing work on ABSA, covering task formulations, generative and discriminative approaches, cross-domain methods, and data augmentation techniques.
-
-Chapter~\ref{ch:metodology} describes our methodology: the output format design, syntactic enrichment modes, augmentation strategies, and evaluation framework.
-
-Chapter~\ref{ch:implementation} covers implementation details: the model architecture, training pipeline, configuration system, baseline implementations, and datasets.
-
-Chapter~\ref{ch:results} presents experimental results across the three benchmarks, including multi-seed validation, ablation studies, cross-method comparisons, and error analysis.
-
-Chapter~\ref{ch:conclusions} summarises findings, acknowledges limitations, and suggests directions for future work.
 
 
 \chapter{State of the Art}\label{ch:stateoftheart}
 
-This chapter surveys the relevant literature across four areas: the progression of ABSA task formulations, the methods developed to solve them (both discriminative and generative), cross-domain approaches, and data augmentation techniques. The focus is on work from the past five years that directly relates to our experimental setup.
+The task of aspect-based sentiment analysis was formalised through a series of shared tasks at SemEval. Pontiki et al.~\cite{pontiki2014semeval, pontiki2015semeval, pontiki2016semeval} organised evaluation campaigns from 2014 to 2016 that defined the core sub-problems: aspect term extraction (identifying what is being discussed), opinion term extraction (identifying what is said), and aspect-level sentiment classification (determining polarity). These shared tasks produced the benchmark datasets, restaurant and laptop reviews with token-level annotations, that the field still uses today. The formulations were initially addressed as separate sub-problems, each solved independently.
 
-\section{ABSA Task Formulations}
+The shift toward joint task formulations was due to the observation that aspects, opinions, and sentiments are interdependent, and that solving them together avoids the error propagation problem. Peng et al.~\cite{peng2020knowing} introduced the ASTE task, which requires extracting (aspect, opinion, polarity) triplets from text. To this end, they proposed a two-stage pipeline comprised of an extraction stage and a coupling stage. The first stage jointly extracts aspect terms, their polarities and opinion terms using separate tagging schemes. The second stage couples the extracted aspects and opinions producing valid triplets. Due to the multi-stage nature, the architecture is prone to error propagation: mistakes in span extraction of the first stage propagate to the pairing stage and cannot be recovered. Subsequent work moved toward end-to-end approaches to avoid this vulnerability.
 
-Aspect-Based Sentiment Analysis has been defined at progressively finer levels of granularity. The earliest formulations addressed individual sub-problems in isolation:
+Among end-to-end discriminative methods, Span-ASTE~\cite{xu2021learning} enumerated candidate spans for aspects and opinions, used a dual-channel pruning strategy to filter them, and then classified sentiment relations for each span pair. It achieved approximately 72--73 F1 on the Rest14 benchmark with a BERT encoder. Wu et al.~\cite{wu2020grid} proposed the Grid Tagging Scheme (GTS), encoding sentence structure as a 2D table where cells indicate aspect spans, opinion spans, and their sentiment relations. Chen et al.~\cite{chen2021bidirectional} framed ASTE as a bidirectional machine reading comprehension problem, where one direction recognises aspects then opinions then sentiments, and the other direction reverses the order, complementing each other to improve triplet coverage. More recently, BTF-CCL~\cite{btfccl2025} (AAAI 2025) combined table-filling with boundary-driven detection and cross-granularity contrastive learning, reaching 75.88 F1 on Rest14, the highest reported discriminative result. ASTE-Transformer~\cite{aste_transformer2024} (EMNLP 2024 Findings) applied transformer layers specifically designed to model dependencies between candidate phrases, achieving competitive performance with a more interpretable attention structure. These methods require specialised architectures (GCN layers, table structures, contrastive objectives) to push performance beyond 73 F1. Importantly, none of them report OOD evaluation results in their publications.
 
-\begin{itemize}
-    \item \textbf{Aspect Term Extraction (ATE)}: identify the aspect terms mentioned in a sentence (e.g., ``pizza'', ``service'').
-    \item \textbf{Aspect Term Sentiment Classification (ATSC)}: given a known aspect term, determine its polarity.
-    \item \textbf{Opinion Term Extraction (OTE)}: identify the opinion expressions (e.g., ``delicious'', ``slow'').
-\end{itemize}
+Zhang et al.~\cite{zhang2021towards} (ACL 2021) took a different direction by reformulating ABSA as a text generation problem. Their GAS framework showed that T5, when given a sentence and asked to generate a structured representation of triplets, could approach discriminative methods without any task-specific architecture. The model simply generates text like \texttt{[food, delicious, positive]} given an input sentence. While GAS underperformed Span-ASTE by approximately 3 F1 points on Rest14 at the time of publication, the simplicity of the approach was appealing: a single seq2seq model, no special layers, no enumeration of candidate spans. In our experiments, our structured baseline follows the same principle and achieves 69.3 F1 on Rest14 (averaged across 5 random seeds), consistent with the original GAS results.
 
-These were the formulations used in the SemEval shared tasks from 2014 to 2016~\cite{pontiki2014semeval, pontiki2015semeval, pontiki2016semeval}, which produced the benchmark datasets still used today.
+Zhang et al.~\cite{zhang2021aspect} (EMNLP 2021) proposed generating natural-language paraphrases instead of structured tuples. Rather than \texttt{[food, delicious, positive]}, the model generates text like ``food is described as delicious, expressing a positive sentiment''. The motivation was that natural-language output aligns with the model's pre-training distribution, since T5 was trained to generate fluent English, not bracket-and-comma sequences. The original paper applied this to ASQP (quad prediction) and evaluated only in-domain. This work is the direct inspiration for our natural-language output format. We extended the idea to ASTE (triples), designed templates for all task combinations (singles, pairs, triples), and evaluated it for OOD generalisation. In our multi-seed experiments, the NL format provides +8.6 F1 points on OOD data over structured output, with non-overlapping confidence intervals. The original paper did not test this, so the OOD benefit was not previously known.
 
-The field then moved toward joint formulations that model relationships between elements:
+Gou et al.~\cite{gou2023mvp} (ACL 2023) introduced Multi-view Prompting (MvP), observing that different element orderings in the output template (aspect-opinion-polarity vs opinion-polarity-aspect, etc.) lead to different error patterns. MvP trains the model on multiple orderings simultaneously, using explicit markers (\texttt{[A]}, \texttt{[O]}, \texttt{[S]}) to indicate element positions, and aggregates predictions at inference time via majority voting across orderings. Combined with multi-task training across 10 ABSA datasets, MvP achieved 76.08 F1 on Rest14, the highest reported generative result. However, this headline number uses cross-dataset multi-task training, making it difficult to isolate the contribution of multi-view prompting from the benefit of training on more diverse data. We replicated the MvP mechanism faithfully in a single-dataset setup: 5 orderings per example, element markers, majority voting at inference. In our OOD evaluation, MvP scores slightly higher than our NL baseline, but still within the confidence interval. The voting mechanism helps in-domain compositional accuracy slightly but does not address vocabulary or domain shift.
 
-\begin{itemize}
-    \item \textbf{Aspect-Opinion Pair Extraction (AOPE)}: extract (aspect, opinion) pairs, establishing which opinion modifies which aspect~\cite{wu2020grid}.
-    \item \textbf{Aspect Sentiment Triplet Extraction (ASTE)}: extract (aspect, opinion, polarity) triplets, the most complete span-level extraction formulation, requiring no external taxonomy~\cite{peng2020knowing, xu2020position}.
-    \item \textbf{Aspect Sentiment Quad Prediction (ASQP)}: extract (aspect, category, opinion, polarity) quads, adding an aspect category from a predefined taxonomy~\cite{zhang2021aspect}.
-\end{itemize}
+Xie et al.~\cite{xie2025star} (AAAI 2025) proposed STAR, which augments training data by decomposing the main ASQP (quad prediction) task into all possible pairwise sub-tasks. For each training example, additional instances are generated for every element-pair combination (aspect+opinion, aspect+polarity, opinion+polarity, etc.), effectively multiplying the training data by 7$\times$. The idea is that sub-task training helps the model learn element-level patterns. STAR reports gains mainly in low-resource settings, with modest improvements ($\sim$1 F1 point) in full-data settings. We adapted this approach to ASTE (triples) and replicated it with balanced contribution loss and per-level normalisation. In our OOD evaluation, STAR hurts significantly: 0.487--0.500 F1 on Laptop14, compared to 0.525 for the baseline. The pairwise decomposition multiplies training instances from the same domain without introducing any domain-relevant variation. More data drawn from the same distribution did not improve cross-domain transfer.
 
-ASTE is the primary focus of this thesis because it captures the full opinion structure (who is being evaluated, what is said about them, and what sentiment it carries) while remaining a pure extraction task: it does not require an external category taxonomy, making it more naturally applicable across domains.
+The most recent work in this line is DOT~\cite{dot2025} (ACL 2025), which addresses MvP's inefficiency at inference time. Rather than generating all orderings and voting, DOT dynamically predicts which orderings are most informative for each instance based on entropy, generating only the necessary views. This reduces inference cost while maintaining accuracy. Scaria et al.~\cite{scaria2023instructabsa} (NAACL 2024) applied instruction tuning to ABSA subtasks, instruction-tuning Tk-Instruct-base with positive, negative, and neutral in-context examples. InstructABSA achieved state-of-the-art on several SemEval subtasks (ATE, ATSC), demonstrating the value of instruction tuning for ABSA, consistent with our choice of FLAN-T5 over plain T5.
 
+On the cross-domain side, Xu et al.~\cite{xu2023dmaste} (ACL 2023 Findings) introduced DMASTE, a multi-domain ASTE benchmark with 8 Amazon review domains annotated for triplets. Four domains serve as training sources (electronics, beauty, fashion, home) and four as test targets (book, grocery, pet, toy). They evaluated several existing methods in this setting and found that Span-ASTE consistently outperformed generative methods like GAS: 43.50 avg F1 in single-source and 45.42 in multi-source, compared to 39.11 for GAS. No domain adaptation techniques are applied in their evaluation; it is a pure train-on-source, test-on-target benchmark. We use DMASTE as our second evaluation setting. Our FLAN-T5-base model with NL output achieves 45.45 avg F1 in multi-source, matching Span-ASTE without any domain adaptation.
 
-\section{Discriminative Approaches to ASTE}
+Chia et al.~\cite{chia2022rethinking} annotated over 4000 sentences from hotel and cosmetics reviews for ASTE, bringing the total number of evaluated domains to four: restaurant, laptop, hotel, and cosmetics. They compared GTS, Span-ASTE, and RoBMRC on the discriminative side against GAS and Paraphrase with both T5 and BART variants on the generative side, evaluating each method in all 12 source-target domain pairs. Their key finding is that all methods suffer substantial OOD degradation of 14--17 F1 points depending on the method family, but generative methods generalise somewhat better than discriminative ones with an average gap of 14.6 F1 vs 16.8. We take their conclusion that generative methods generalise better as a starting point and focus on what happens inside the generative paradigm: we fix the architecture to FLAN-T5 with NL output and vary training strategies to see which ones actually help OOD.
 
-Early ASTE methods decomposed the problem into sequential sub-tasks. Peng et al.~\cite{peng2020knowing} used a two-stage pipeline: the first stage jointly extracts aspect terms with their sentiments (using a unified tagging scheme) and opinion terms (using BIOES tags), while the second stage couples the extracted targets and opinions to form valid triplets. This pipeline suffers from error propagation: mistakes in span extraction cannot be recovered at the pairing stage.
+On the domain adaptation side, FOAL~\cite{foal2023} applies fine-grained contrastive learning to reduce domain discrepancy for cross-domain ASTE, requiring unlabeled target-domain data during training (unsupervised domain adaptation), which differs from our zero-shot setting where no target data is available. TFMT~\cite{tfmt2024} uses table-filling combined with a mean teacher framework to generate pseudo-labels for unlabeled target-domain sentences. Both assume access to target-domain text, an assumption we do not make.
 
-The field moved toward end-to-end methods that jointly extract all three elements. These can be grouped into several families:
+On the augmentation side, several approaches have been explored for improving ABSA through training data manipulation. Wei et al.~\cite{wei2019eda} proposed Easy Data Augmentation (EDA), consisting of synonym replacement, random insertion, swap, and deletion, which generally helps text classification but provides limited benefit for extraction tasks where span boundaries matter. Sennrich et al.~\cite{sennrich2016backtranslation} introduced back-translation as an augmentation method, translating text to another language and back to introduce paraphrases. For extraction tasks, however, this tends to corrupt the alignment between span annotations and text. Zhou et al.~\cite{zhou2021melm} proposed MELM, which masks entity spans and uses a language model to generate variants for NER augmentation. This is the direct inspiration for our aspect masking experiment: we replace aspect spans with sentinel tokens and ask the model to still predict the correct aspect in the output, forcing reliance on contextual cues rather than copying. In practice, masking hurt OOD performance in our experiments. Wang et al.~\cite{wang2022contrastive_aug} (COLING 2022) proposed contrastive cross-channel augmentation for ABSA, generating multi-aspect training sentences using a fine-tuned generator. Yu et al.~\cite{yu2023crossdomain_aug} (ACL 2023) combined domain-adaptive language modelling with augmentation for cross-domain ABSA, showing improvements on polarity classification but not on triplet extraction. This is consistent with the pattern observed across these papers: augmentation methods that work for classification do not necessarily transfer to extraction tasks, where the model must learn precise span boundaries.
 
-\subsection{Span-Based Methods}
+A comprehensive survey by Ding et al.~\cite{ding2024llm_aug_survey} (ACL 2024 Findings) categorises LLM augmentation approaches and identifies when they help: primarily in low-resource settings, with diminishing or negative returns in full-data regimes. The IDG framework~\cite{zhong2024iterative} uses GPT-3.5 to iteratively generate aspect-sentiment training data with a self-reflection filtering mechanism, showing improvements on polarity classification but not triplet extraction. The self-training approach with pseudo-label scoring~\cite{st_scorer2024} (ACL 2024) offers an explanation: the quality of generated data matters more than quantity, and ABSA extraction tasks are particularly sensitive to subtle annotation errors because the model must learn exact span boundaries. Our opinion synonym augmentation experiment is situated in this landscape: we found that LLM-generated paraphrases hurt OOD performance even at low augmentation fractions, consistent with the broader finding that LLM augmentation helps classification more than extraction.
 
-Span-ASTE~\cite{xu2021learning} enumerates candidate spans for aspects and opinions, uses a dual-channel pruning strategy (supervised by ATE and OTE tasks) to select the most promising candidates, then classifies the sentiment relation for each target-opinion span pair. By considering span-level rather than word-level interactions, it achieves strong results (approximately 72 F1 on Rest14 and 62 on Laptop14 with BERT) and handles multi-word aspect and opinion terms more effectively than earlier word-pair methods.
+The question of whether large language models can perform ABSA without fine-tuning has been investigated in several recent papers. Simmering and Huoviala~\cite{veyseh2024llm_absa} evaluated GPT-3.5 and GPT-4 on the SemEval 2014 joint aspect term extraction and polarity classification task and found that fine-tuned GPT-3.5 achieves state-of-the-art performance (83.8 F1), while GPT-4 in 6-shot settings reaches 71.3 F1 --- below fine-tuned smaller models. A consistent finding is that LLMs perform better at classification (determining whether something is positive or negative) than at extraction (identifying which specific words constitute an aspect or opinion span).
 
-\subsection{Table-Filling Methods}
+\v{S}m\'{i}d et al.~\cite{smid2024multilingual_llm_absa} (2024) conducted a systematic evaluation of LLMs for zero-shot multilingual ABSA across several languages. Their results indicate that while LLMs show promise, they generally fall short of fine-tuned task-specific models. They also found that simpler zero-shot prompts often outperform more complex prompting strategies, especially in high-resource languages. The same group~\cite{smid2025czech_absa} (2025) applied this comparison to Czech, a medium-resource language comparable to Romanian. They found that small domain-specific models fine-tuned for ABSA outperform general-purpose LLMs in zero-shot and few-shot settings. This parallels our Romanian findings and suggests the pattern is not language-specific but reflects a general property of extraction tasks: task-specific fine-tuning remains more sample-efficient than scaling model size for structured prediction.
 
-Grid Tagging Scheme (GTS)~\cite{wu2020grid} encodes a sentence as a 2D token-pair table where cells indicate whether a pair of tokens belongs to an aspect span, opinion span, or constitutes an aspect-opinion boundary with a specific polarity. This avoids explicit span enumeration but requires careful boundary decoding.
+On the cross-lingual ABSA front, recent work~\cite{fewshot_crosslingual_absa2025} has shown that adding as few as ten target-language examples to a sequence-to-sequence model significantly improves performance over zero-shot cross-lingual transfer. This is consistent with our setup: we fine-tune FLAN-T5-base on a small Romanian dataset rather than relying on zero-shot transfer from English, and it performs competitively with much larger models. A broader survey of cross-lingual transfer strategies for ABSA~\cite{crosslingual_transfer_absa2026} confirms that the field remains largely English-focused, and that practical approaches for non-English languages typically involve some amount of target-language fine-tuning rather than relying purely on zero-shot transfer.
 
-BTF-CCL~\cite{btfccl2025} (AAAI 2025) extends table-filling with boundary-driven detection and cross-granularity contrastive learning. It achieves the current highest reported discriminative results: 75.88 F1 on Rest14 and 63.29 on Laptop14. The contrastive objective aligns sentence-level and word-level representations, improving boundary detection.
+Two pre-trained language models exist specifically for Romanian. Masala et al.~\cite{masala2020robert} (COLING 2020) introduced RoBERT, a BERT model trained from scratch on Romanian text. They released three sizes: RoBERT-small (19M parameters), RoBERT-base (114M), and RoBERT-large (341M), all uncased. The training corpus consists of approximately 12GB of cleaned Romanian text from OSCAR, RoTex, and Wikipedia. On downstream tasks such as part-of-speech tagging and named entity recognition, RoBERT outperformed multilingual BERT by a considerable margin, demonstrating the value of monolingual pre-training even at the base model scale. Dumitrescu et al.~\cite{dumitrescu2020birth} (EMNLP 2020 Findings) independently trained another Romanian BERT, bert-base-romanian-cased, on a 15GB corpus comprising OPUS, OSCAR, and Wikipedia data. Their model is cased (unlike RoBERT which is uncased) and also outperformed multilingual BERT on Romanian benchmarks. Both papers report that language-specific pre-training on even moderately-sized corpora produces models that outperform multilingual alternatives on downstream tasks in that language.
 
-\subsection{Transformer-Based Methods}
+On the multilingual side, XLM-RoBERTa~\cite{conneau2020unsupervised} (XLM-R) is a transformer model trained on 2.5TB of filtered CommonCrawl data in 100 languages. At the base scale (278M parameters), it provides competitive performance across many languages without language-specific training. The trade-off is that its capacity is spread across 100 languages, so for any single language it has seen less language-specific data than a dedicated monolingual model, but it benefits from cross-lingual transfer. This trade-off has been termed the ``curse of multilinguality''~\cite{chang2023multilinguality, pfeiffer2024breaking}: as a fixed-capacity model covers more languages, per-language performance decreases. Bérard et al.~\cite{berard2026capacity} confirmed this empirically, showing that multilingual language models consistently underperform monolingual counterparts due to capacity constraints. Velankar et al.~\cite{velankar2022mono} demonstrated the same pattern for Marathi: monolingual BERT models outperformed XLM-RoBERTa on five downstream tasks despite the multilingual model being substantially larger. Hasan et al.~\cite{tanvir2023bangla} reported consistent findings for Bangla sentiment analysis. The pattern appears general: for a given downstream task in a specific language, a dedicated monolingual model matches or exceeds a larger multilingual model when sufficient monolingual pre-training data is available.
 
-ASTE-Transformer~\cite{aste_transformer2024} (EMNLP 2024 Findings) applies transformer layers specifically designed to model dependencies between candidate phrases. Combined with a pre-training technique on related data, it achieves competitive performance while providing a more interpretable attention structure than table-filling.
+Zhang et al.~\cite{zhang2019aspect} used dependency parse trees with graph convolutional networks for aspect-level sentiment classification, encoding the syntactic relationship between aspect terms and opinion words explicitly. Dependency relations like adjectival-modifier are the same whether the sentence talks about ``delicious pizza'' or ``responsive touchscreen'', so in principle, providing this structure to a model could help it generalise across domains. Their work was on classification, not extraction, but the same reasoning motivated our syntax experiments.
 
-\subsection{Reading Comprehension Approaches}
+Finally, our experimental backbone is FLAN-T5-base~\cite{chung2022scaling}, a 250M parameter variant of T5~\cite{raffel2020exploring} that was further instruction-tuned on over 1800 tasks. Chung et al.\ report that instruction-tuned models converge faster when fine-tuned on new tasks compared to vanilla T5. At this size, the model is small enough to train on a single GPU while still being competent at generating fluent English from task descriptions. We suspect this instruction-tuning background is part of why the NL output format works well for our task: the model has practiced generating structured information in natural language across many tasks before ever seeing ABSA data.
 
-Chen et al.~\cite{chen2021bidirectional} frame ASTE as a bidirectional machine reading comprehension problem. One direction sequentially recognises aspects, then their opinion expressions, then sentiments; the other direction identifies opinions first, then the corresponding aspects, then sentiments. The two directions complement each other, improving triplet coverage at the cost of additional inference passes.
-
-\subsection{Summary}
-
-Discriminative ASTE methods have reached approximately 75--76 F1 on the Rest14 in-domain benchmark, with specialised architectures (GCN, table-filling, contrastive learning) required to push beyond 73. However, these methods are inherently tied to the token-level representations of their backbone encoder (typically BERT or RoBERTa), which limits their ability to generalise across vocabularies. None of the discriminative methods listed above report OOD evaluation results in their papers.
-
-
-\section{Generative Approaches to ABSA}
-
-Generative methods reformulate ABSA as a text-to-text problem, using sequence-to-sequence models (typically T5~\cite{raffel2020exploring}) to produce a textual encoding of the sentiment structure. This section traces their evolution.
-
-\subsection{GAS: Generative Aspect-Based Sentiment Analysis}
-
-Zhang et al.~\cite{zhang2021towards} (ACL 2021) were among the first to show that T5 can be competitive on ABSA by simply generating a structured representation of the output. The input sentence is prefixed with a task description, and the model generates tuples in a fixed format. While simpler than discriminative methods, GAS underperformed them on ASTE, achieving roughly 70 F1 on Rest14 compared to 73 for Span-ASTE at the time.
-
-\subsection{Paraphrase: Natural-Language Output}
-
-Zhang et al.~\cite{zhang2021aspect} (EMNLP 2021) proposed encoding the output as a natural-language paraphrase rather than a structured tuple. For ASQP (quads), the model generates sentences like ``the food quality is great because the pizza is delicious'' rather than a bracketed quad representation. The key insight is that natural-language output aligns with the pre-training distribution of the model. This is the direct inspiration for our natural-language output format, though we extend it to ASTE (triples) and evaluate it specifically for OOD generalisation, which the original paper did not address.
-
-\subsection{MvP: Multi-View Prompting}
-
-Gou et al.~\cite{gou2023mvp} (ACL 2023) observed that different element orderings in the output template lead to different error patterns. MvP trains the model on multiple orderings simultaneously (using markers like [A][O][S] to indicate element positions) and aggregates predictions at inference time via majority voting. Combined with multi-task training across 10 datasets, MvP achieved 76.08 F1 on Rest14 for ASTE, the highest generative result reported to date. However, this number uses cross-dataset multi-task training (10 datasets jointly), making it difficult to isolate the contribution of multi-view prompting alone.
-
-\subsection{STAR: Stepwise Task Augmentation}
-
-Xie et al.~\cite{xie2025star} (AAAI 2025) augment training data by decomposing the main ASQP task into pairwise sub-tasks (aspect+opinion, aspect+polarity, etc.) and training on all decompositions alongside the full quad prediction. This effectively multiplies the training data by 7$\times$. STAR reports improvements mainly in low-resource settings and provides modest gains ($\sim$1 point) in full-data settings over MvP. Like MvP, STAR evaluates exclusively in-domain.
-
-\subsection{DOT: Dynamic Order Template}
-
-The most recent generative ABSA work (ACL 2025)~\cite{dot2025} addresses the inefficiency of MvP's exhaustive multi-view generation at inference. DOT dynamically predicts which orderings are most informative for each instance based on entropy, generating only the necessary views. This reduces inference cost while maintaining MvP-level accuracy.
-
-\subsection{InstructABSA}
-
-Scaria et al.~\cite{scaria2023instructabsa} (NAACL 2024) applied instruction tuning to ABSA subtasks. Their method instruction-tunes Tk-Instruct-base (a T5-based 220M parameter model) with positive, negative, and neutral in-context examples for each training sample. InstructABSA achieved state-of-the-art on several SemEval subtasks (ATE, ATSC), outperforming much larger models used without task-specific instruction tuning. However, it evaluates individual subtasks rather than the joint ASTE formulation, making direct comparison to our work limited. It demonstrates the value of instruction tuning for ABSA, consistent with our choice of FLAN-T5 over plain T5.
-
-\subsection{Summary}
-
-Generative methods have converged to a common recipe: take a pre-trained seq2seq model (usually T5), design an input prompt and output template, and fine-tune end-to-end. The key design decisions that differentiate methods are: output format (structured vs natural-language), element ordering (fixed vs multi-view), and training data construction (single-task vs multi-task/sub-task augmentation). All published evaluation is in-domain. Our work tests these design decisions in the OOD setting.
-
-
-\section{Large Language Models for ABSA}
-
-The emergence of large language models (LLMs) has prompted investigation of their capabilities on ABSA tasks, both in zero/few-shot settings and via fine-tuning.
-
-\subsection{Zero-Shot and Few-Shot Evaluation}
-
-A comprehensive evaluation of GPT-3.5 and GPT-4 on SemEval ABSA tasks~\cite{veyseh2024llm_absa} showed that GPT-4 in 6-shot settings approaches the performance of fine-tuned models on ATSC (aspect-level polarity classification), but struggles with extraction tasks (ATE, AOPE) where it must identify span boundaries. Fine-tuned GPT-3.5 achieves 83.8 F1 on the joint ATE+ATSC task, although this is a simpler formulation than ASTE since it does not require opinion extraction.
-
-A consistent finding across LLM evaluations is that these models perform better at classification (determining polarity) than at extraction (identifying span boundaries). This matches our observations: in our LLM experiments, aspect-only F1 reaches 0.80 for Gemma2 27B in 6-shot, but opinion span matching drags the full triplet F1 down to 0.65.
-
-\subsection{Fine-Tuned LLMs}
-
-Fine-tuning smaller LLMs (LLaMA 7B/13B) for ABSA has been explored but generally does not outperform purpose-built smaller models. Studies at the WASSA 2024 workshop found that fine-tuned LLaMA approaches but does not surpass T5-based methods on compound ABSA tasks, at significantly higher computational cost.
-
-\subsection{Relevance to Our Work}
-
-Our LLM experiments (Gemma2 27B, Qwen2.5 32B, Command-R) serve a specific purpose in the thesis: establishing whether the OOD generalisation advantage of fine-tuned models persists when compared against models with much broader pretraining knowledge. The answer is yes: our 250M parameter FLAN-T5 consistently outperforms 27-32B parameter LLMs in few-shot settings on both ID and OOD data, suggesting that task-specific fine-tuning remains more efficient than scale for structured extraction tasks.
-
-
-\section{Cross-Domain ABSA}
-
-Cross-domain ABSA aims to apply models trained on one domain (e.g., restaurant reviews) to another domain (e.g., laptop reviews) without additional annotation. This is our primary research focus.
-
-\subsection{Discriminative Domain Adaptation}
-
-Traditional approaches use adversarial training or domain-invariant feature learning to align source and target representations. These were developed primarily for simpler ABSA subtasks (ATE, ATSC) rather than ASTE. For aspect-level polarity classification, adversarial methods show moderate success~\cite{yu2023crossdomain_aug}, but the triplet extraction task is fundamentally harder to adapt because the model must simultaneously maintain domain-invariant representations while performing fine-grained discrimination between aspect boundaries, opinion boundaries, and their pairings.
-
-FOAL~\cite{foal2023} applies fine-grained contrastive learning to reduce domain discrepancy for cross-domain ASTE. It requires unlabeled target-domain data during training (unsupervised domain adaptation setting), which differs from our zero-shot setting where no target data is available.
-
-TFMT~\cite{tfmt2024} uses table-filling combined with a mean teacher framework to generate pseudo-labels for unlabeled target-domain sentences. This is a semi-supervised approach that, like FOAL, assumes access to target-domain text (a weaker assumption than labeled data but still an assumption we do not make).
-
-\subsection{The DMASTE Benchmark}
-
-Xu et al.~\cite{xu2023dmaste} (ACL 2023 Findings) introduced DMASTE, a multi-domain ASTE benchmark with 8 Amazon review domains annotated for triplets. Four domains serve as training sources (electronics, beauty, fashion, home) and four as test targets (book, grocery, pet, toy). They evaluated several existing methods: Span-ASTE consistently outperformed generative methods, achieving 43.50 avg F1 in single-source and 45.42 in multi-source, compared to 39.11 and approximately 42 for GAS. No domain adaptation techniques are applied; it is a pure train-on-source, test-on-target benchmark.
-
-\subsection{Domain-Expanded ASTE}
-
-Chia et al.~\cite{chia2022rethinking} (EMNLP 2024 Workshop) is the work most directly related to ours. They expanded the standard ASTE benchmark with hotel and cosmetics domains and systematically evaluated five methods in ID, OOD, and cross-domain settings. Key findings:
-\begin{itemize}
-    \item Generative methods (GAS, Paraphrase) generalise better OOD than discriminative methods (GTS, Span-ASTE, RoBMRC), with an average domain shift gap of 14.6 points vs 16.8 points.
-    \item ChatGPT (0-shot) has the smallest domain shift gap (7.4 points) but the worst in-domain performance.
-    \item They propose CASE, a confidence-aware decoding strategy that improves both ID and OOD performance of LLMs.
-\end{itemize}
-
-Our work differs in three ways: (1) we evaluate a wider range of training strategies (output format, syntax, augmentation, task decomposition) rather than just comparing method families; (2) we use FLAN-T5 rather than vanilla T5/BART; (3) we validate with multi-seed statistical testing and across three benchmarks including DMASTE.
-
-More recently, LLMs with chain-of-thought reasoning have been explored for zero-shot cross-domain ABSA, avoiding fine-tuning entirely by crafting prompts that help the model reason about domain-specific aspects. While promising for classification subtasks (polarity prediction), these approaches have not yet demonstrated competitive extraction performance on ASTE, where precise span identification remains a bottleneck for prompted models.
-
-
-\section{Data Augmentation for ABSA}
-
-Data augmentation is a natural strategy for improving generalisation. By increasing training diversity, the model might learn patterns that transfer better to unseen domains. Several approaches have been explored for ABSA.
-
-\subsection{Traditional Augmentation}
-
-Standard NLP augmentation techniques have been applied to ABSA with mixed results:
-\begin{itemize}
-    \item \textbf{EDA (Easy Data Augmentation)}~\cite{wei2019eda}: synonym replacement, random insertion, swap, and deletion. Generally provides small gains for classification but limited benefit for extraction tasks where span boundaries matter.
-    \item \textbf{Back-translation}~\cite{sennrich2016backtranslation}: translating to another language and back introduces paraphrases. Effective for classification but can corrupt span alignments needed for ASTE.
-    \item \textbf{Contextual augmentation}: using masked language models (BERT) to replace words in context. MELM~\cite{zhou2021melm} applied this to entity spans for NER, showing gains in low-resource settings.
-\end{itemize}
-
-For ABSA specifically, Wang et al.~\cite{wang2022contrastive_aug} (COLING 2022) proposed a contrastive cross-channel framework that generates multi-aspect training sentences using a fine-tuned generator. Yu et al.~\cite{yu2023crossdomain_aug} (ACL 2023) combined domain-adaptive language modeling with augmentation for cross-domain ABSA, showing improvements on aspect-level polarity classification but not on triplet extraction.
-
-\subsection{LLM-Based Augmentation}
-
-The use of LLMs for data generation has become a major research direction. A comprehensive survey by Ding et al.~\cite{ding2024llm_aug_survey} (ACL 2024 Findings) categorises LLM augmentation approaches and identifies when they help: primarily in low-resource settings, with diminishing or negative returns in full-data regimes.
-
-For ABSA specifically, the IDG framework~\cite{zhong2024iterative} uses GPT-3.5 to iteratively generate aspect-sentiment training data with a self-reflection filtering mechanism. It shows improvements over traditional augmentation methods but evaluates only on polarity classification (ATSC), not triplet extraction. The generated data achieves comparable performance to human-annotated data on several benchmarks, but mixing generated with real data provides the best results.
-
-More recent work on LLM-based ABSA augmentation (DS2-ABSA, ACL 2025) uses dual-stream synthesis (label-to-text and text-to-label) with label refinement for few-shot settings. These approaches consistently show that the quality filtering step is critical: raw LLM generation introduces enough noise to hurt performance.
-
-\subsection{Relevance to Our Negative Results}
-
-Our opinion synonym augmentation experiment is situated in this landscape. We found that LLM-generated paraphrases (replacing opinion terms with synonyms) hurt OOD performance even at low augmentation fractions. This is consistent with the broader finding that LLM augmentation helps classification tasks more than extraction tasks, and helps low-resource settings more than full-data settings. In our setup (1266 training sentences, full triplet extraction), the distributional mismatch introduced by LLM-generated text outweighs the vocabulary diversity benefit.
-
-The self-training approach with pseudo-label scoring~\cite{st_scorer2024} (ACL 2024) offers a potential explanation: the quality of generated data matters more than quantity, and ABSA extraction tasks are particularly sensitive to subtle annotation errors because the model must learn exact span boundaries. Our validation pipeline attempted to ensure quality, but the distributional shift in LLM-generated sentence structure still degraded the model.
-
-
-\section{Pre-trained Seq2Seq Models}
-
-Our experimental backbone is FLAN-T5-base~\cite{chung2022scaling}, so it is worth understanding what distinguishes it from plain T5~\cite{raffel2020exploring}.
-
-T5 (Text-to-Text Transfer Transformer) casts all NLP tasks into a text-to-text format during pretraining: the model receives a text input and produces a text output for every task, including classification, translation, summarization, and question answering. This unified framework means the same architecture and training procedure can be applied to any downstream task with appropriate prompt formatting.
-
-FLAN-T5 extends T5 with instruction tuning across 1800+ tasks~\cite{chung2022scaling}. The key finding is that instruction-tuned models converge faster and to higher performance when fine-tuned on new downstream tasks. They are better ``starting checkpoints''. For our purposes, FLAN-T5-base (250M parameters) provides:
-\begin{itemize}
-    \item Better few-shot capabilities than plain T5 of the same size.
-    \item Stronger instruction-following behaviour, which may explain why the natural-language output format works well: the model is already accustomed to generating structured text in response to task descriptions.
-    \item Competitive performance with much larger models in task-specific fine-tuning, consistent with the ``small model + fine-tuning beats large model + prompting'' finding for extraction tasks.
-\end{itemize}
 
 \chapter{Methodology}\label{ch:metodology}
 
@@ -498,7 +325,7 @@ This chapter describes the methods we evaluated for out-of-domain generalisation
 
 \section{Task Formulation}
 
-We formulate Aspect Sentiment Triplet Extraction (ASTE) as a sequence-to-sequence generation problem, following GAS~\cite{zhang2021towards} and the Paraphrase framework~\cite{zhang2021aspect}. Given an input sentence $x$, the model generates a text sequence $y$ encoding all sentiment triplets $(a_i, o_i, p_i)$ present in the sentence, where $a_i$ is an aspect term, $o_i$ is an opinion term, and $p_i \in \{\text{positive}, \text{negative}, \text{neutral}\}$ is the sentiment polarity.
+Rather than treating ASTE as a single monolithic task, we decompose it into three base objectives: aspect extraction, sentiment extraction, and polarity inference. The model can be tasked to perform any combination of these, from a single objective to the full triplet, and anything in-between.
 
 The input follows a structured prompt format:
 
@@ -538,28 +365,23 @@ Triplets are encoded using English sentence templates. The model generates text 
 \textbf{Task} & \textbf{Template} \\
 \midrule
 Aspect only & \texttt{the aspect discussed is \{aspect\}} \\
-Opinion only & \texttt{the opinion expressed is \{sentiment\}} \\
+Opinion only & \texttt{the opinion expressed is \{opinion\}} \\
 Polarity only & \texttt{the overall sentiment is \{polarity\}} \\
-Category only & \texttt{the category discussed is \{category\}} \\
 \midrule
-Aspect + Opinion & \texttt{\{aspect\} is described as \{sentiment\}} \\
+Aspect + Opinion & \texttt{\{aspect\} is described as \{opinion\}} \\
 Aspect + Polarity & \texttt{the opinion about \{aspect\} is \{polarity\}} \\
-Opinion + Polarity & \texttt{the opinion \{sentiment\} conveys a \{polarity\} sentiment} \\
-Aspect + Category & \texttt{\{aspect\}, related to \{category\}, is being discussed} \\
-Polarity + Category & \texttt{the sentiment toward \{category\} is \{polarity\}} \\
+Opinion + Polarity & \texttt{the opinion \{opinion\} conveys a \{polarity\} sentiment} \\
 \midrule
-Triplet (A+O+P) & \texttt{\{aspect\} is described as \{sentiment\}, expressing a \{polarity\} sentiment} \\
-Quad (A+O+P+C) & \texttt{\{aspect\}, related to \{category\}, is described as \{sentiment\}, expressing a \{polarity\} sentiment} \\
+Triplet (A+O+P) & \texttt{\{aspect\} is described as \{opinion\}, expressing a \{polarity\} sentiment} \\
 \midrule
 Implicit opinion & \texttt{\{aspect\} carries an implied \{polarity\} opinion} \\
-Implicit aspect & \texttt{the implied aspect is \{aspect\}, described as \{sentiment\}, expressing a \{polarity\} sentiment} \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Multiple triplets within the same sentence are joined with semicolons. For single-element tasks with multiple annotations, a plural list form is used (e.g., \texttt{the aspects discussed are food, service, ambiance}). The implicit templates handle cases where an opinion is implied but not stated (common in the laptop domain) or where an aspect is inferable from context but not explicitly mentioned (40--47\% of annotations in DMASTE).
+If an input sentence contains more than one triplet, semicolons separate them in the target. For single-element tasks with multiple annotations, a plural list form is used (e.g., \texttt{the aspects discussed are food, staff and ambiance}).
 
-The rationale for natural-language output is twofold:
+The main motivation for this output format is twofold:
 \begin{enumerate}
     \item It aligns with the pre-training objective. FLAN-T5 was trained to generate fluent English, not bracketed structures. The model can reuse existing generation capabilities rather than learning a new output syntax from scratch.
     \item The template words (``is described as'', ``expressing a'') act as structural delimiters that constrain the output space. On out-of-domain inputs where the model is less certain, this may reduce the likelihood of malformed outputs.
@@ -568,46 +390,42 @@ The rationale for natural-language output is twofold:
 
 \section{Input Representation}\label{sec:syntax}
 
-Beyond the raw sentence text, we investigate whether augmenting the input with syntactic annotations improves cross-domain transfer. The intuition is that aspect-opinion relationships are often encoded in syntactic structure, ``delicious pizza'' and ``responsive touchscreen'' share the same adjectival modifier dependency regardless of domain. Making this structure explicit might help the model generalise where surface vocabulary differs.
+Beyond the raw sentence text, we investigate whether augmenting the input with syntactic annotations improves cross-domain transfer. The intuition is that aspect-opinion relationships are often encoded in syntactic structure: ``delicious pizza'' and ``responsive touchscreen'' share the same adjectival modifier dependency regardless of domain. Making this structure explicit might help the model generalise where surface vocabulary differs.
 
-We evaluate four syntactic annotation modes, all computed using spaCy's \texttt{en\_core\_web\_sm} model and cached at data load time:
+We evaluate four syntactic annotation modes, all computed using spaCy's \texttt{en\_core\_web\_sm} model:
 
 \subsection{Compact Dependency Annotations}
 
-A separate \texttt{Syntax:} line is appended to the input containing content words (nouns, verbs, adjectives, adverbs, proper nouns) with their dependency head and relation type. Function words and punctuation are excluded to keep the representation focused on semantically meaningful structure:
+A separate \texttt{Syntax:} line is appended to the input containing content words (nouns, verbs, adjectives, adverbs) with their dependency head and relation type:
 
 \begin{lstlisting}
 Task: aspect-extraction, sentiment-extraction, polarity-inference
-Input: But the staff was so horrible to us .
 Syntax: staff->was:nsubj horrible->was:acomp
+Input: But the staff was so horrible to us .
 \end{lstlisting}
-
-This tells the model that ``staff'' is the nominal subject of ``was'' and ``horrible'' is its adjectival complement, enough to identify the aspect-opinion pair without domain-specific vocabulary knowledge.
 
 \subsection{Compact Part-of-Speech Annotations}
 
-A lighter alternative that provides only POS tags for content words, without dependency relations:
+A lighter alternative that provides only POS tags for content words:
 
 \begin{lstlisting}
 Syntax: staff/NOUN was/AUX horrible/ADJ
 \end{lstlisting}
 
-This gives the model word-class information (nouns tend to be aspects, adjectives tend to be opinions) without the full dependency structure.
-
 \subsection{Inline Annotations}
 
-Two inline modes replace the original input tokens directly with annotated versions:
+Two inline modes inject annotations directly into the input sentence:
 \begin{itemize}
     \item Inline dependency: \texttt{staff/nsubj was horrible/acomp}
     \item Inline POS: \texttt{staff/NOUN was/AUX horrible/ADJ}
 \end{itemize}
 
-These modify the \texttt{Input:} line rather than adding a separate syntax line, which means the model must handle the annotations mixed in with the actual sentence tokens.
+Both inline modes alter the input sentence itself, so the model must learn to distinguish annotation tokens from actual sentence content. As shown in Section~\ref{sec:syntax-results}, both methods hurt performance consistently.
 
 
 \section{Training Strategies}\label{sec:training-strategies}
 
-This section covers all interventions that modify how the training data is constructed or presented to the model, without changing the model architecture itself.
+This section covers all interventions that modify how the training data is constructed or presented to the model.
 
 \subsection{Multi-Ordering Training}
 
@@ -622,93 +440,100 @@ The model is trained with multiple element orderings for the same triplet. Each 
 \toprule
 \textbf{Order} & \textbf{Template} \\
 \midrule
-A, O, P & \texttt{\{aspect\} is described as \{sentiment\}, expressing a \{polarity\} sentiment} \\
-A, P, O & \texttt{\{aspect\} carries a \{polarity\} opinion, expressed as \{sentiment\}} \\
-O, A, P & \texttt{the opinion \{sentiment\} is expressed towards \{aspect\}, conveying a \{polarity\} sentiment} \\
-O, P, A & \texttt{\{sentiment\} conveys a \{polarity\} sentiment about \{aspect\}} \\
-P, A, O & \texttt{a \{polarity\} sentiment toward \{aspect\} is expressed as \{sentiment\}} \\
-P, O, A & \texttt{a \{polarity\} sentiment is expressed as \{sentiment\}, regarding \{aspect\}} \\
+A, O, P & \texttt{\{aspect\} is described as \{opinion\}, expressing a \{polarity\} sentiment} \\
+A, P, O & \texttt{\{aspect\} carries a \{polarity\} opinion, expressed as \{opinion\}} \\
+O, A, P & \texttt{the opinion \{opinion\} is expressed towards \{aspect\}, conveying a \{polarity\} sentiment} \\
+O, P, A & \texttt{\{opinion\} conveys a \{polarity\} sentiment about \{aspect\}} \\
+P, A, O & \texttt{a \{polarity\} sentiment toward \{aspect\} is expressed as \{opinion\}} \\
+P, O, A & \texttt{a \{polarity\} sentiment is expressed as \{opinion\}, regarding \{aspect\}} \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-This is functionally equivalent to MvP's element-order prompting~\cite{gou2023mvp}. MvP uses explicit markers (\texttt{[A][O][S]}) while we encode order through the task name sequence in the prompt. At inference time, predictions from multiple orderings can be aggregated via majority voting. We evaluate training-time multi-ordering and inference-time voting separately to isolate their contributions.
+This is functionally equivalent to MvP's element-order prompting~\cite{gou2023mvp}, but encoded through template variation rather than explicit markers. At inference time, predictions from multiple orderings can be aggregated via majority voting. We evaluate training-time multi-ordering and inference-time voting separately.
 
-\subsection{Sub-task Decomposition}
+\subsection{Sub-task Decomposition (STAR)}
 
-Following STAR~\cite{xie2025star}, we train on decomposed sub-tasks alongside the full triplet task. For each training example, additional instances are generated for all sub-task combinations (3 singles + 3 pairs = 6 additional instances per example, yielding 7$\times$ data multiplication). The hypothesis is that sub-task training helps the model learn element-level patterns that transfer better across domains.
+Following STAR~\cite{xie2025star}, we train on decomposed sub-tasks alongside the full triplet task. For each training example, additional instances are generated for all sub-task combinations (3 singles + 3 pairs = 6 additional instances per example, yielding 7$\times$ data multiplication).
+
+\subsection{Mixed-Objective Training}
+
+In mixed-objective training, each training example is randomly assigned to a subset of objectives at the start of every epoch, rather than always being used for full triplet extraction. A sentence used for full triplet extraction in one epoch might be assigned to aspect-only extraction in the next, or to an aspect+polarity pair in another. The assignments follow a configurable distribution and are re-randomised every epoch, so the model sees the same data through different lenses without any data duplication.
+
+The hypothesis is that exposure to simpler extraction variants teaches the model to recognise individual elements (aspects, opinions) in isolation, which might produce more robust representations for OOD transfer.
+
+Both mixed-objective training and STAR expose the model to the same set of task configurations, but differ in whether they replace or duplicate: mixed-objective replaces each example's task assignment per epoch without changing dataset size, while STAR duplicates every example into all 7 configurations simultaneously, multiplying the dataset by 7$\times$.
 
 \subsection{Curriculum Learning}
 
-Training proceeds through waypoints that interpolate task partition weights across epochs, gradually shifting the training focus. We evaluated three schedules:
+Training proceeds through waypoints that interpolate task partition weights across epochs. We define waypoints at specific epochs, each specifying a target distribution over task types, and interpolate linearly between them. Three schedules were tested:
 
 \begin{enumerate}
-    \item \textbf{Overlap-first}: begins with sub-tasks that share vocabulary with the full triplet task (aspect+opinion, aspect+polarity), then transitions to full triplet extraction. The idea is to build element-pairing capabilities before requiring the full composition.
-    \item \textbf{Fast ramp}: spends only the first few epochs on sub-tasks before quickly transitioning to full triplet training. A minimal warm-up that tests whether even brief sub-task exposure helps.
-    \item \textbf{Sandwich}: starts with full triplet training, drops to sub-tasks in the middle epochs, then returns to full triplet. The mid-training sub-task phase acts as a regulariser, forcing the model to revisit element-level patterns after initial convergence.
+    \item \textbf{Overlap-first}: epochs 0--10 train exclusively on singles (33\% aspect, 33\% opinion, 34\% polarity). From epoch 10 to 20, training shifts to a mix of pairs and full triplets (20\% each pair type, 40\% full). From epoch 20 onward, 100\% full triplet.
+    \item \textbf{Fast ramp}: epoch 0 starts with a broad mix across all 7 configurations (15\% each single, 10\% each pair, 25\% full). By epoch 5, the distribution has already shifted to 100\% full triplet, which remains for the rest of training.
+    \item \textbf{Sandwich}: epochs 0--8 are 100\% full triplet. Epochs 8--16 drop to a broad mix of simpler objectives (20\% each single, 10\% each pair, 10\% full), intended as a regularisation phase. From epoch 16 onward, 100\% full triplet again.
 \end{enumerate}
-
-Each schedule was also tested with compact dependency annotations to see whether curriculum and syntax enrichment interact positively.
 
 \subsection{Aspect Masking}
 
-Aspect spans in the input are replaced with sentinel tokens (\texttt{<extra\_id\_X>}). The model must still predict the correct aspect in the output, forcing reliance on contextual cues rather than copying. If the model learns to identify aspects by contextual role rather than memorising specific terms, it might handle novel aspects in unseen domains better.
+Aspect spans in the input are replaced with sentinel tokens (\texttt{<extra\_id\_X>}). The model must still predict the correct aspect in the output, forcing reliance on contextual cues rather than copying. The idea is loosely inspired by MELM~\cite{zhou2021melm}, which masks entity spans for NER augmentation.
 
 \subsection{Cross-Domain Data Mixing}
 
-The primary training set is augmented with a fraction of data from a different domain (e.g., Rest14 + DMASTE electronics). The motivation is that exposure to diverse domains during training might improve generalisation to unseen domains.
+The primary training set is augmented with a fraction of data from a different domain (e.g., Rest14 + DMASTE electronics). Each DMASTE domain is sampled at a fraction chosen to contribute approximately 315 additional sentences, roughly 25\% of the Rest14 training set size.
 
 \subsection{Opinion Synonym Augmentation}
 
-For each training example, an LLM (Gemma2:27b) rewrites the sentence replacing opinion terms with synonyms of the same polarity. The generation uses a 5-shot chat prompt that provides the sentence with its full annotation structure and asks for rewritten variants.
-
-\textbf{Generation.} The LLM receives the original sentence, all aspect-opinion-polarity annotations, and is asked to produce 2 rewritten versions where only the opinion terms change. The prompt explicitly instructs the model to preserve aspect terms exactly and maintain polarity. Five diverse few-shot examples (covering multi-aspect sentences, mixed polarities, and neutral cases) guide the output format.
-
-\textbf{Validation.} Each generated variant goes through a multi-step validation pipeline before being accepted:
+For each training example, an LLM (Gemma2:27b) rewrites the sentence replacing opinion terms with synonyms of the same polarity. The generation uses a 5-shot chat prompt and goes through a multi-step validation pipeline:
 \begin{enumerate}
-    \item \textbf{Aspect preservation}: every original aspect term must appear in the rewritten sentence (case-insensitive substring match). Variants that drop or modify aspects are discarded.
-    \item \textbf{Opinion mapping}: the LLM's response is parsed to extract explicit old$\rightarrow$new opinion mappings. At least one opinion must have actually changed.
-    \item \textbf{Opinion presence}: each new opinion term must appear in the rewritten sentence. If the LLM claims a substitution that is not reflected in the generated text, the variant is discarded.
+    \item \textbf{Aspect preservation}: every original aspect term must appear in the rewritten sentence.
+    \item \textbf{Opinion mapping}: at least one opinion must have actually changed.
+    \item \textbf{Opinion presence}: each new opinion term must appear in the rewritten sentence.
 \end{enumerate}
 
-This pipeline rejected approximately 20\% of generated variants (1989 valid from $\sim$2500 attempts across 1266 sentences). We evaluated the augmented data at two mixture fractions: 0.2 (adding 20\% synthetic examples) and 1.0 (doubling the training set with all valid variants).
+This pipeline rejected approximately 20\% of generated variants (1989 valid from $\sim$2500 attempts across 1266 sentences). We evaluated augmented data at two mixture fractions: 0.2 and 1.0.
+
+
+\section{LLM Few-Shot Evaluation}\label{sec:llm-method}
+
+To contextualise our fine-tuned model's performance, we evaluate three LLMs in zero-shot and six-shot settings:
+
+\begin{itemize}
+    \item \textbf{Gemma2 27B}~\cite{team2024gemma} --- Google's 27B parameter model.
+    \item \textbf{Qwen2.5 32B}~\cite{hui2024qwen2} --- Alibaba's 32B parameter model.
+    \item \textbf{Command-R}~\cite{cohere2024commandr} --- Cohere's 35B parameter model.
+\end{itemize}
+
+For the 6-shot setting, demonstrations are retrieved from the training set using a hybrid strategy: 3 examples via BM25~\cite{robertson2009bm25} (lexical similarity) and 3 via SimCSE~\cite{gao2021simcse} (semantic similarity), ensuring both vocabulary and structural diversity. Each model is tested on both the English SemEval ASTE benchmark and a Romanian ABSA dataset.
 
 
 \section{Evaluation Framework}\label{sec:evaluation}
 
 \subsection{Metrics}
 
-\textbf{Exact-match F1.} The primary metric is micro-averaged precision, recall, and F1 at the triplet level. A predicted triplet $(a, o, p)$ is correct only if all three elements exactly match a gold triplet. We also report F1 for subsets of elements (aspect-only, opinion-only, polarity-only, aspect+opinion) to identify which component is the bottleneck.
+\textbf{Exact-match F1.} The primary metric is micro-averaged precision, recall, and F1 at the triplet level. A predicted triplet $(a, o, p)$ is correct only if all three elements exactly match a gold triplet.
 
-\textbf{Lenient matching.} For error analysis, we use lenient metrics that count near-misses as partial matches. Two similarity functions quantify how close a prediction is to the gold:
-\begin{itemize}
-    \item Token overlap F1: unordered token-level overlap between predicted and gold spans, computed as the harmonic mean of token-level precision and recall.
-    \item LCS F1: based on the longest common subsequence between predicted and gold spans, rewarding correct ordering of shared tokens.
-\end{itemize}
+\textbf{Romanian metrics.} For the Romanian task (polarity + category classification), we report pair F1 (both must match), polarity F1, and category F1.
 
-A prediction is counted as a lenient match if the minimum similarity across all elements of the tuple exceeds a threshold (default 0.8). This helps distinguish genuine errors from boundary disagreements.
-
-\textbf{Soft F1 (embedding-based).} For the aspect key specifically, we compute a soft match using sentence-transformer embeddings (all-MiniLM-L6-v2). This captures semantic equivalence between predicted and gold aspect spans that differ lexically but refer to the same concept (e.g., ``OS'' vs ``operating system'').
-
-\textbf{Average overlap.} We report average token overlap and LCS overlap across all matched prediction-gold pairs, along with the match rate (fraction of predictions with any match). This provides a continuous view of prediction quality beyond the binary exact-match F1.
+Generated outputs are parsed using regex-based template matching. Malformed predictions that do not conform to the expected template structure score zero; no lenient parsing or partial credit.
 
 \subsection{Evaluation Protocol}
-
-Generated outputs are parsed using regex-based template matching. Malformed predictions that do not conform to the expected template structure score zero; no lenient parsing or partial credit. This ensures metrics reflect the model's ability to produce well-formed outputs.
 
 For out-of-domain evaluation, the model is trained on one domain and tested on a different domain without any adaptation. We use three setups:
 
 \begin{enumerate}
-    \item \textbf{SemEval ASTE}: Train on Restaurant14, test on Restaurant14 (in-domain), Restaurant15 and Restaurant16 (near-OOD, same domain family), and Laptop14 (out-of-domain).
+    \item \textbf{SemEval ASTE}: Train on Restaurant14, test on Restaurant14 (in-domain), Restaurant15 and Restaurant16 (near-OOD), and Laptop14 (out-of-domain).
     \item \textbf{DMASTE}: Train on source domains (electronics, beauty, fashion, home), test on held-out targets (book, grocery, pet, toy). Both single-source and multi-source settings.
-    \item \textbf{Romanian ABSA (eMAG)}: FLAN-T5-base on Romanian phone reviews for polarity and category prediction, compared against large LLMs and XLM-R.
+    \item \textbf{Romanian ABSA (eMAG)}: Polarity and category prediction on phone reviews, comparing fine-tuned models against LLMs.
 \end{enumerate}
 
 All multi-seed experiments use 5 random seeds (42, 123, 456, 789, 1337), reporting mean and standard deviation.
 
+
+
 \chapter{Implementation}\label{ch:implementation}
 
-This chapter describes the technical implementation: model architecture, training infrastructure, baseline systems, and datasets. The entire codebase is written in Python using PyTorch, PyTorch Lightning, and HuggingFace Transformers.
+This chapter describes the technical implementation of the experimental system: model architecture, training infrastructure, baseline systems, and datasets. The system was designed around two principles: reproducibility (every experiment is fully specified by a single configuration file) and comparability (all models and strategies are evaluated through the same pipeline with identical metrics and parsing logic). The entire codebase is written in Python using PyTorch, PyTorch Lightning, and HuggingFace Transformers.
 
 \section{System Architecture}
 
@@ -720,39 +545,34 @@ python main.py --config config/overlays/t5-nl-baseline.yaml --mode train
 
 The base configuration (\texttt{config/base.yaml}) defines sensible defaults for all parameters. Overlay files override only the parameters relevant to a specific experiment, ensuring minimal configuration duplication. At runtime, the overlay is merged on top of the base, and additional overrides can be passed via \texttt{--set} flags for quick experimentation.
 
-Each experiment produces a date-stamped directory (\texttt{experiments/YYYY-MM-DD/experiment-name/}) containing:
-\begin{itemize}
-    \item A frozen copy of the resolved configuration.
-    \item Model checkpoints (best validation F1).
-    \item Results: per-epoch metrics, loss curves, and test-set evaluations.
-\end{itemize}
+Each experiment produces a date-stamped directory (\texttt{experiments/YYYY-MM-DD/experiment-name/}) containing a frozen copy of the resolved configuration, model checkpoints (best validation F1), and results.
+
 
 \section{Model Architecture}
 
 \subsection{FLAN-T5 (Primary Model)}
 
-The primary model is FLAN-T5-base~\cite{chung2022scaling}, a 250M parameter encoder-decoder transformer loaded from HuggingFace (\texttt{google/flan-t5-base}). We use the standard \texttt{AutoModelForSeq2SeqLM} class with gradient checkpointing enabled to reduce memory usage during training.
+The primary model is FLAN-T5-base~\cite{chung2022scaling}, a 250M parameter encoder-decoder transformer. We use the standard \texttt{AutoModelForSeq2SeqLM} class with gradient checkpointing enabled. At training time, teacher forcing is used with standard cross-entropy loss. At inference time, greedy decoding is the default (beam search and sampling were evaluated but did not help, as discussed in Chapter~\ref{ch:results}).
 
-The model takes tokenised input (sentence with task prefix, optionally syntax annotations) and generates output tokens auto-regressively. At training time, teacher forcing is used with standard cross-entropy loss. At inference time, greedy decoding is the default (beam search and sampling were evaluated but did not help, as discussed in Chapter~\ref{ch:results}).
+We suspect FLAN-T5's instruction-tuning background is part of why the NL output format works well: the model has practiced generating structured information in natural language across many tasks before ever seeing ABSA data.
 
 \subsection{RoBERTa Span Extraction (Baseline)}
 
-As a discriminative baseline, we implemented a span extraction model using RoBERTa-base~\cite{liu2019roberta} (125M parameters). The architecture consists of:
-\begin{itemize}
-    \item BIO sequence tagger for aspect and opinion span detection.
-    \item Biaffine attention scorer for pairing detected aspect spans with opinion spans.
-    \item Linear polarity classifier on the concatenated representations of paired spans.
-\end{itemize}
-
-This is a naive implementation: it does not include the specialised architectures (GCN layers, table-filling, contrastive learning) used by published discriminative SOTA methods. It serves as a lower bound to confirm that the generative approach provides meaningful improvements over a straightforward discriminative baseline.
+As a discriminative baseline, we implemented a span extraction model using RoBERTa-base~\cite{liu2019roberta} (125M parameters). The architecture consists of BIO sequence tagging for aspect and opinion span detection, biaffine attention scoring for pairing detected spans, and a linear polarity classifier on concatenated span representations. This is a naive implementation that serves as a lower bound, not a reproduction of the discriminative state of the art.
 
 \subsection{XLM-R (Multilingual Baseline)}
 
-For multilingual experiments, we used XLM-R-base~\cite{conneau2020unsupervised} (278M parameters) in two configurations:
+For multilingual experiments, we used XLM-R-base~\cite{conneau2020unsupervised} (278M parameters) as a classification model for Romanian ABSA, where its multilingual pretraining gives it an advantage over English-centric models.
+
+\subsection{Romanian Encoder Models}
+
+For Romanian polarity + category classification, we additionally compare:
 \begin{itemize}
-    \item As a span extraction model (same BIO + biaffine architecture as RoBERTa) for English ASTE, to test whether multilingual pretraining helps cross-domain transfer on English data.
-    \item As a classification model for Romanian ABSA (polarity + category prediction on eMAG phone reviews), where its multilingual pretraining gives it an advantage over English-centric models.
+    \item \textbf{RoBERT-base}~\cite{masala2020robert} --- 114M parameters, Romanian-only, uncased.
+    \item \textbf{bert-base-romanian-cased}~\cite{dumitrescu2020birth} --- 110M parameters, Romanian-only, cased.
 \end{itemize}
+
+All encoder-based classifiers (including XLM-R) share the same architecture: we load the pre-trained encoder and add a two-layer MLP classification head on top of the \texttt{[CLS]} representation. Since each sentence can have multiple (category, polarity) annotations, we frame the task as multi-label classification over all 33 possible category$\times$polarity combinations (11 categories $\times$ 3 polarities) and train with binary cross-entropy loss over all label positions, applying a 0.5 threshold to the sigmoid outputs at inference time. Training uses AdamW with learning rate $2 \times 10^{-5}$, weight decay 0.01, warmup ratio 0.06, batch size 16, gradient clipping 1.0, bf16 mixed precision, up to 8 epochs with early stopping at patience 3 on validation F1. A 10\% random split of training data serves as the validation set.
 
 \subsection{LLM Inference (Baseline)}
 
@@ -763,12 +583,14 @@ For the LLM baselines, we use the ollama inference server to run quantised model
     \item Command-R (35B, 4-bit quantised)
 \end{itemize}
 
-Each model is prompted with a structured task description and the input sentence. In the 6-shot setting, demonstrations are retrieved from the training set using a hybrid strategy: 3 examples via BM25 (lexical similarity) and 3 via SimCSE (semantic similarity), ensuring both vocabulary and structural diversity in the demonstrations.
+Each model is tested in 0-shot (task description only) and 6-shot (task description plus 6 demonstration examples) settings. In the 6-shot setting, demonstrations are retrieved from the training set using a hybrid approach combining BM25~\cite{robertson2009bm25} (lexical similarity) and SimCSE~\cite{gao2021simcse} (semantic similarity), with each technique selecting half of the examples to ensure a balance of vocabulary and structural similarity with the test sentence.
+
+Output parsing follows the same strict protocol as our fine-tuned models: generated text is matched against expected patterns, and malformed outputs score zero.
 
 
 \section{Training Configuration}
 
-Table~\ref{tab:hyperparams} summarises the training hyperparameters used for the FLAN-T5 experiments. These were determined through preliminary experiments and kept constant across all configurations to ensure fair comparison.
+Table~\ref{tab:hyperparams} summarises the training hyperparameters used for the FLAN-T5 experiments.
 
 \begin{table}[htbp]
 \centering
@@ -798,70 +620,29 @@ Early stopping & Disabled (cosine schedule requires full training) \\
 \end{tabular}
 \end{table}
 
-A few design decisions worth noting:
-\begin{itemize}
-    \item Label smoothing of 0.05 was chosen after ablation (0.1 hurt OOD performance, 0.0 was slightly worse than 0.05).
-    \item Cosine scheduling requires running all epochs. Combining it with early stopping is counterproductive because the learning rate has not yet decayed when early stopping triggers.
-    \item The effective batch size of 32 (8 $\times$ 4 accumulation steps) provides stable training on the relatively small datasets (1266--3831 sentences).
-\end{itemize}
+Label smoothing of 0.05 was chosen after ablation: at 0.1, OOD F1 dropped to 0.427 compared to 0.449 with no smoothing. In a generative extraction setup, the model must produce exact spans token by token; high label smoothing spreads probability mass across the vocabulary, making the model less decisive. At 0.05 the regularisation is light enough to discourage memorisation without degrading generation precision.
+
+We use cosine scheduling over all 30 epochs without early stopping. The two interact poorly: cosine decay is designed so that the final epochs operate at near-zero learning rate for refinement. Early stopping would cut off this low-LR phase, which represents the part of training least likely to overfit.
 
 
 \section{Data Pipeline}
 
 \subsection{Loading and Canonical Format}
 
-All datasets are normalised to a canonical format upon loading: each example is a dictionary with \texttt{sentence} (string), \texttt{tokens} (list), and \texttt{annotations} (list of dicts, each containing \texttt{aspect}, \texttt{aspect\_idx}, \texttt{sentiment}, \texttt{sentiment\_idx}, \texttt{polarity}, and optionally \texttt{category}). Separate loaders exist for ASTE format (token-index-based), ACOS format (JSONL), and the Romanian eMAG format. Training can combine multiple source files, each with a configurable sampling fraction, enabling the cross-domain data mixing experiments.
-
-If syntax enrichment is enabled, annotations are computed via spaCy (\texttt{en\_core\_web\_sm}) at load time and stored as additional fields on each example. This avoids redundant parsing across epochs.
-
-\subsection{Augmentation Chain}
-
-If augmentation is configured, it is applied to canonical-format examples before generative format conversion. The registry applies augmenters in a fixed order:
-\begin{enumerate}
-    \item Duplication (controlled data multiplication for ablation).
-    \item Aspect masking (replace aspect spans with sentinels).
-    \item NLPaug methods (synonym replacement, contextual embeddings, random operations).
-    \item Opinion synonym augmentation (pre-generated LLM rewrites appended to training set).
-\end{enumerate}
+All datasets are normalised to a canonical format upon loading: each example is a dictionary with \texttt{sentence} (string), \texttt{tokens} (list), and \texttt{annotations} (list of dicts, each containing \texttt{aspect}, \texttt{aspect\_idx}, \texttt{sentiment}, \texttt{sentiment\_idx}, \texttt{polarity}, and optionally \texttt{category}). Separate loaders exist for ASTE format, ACOS format (JSONL), and the Romanian eMAG format. If syntax enrichment is enabled, annotations are computed via spaCy at load time.
 
 \subsection{Generative Format Conversion}
 
-The final step converts canonical examples to model input/output pairs via the \texttt{split\_by\_task} function. This resolves several decisions simultaneously:
-\begin{itemize}
-    \item Which task subset to request (full triplet, singles, pairs), based on the configured partition weights.
-    \item Which output format to use (structured, natural-language, or MvP markers).
-    \item Whether to use a shuffled task ordering for multi-ordering training.
-    \item What fraction of examples should use NL vs structured format (for mixed-training experiments).
-    \item Category shuffling per example (to prevent positional bias in ASQP experiments).
-\end{itemize}
+The final step converts canonical examples to model input/output pairs. This resolves which task subset to request, which output format to use, and whether to apply multi-ordering. The full data preparation pipeline is re-executed every epoch with a different random seed, ensuring that task assignments, masking targets, and ordering choices change each epoch. Because the transformation stages are re-executed each epoch with a different random seed, the same training example may receive different masking, task assignment, or element ordering across epochs, so the model never sees the same input-output pair twice.
 
-After the main conversion, additional training examples may be generated: MvP top-k ordering multiplication (5 orderings per example), STAR pairwise relation sub-tasks, syntax auxiliary prediction tasks (dep/POS prediction as secondary objectives), and opinion prediction auxiliary examples.
+Figure~\ref{fig:pipeline} shows the complete training and evaluation pipeline.
 
-\subsection{Per-Epoch Re-randomisation}
-
-The full data preparation pipeline (augmentation + task splitting + format conversion) is re-executed every epoch with a different random seed. This ensures that task partition assignments, masking targets, NL fraction assignments, and ordering choices change each epoch, preventing the model from memorising which examples get which treatment. The curriculum interpolation also operates at this level, adjusting partition weights as training progresses.
-
-
-\section{Evaluation Infrastructure}
-
-\subsection{Output Parsing}
-
-Generated text is parsed back into structured predictions using regex-based template matching. The parser handles:
-\begin{itemize}
-    \item Natural-language format: matches template patterns (``\{X\} is described as \{Y\}, expressing a \{Z\} sentiment'') with fallback for ordering variants.
-    \item Structured format: splits on bracket boundaries and commas.
-    \item MvP marker format: splits on [SSEP] separators and extracts elements by marker position ([A], [O], [S]).
-\end{itemize}
-
-Malformed outputs that match no pattern produce zero predictions (scored as empty).
-
-\subsection{Distributed Evaluation}
-
-When training with DDP (Distributed Data Parallel), validation predictions are gathered across all processes using all-gather operations before computing metrics. This ensures consistent metric reporting regardless of the number of GPUs used.
-
-\subsection{Aggregation Tools}
-
-A built-in aggregation mode (\texttt{--mode aggregate}) collects results across multiple experiments and produces comparison tables (plain text or LaTeX), bar charts, and loss curve plots. This was used to generate all results tables in Chapter~\ref{ch:results}.
+\begin{figure}[p]
+\centering
+\includegraphics[width=\textwidth, height=0.88\textheight, keepaspectratio]{figures/pipeline_complete.pdf}
+\caption{Training and evaluation pipeline. The dashed cluster indicates steps that are re-randomised every epoch. The three parallel evaluation paths (generative, discriminative baseline, LLM inference) are shown on the right.}
+\label{fig:pipeline}
+\end{figure}
 
 
 \section{Datasets}
@@ -887,15 +668,15 @@ Laptop14 (test) & 328 & 543 & 1.66 & OOD test \\
 \end{tabular}
 \end{table}
 
-We train exclusively on Restaurant14 and test on all four. Restaurant15 and 16 are near-OOD (same domain family, different years). Laptop14 is OOD (completely different product category).
+We train exclusively on Restaurant14 and test on all four. A methodological note: we discovered that 80\% of Rest15 test sentences overlap with the combined Rest14+15+16 training set (they share source Yelp reviews across SemEval years). This is why we use Rest14-only training rather than pooling all restaurant data.
 
 \subsection{DMASTE}
 
-The DMASTE benchmark~\cite{xu2023dmaste} provides 8 Amazon review domains annotated for ASTE triplets:
+The DMASTE benchmark~\cite{xu2023dmaste} provides a more rigorous cross-domain evaluation with 8 Amazon review domains:
 
 \begin{table}[htbp]
 \centering
-\caption{DMASTE dataset statistics. Source domains are used for training, target domains for testing.}
+\caption{DMASTE dataset statistics.}
 \small
 \begin{tabular}{@{}llrrrr@{}}
 \toprule
@@ -914,25 +695,102 @@ Target & Toy & 354 & 1431 & 4.04 & 42.7\% \\
 \end{tabular}
 \end{table}
 
-DMASTE differs from SemEval in several ways: sentences are much longer (55--64 tokens vs 15--17), more triplets per sentence (3--4 vs 1.5--2), and 40--47\% of aspects are implicit. Opinion spans are also longer (mean 1.6--1.7 words vs 1.2 in SemEval), reflecting a different annotation style that favours verb-phrase opinions over single-adjective opinions.
+DMASTE differs from SemEval in several ways: sentences are much longer (55--64 tokens vs 15--17), more triplets per sentence (3--4 vs 1.5--2), and 40--47\% of aspects are implicit.
 
 \subsection{Romanian ABSA (eMAG)}
 
-For multilingual evaluation, we use a dataset of Romanian phone reviews from eMAG. The training set contains 27,630 sentences (90,778 annotations, 3.29 avg per sentence) and the test set contains 3,093 sentences (9,478 annotations). The task is polarity and category prediction (not full triplet extraction) across 14 predefined categories (experience, durability, performance, battery, camera, design, audio, software, brand, service, price/quality, quality, compatibility, accessories). This provides a cross-lingual dimension to evaluate whether findings about model efficiency generalise beyond English.
+For multilingual evaluation, we use a dataset of Romanian phone reviews from eMAG (a Romanian e-commerce platform). The task is polarity and category prediction across 11 predefined categories (experience, durability, performance, battery, price\_quality, design, camera, audio, software, brand, service). The training set contains 27,630 sentences (90,778 annotations, 3.29 avg per sentence) and the test set contains 3,093 sentences (9,478 annotations). The polarity distribution is heavily skewed toward positive (72.4\%), with negative at 22.6\% and neutral at 5.0\%.
 
-\subsection{Data Quality Considerations}
+The training data was annotated with GPT-4 assistance: reviews were processed by GPT-4 to identify aspects and assign polarity/category labels from the predefined taxonomy, followed by human review. The test set was annotated independently.
 
-The SemEval annotations contain known quality issues that affect all models equally. Some annotations involve complex rhetorical structures (hypotheticals, counterfactuals) that are arguable even for human annotators. For example, in sentences with conditional or dismissed suggestions, the annotators sometimes mark counterfactual statements as negative opinions. These represent irreducible annotation noise: they inflate the gap between reported performance and true task difficulty, but they do not affect relative comparisons between methods.
+
 
 \chapter{Experimental Results}\label{ch:results}
 
-This chapter presents the experimental results across the three benchmarks. We start with the main finding (output format impact), then cover syntax enrichment, training strategies that did not help, the DMASTE cross-domain benchmark, cross-method comparisons, Romanian results, and error analysis.
+This chapter presents the experimental results across the three benchmarks. We begin with a data analysis that characterises the datasets and explains the sources of cross-domain difficulty. We then present the main finding (output format impact), followed by syntax enrichment results, the series of training strategies that did not help, the DMASTE cross-domain benchmark, LLM comparisons on English and Romanian, in-domain benchmark context, and a detailed error analysis. The chapter concludes with a discussion of the mechanisms behind our findings.
 
-\section{Output Format: The Main Finding}
+\section{Data Analysis}\label{sec:data-analysis}
+
+Before presenting experimental results, we analyse the characteristics of the datasets to understand what makes cross-domain transfer difficult. Figure~\ref{fig:r3-polarity} shows the polarity distribution across datasets, and Figure~\ref{fig:r3-sentlen} compares sentence length distributions between the training domain (Rest14) and the OOD target (Laptop14).
+
+The Rest14 training set contains 1266 sentences with 2338 annotations (1.85 annotations per sentence on average). Sentences are relatively short: mean 17.3 words, median 16, with 95\% of sentences under 34 words. The vocabulary is small (2916 unique words). Aspect spans are overwhelmingly single-word (mean 1.38 words) and opinion spans even shorter (mean 1.17 words). The polarity distribution is skewed toward positive (72.4\%), with negative at 20.5\% and neutral at 7.1\%.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\textwidth]{figures/r3_polarity_distribution.pdf}
+\caption{Polarity distribution across all datasets used in this thesis.}
+\label{fig:r3-polarity}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\textwidth]{figures/r3_sentence_length_histogram.pdf}
+\caption{Sentence length distributions for Rest14 (training) and Laptop14 (OOD test) at word and subword token level.}
+\label{fig:r3-sentlen}
+\end{figure}
+
+\subsection{Vocabulary Overlap}
+
+Table~\ref{tab:vocab-overlap} shows token-level vocabulary overlap between training and test domains. For SemEval, only 3.7\% of Laptop14 aspect tokens appear in the Rest14 training vocabulary, while the Rest14 test set shares 31\%. Opinion overlap is higher across the board (19.7\% for Laptop14), because words like ``good'', ``terrible'', ``excellent'' appear across domains while ``pizza'' and ``keyboard'' do not.
+
+DMASTE target domains show higher overlap overall (24--55\% aspect, 60--76\% opinion) since they share the Amazon review style with the source domains.
+
+\begin{table}[H]
+\centering
+\caption{Token-level vocabulary overlap (\%) between training and test domains.}
+\label{tab:vocab-overlap}
+\small
+\begin{tabular}{@{}llcc@{}}
+\toprule
+\textbf{Train} & \textbf{Test} & \textbf{Aspect overlap} & \textbf{Opinion overlap} \\
+\midrule
+\multicolumn{4}{l}{\textit{SemEval (Rest14 train $\rightarrow$ test sets)}} \\
+\midrule
+Rest14 & Rest14 (ID) & 31.0 & 33.1 \\
+Rest14 & Rest15 & 20.3 & 21.7 \\
+Rest14 & Rest16 & 19.6 & 24.1 \\
+Rest14 & Laptop14 (OOD) & 3.7 & 19.7 \\
+\midrule
+\multicolumn{4}{l}{\textit{DMASTE (source domains $\rightarrow$ target domains)}} \\
+\midrule
+Sources & Book & 24.4 & 60.2 \\
+Sources & Grocery & 38.4 & 65.3 \\
+Sources & Pet & 54.5 & 75.5 \\
+Sources & Toy & 41.2 & 66.8 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Linguistic Differences}
+
+The datasets differ in their annotation styles in ways that go beyond vocabulary. Figure~\ref{fig:pos} compares the POS tag distribution for opinion spans across all datasets. The most striking difference is in opinion annotations: SemEval opinions are adjective-dominant (37--46\% of opinion head POS tags are adjectives: ``delicious'', ``horrible''), while DMASTE opinions are verb-dominant (21--24\% verbs: ``works'', ``love'', ``recommend''). This reflects different annotation conventions rather than just different vocabulary. A model trained on adjective-heavy SemEval opinions may underperform on verb-heavy DMASTE opinions regardless of vocabulary overlap.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\textwidth]{figures/pos_comparison.pdf}
+\caption{POS tag distribution for aspect terms (top) and opinion terms (bottom) across SemEval and DMASTE datasets.}
+\label{fig:pos}
+\end{figure}
+
+\subsection{Structural Characteristics}
+
+DMASTE sentences are 3--4$\times$ longer than SemEval (55--64 tokens vs 15--17), contain 2$\times$ more triplets per sentence (3.3--4.0 vs 1.5--2.0), and have much higher implicit aspect rates (38--47\% vs 0\% in SemEval). These compounding differences make DMASTE a substantially harder cross-domain target than the near-OOD SemEval restaurant variants.
+
+The relationship between vocabulary overlap and performance is not straightforward. The Pet domain has the highest aspect overlap with training sources (54.5\%) but second-worst F1, explained by its 47.4\% implicit aspect rate. Vocabulary overlap is necessary but not sufficient; implicit aspects, sentence length, and annotation density all modulate the relationship.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\textwidth]{figures/dataset_characteristics.pdf}
+\caption{Dataset characteristics comparison: sentence length, triplets per sentence, implicit aspect rate, aspect span length, and opinion span length across all datasets.}
+\label{fig:characteristics}
+\end{figure}
+
+
+\section{Output Format: The Main Finding}\label{sec:format-results}
 
 Table~\ref{tab:multiseed} presents the multi-seed results (5 seeds) for the primary SemEval setup, training on Restaurant14 only.
 
-\begin{table}[htbp]
+\begin{table}[H]
 \centering
 \caption{Multi-seed results on SemEval ASTE (triplet micro-F1, mean$\pm$std across 5 seeds). Training on Rest14 only.}
 \label{tab:multiseed}
@@ -942,59 +800,62 @@ Table~\ref{tab:multiseed} presents the multi-seed results (5 seeds) for the prim
 \textbf{Configuration} & \textbf{Rest14 (ID)} & \textbf{Rest15} & \textbf{Rest16} & \textbf{Laptop14 (OOD)} \\
 \midrule
 Structured baseline & 0.693$\pm$0.008 & 0.575$\pm$0.009 & 0.640$\pm$0.009 & 0.439$\pm$0.012 \\
-Structured + dep. annotations & 0.699$\pm$0.004 & 0.578$\pm$0.012 & 0.655$\pm$0.008 & 0.447$\pm$0.012 \\
+Structured + compact dep. & 0.699$\pm$0.004 & 0.578$\pm$0.012 & 0.655$\pm$0.008 & 0.447$\pm$0.012 \\
 \midrule
 NL baseline & \textbf{0.722$\pm$0.005} & \textbf{0.602$\pm$0.004} & 0.680$\pm$0.010 & \textbf{0.525$\pm$0.012} \\
-NL + compact dependencies & 0.708$\pm$0.006 & 0.596$\pm$0.006 & 0.669$\pm$0.004 & 0.509$\pm$0.005 \\
+NL + compact dep. & 0.708$\pm$0.006 & 0.596$\pm$0.006 & 0.669$\pm$0.004 & 0.509$\pm$0.005 \\
 NL + compact POS & 0.699$\pm$0.003 & 0.601$\pm$0.010 & 0.672$\pm$0.007 & 0.506$\pm$0.012 \\
-NL + multi-ordering & \textbf{0.730$\pm$0.005} & 0.593$\pm$0.010 & \textbf{0.686$\pm$0.009} & 0.524$\pm$0.011 \\
+NL + mixed-objective & \textbf{0.730$\pm$0.005} & 0.593$\pm$0.010 & \textbf{0.686$\pm$0.009} & 0.524$\pm$0.011 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-The central result: switching from structured to natural-language output provides +8.6 F1 points on Laptop14 OOD (0.439$\rightarrow$0.525), with non-overlapping confidence intervals. This is a larger improvement than any other intervention we tested.
+The central result: switching from structured to natural-language output provides +8.6 F1 points on Laptop14 OOD (0.439$\rightarrow$0.525), with non-overlapping confidence intervals. This is a larger improvement than any other intervention we tested. The gap widens with domain distance: +2.9 on Rest14, +2.7 on Rest15, +4.0 on Rest16, +8.6 on Laptop14.
 
-On in-domain data (Rest14), the NL format also helps (+2.9 points), but the OOD improvement is proportionally much larger. On the near-OOD sets (Rest15, Rest16), the pattern holds: +2.7 and +4.0 points respectively.
+Once the model uses NL output, adding syntax enrichment or mixed-objective training on top does not produce further gains: all NL variants land between 0.506 and 0.525 on Laptop14, within overlapping confidence intervals. We believe the format advantage comes from alignment with FLAN-T5's pre-training distribution: on OOD data where the model has less task-specific confidence, generating fluent template sentences is something it can still fall back on.
 
-The NL format improvement is robust across seeds (standard deviation 0.012 on Laptop14, vs the 0.086 gap). No single seed shows the structured format beating NL on OOD data.
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{figures/r3_output_format_comparison.pdf}
+\caption{Output format comparison: structured vs natural-language F1 across all test sets (5-seed mean).}
+\label{fig:r3-format}
+\end{figure}
 
 
-\section{Syntactic Enrichment}
+\section{Syntactic Enrichment}\label{sec:syntax-results}
 
 We tested four syntax annotation modes. Only the compact dependency and compact POS modes (which add a separate Syntax line) were viable. The inline modes (which replace input tokens) consistently hurt both ID and OOD performance, likely because they corrupt the surface form the model uses for span copying.
 
-\begin{table}[htbp]
+\begin{table}[H]
 \centering
-\caption{Syntax enrichment multi-seed results (5 seeds, 30 epochs, Rest14 training). Only the compact separate-line modes are shown; inline modes degraded performance by 5--8 points and were excluded from further evaluation.}
-\label{tab:syntax}
+\caption{Syntax modes comparison (triplet micro-F1, 20 epochs, structured format, Rest14-only training, seed 42).}
+\label{tab:syntax-inline}
 \small
-\begin{tabular}{@{}lcccc@{}}
+\begin{tabular}{@{}lcc@{}}
 \toprule
-\textbf{Configuration} & \textbf{Rest14} & \textbf{Rest15} & \textbf{Rest16} & \textbf{Laptop14} \\
+\textbf{Configuration} & \textbf{Rest14 (ID)} & \textbf{Laptop14 (OOD)} \\
 \midrule
-NL baseline (5-seed) & 0.722 & 0.602 & 0.680 & 0.525 \\
-NL + compact dependencies (5-seed) & 0.708 & 0.596 & 0.669 & 0.509 \\
-NL + compact POS (5-seed) & 0.699 & 0.601 & 0.672 & 0.506 \\
+Baseline (no syntax) & 0.705 & 0.424 \\
++ inline dep. & 0.656 & 0.412 \\
++ inline POS & 0.660 & 0.382 \\
++ compact dep. & 0.708 & 0.481 \\
++ compact POS & 0.713 & 0.494 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-The multi-seed results show that syntax enrichment does \textit{not} significantly help OOD generalisation in our setup. The confidence intervals overlap with the NL baseline on Laptop14. Compact dependencies slightly help near-OOD (Rest15/16) but slightly hurt far-OOD (Laptop14). The POS variant shows a similar pattern.
-
-We also tested auxiliary syntax prediction tasks (training the model to predict dependency relations or POS tags as a secondary objective alongside the main ASTE task. This hurt OOD performance further (0.481 on Laptop14 vs 0.525 baseline), likely because the auxiliary objectives consume model capacity without providing domain-transferable signal).
-
-We hypothesise this is data-size dependent. In earlier experiments with multi-restaurant training (2728 sentences), compact dependencies did help OOD (+2 points). With Rest14-only training (1266 sentences), the additional input length from syntax annotations may dilute the signal without providing enough generalisation benefit to compensate.
+The multi-seed results (Table~\ref{tab:multiseed}) confirm that syntax enrichment does not significantly help OOD generalisation once the NL format is applied. The confidence intervals overlap with the NL baseline on Laptop14. We hypothesise this is data-size dependent: with Rest14-only training (1266 sentences), the additional input length from syntax annotations may dilute the signal without providing enough generalisation benefit to compensate.
 
 
-\section{Training Strategies: Negative Results}
+\section{Training Strategies: Negative Results}\label{sec:negative}
 
-This section documents strategies that did not reliably improve OOD performance. These are presented honestly as negative results: they were worth trying based on their intuitive appeal, but the evidence does not support their use for OOD generalisation in generative ABSA.
+This section documents strategies that did not reliably improve OOD performance. The ablation studies use a single random seed (42) to reduce computational cost. Single-seed results are interpreted relative to the 5-seed baseline's confidence interval (0.525$\pm$0.012 on Laptop14).
 
-\subsection{Multi-Ordering Training (MvP-style)}
+\subsection{Multi-Ordering Training and MvP/STAR Replications}\label{sec:mvp-star}
 
-\begin{table}[htbp]
+\begin{table}[H]
 \centering
-\caption{Multi-ordering and MvP/STAR replication results (single seed 42).}
+\caption{MvP and STAR replication results (triplet micro-F1, seed 42, Rest14-only training).}
 \label{tab:mvp-star}
 \small
 \begin{tabular}{@{}lcccc@{}}
@@ -1013,70 +874,63 @@ NL + multi-ordering (5-seed) & 0.730 & 0.593 & 0.686 & 0.524 \\
 \end{tabular}
 \end{table}
 
-MvP with voting gives a small ID improvement (+1.3 points) but OOD performance (0.530) falls within the NL baseline's confidence interval (0.525$\pm$0.012). The voting mechanism helps compositional accuracy in-domain but does not address vocabulary or domain shift.
+MvP with voting achieves 0.530 on Laptop14, within the NL baseline's confidence interval. The voting mechanism helps ID compositional accuracy but does not address vocabulary or domain shift. STAR hurts OOD significantly ($-$3.8 points for greedy, $-$2.5 with voting). The pairwise sub-task decomposition multiplies training instances from the same domain without introducing any domain-relevant variation.
 
-STAR hurts OOD significantly ($-$3.8 points for greedy, $-$2.5 with voting). The pairwise sub-task decomposition splits model capacity across 7$\times$ more training instances without introducing domain-relevant variation. The sub-tasks are all drawn from the same domain, so more data from the same distribution does not improve cross-domain transfer.
+\subsection{Curriculum Learning}\label{sec:curriculum}
 
-\subsection{Curriculum Learning}
-
-\begin{table}[htbp]
+\begin{table}[H]
 \centering
-\caption{Curriculum learning results (30 epochs, NL format). None beat the NL baseline on OOD.}
+\caption{Curriculum learning results (triplet micro-F1, 28 epochs, NL format, Rest14 training, seed 42).}
 \label{tab:curriculum}
 \small
-\begin{tabular}{@{}lcc@{}}
+\begin{tabular}{@{}lcccc@{}}
 \toprule
-\textbf{Schedule} & \textbf{Rest14 (ID)} & \textbf{Laptop14 (OOD)} \\
+\textbf{Schedule} & \textbf{Rest14 (ID)} & \textbf{Rest15} & \textbf{Rest16} & \textbf{Laptop14 (OOD)} \\
 \midrule
-NL baseline & 0.722 & 0.525 \\
+NL baseline (5-seed avg) & 0.722 & 0.602 & 0.680 & 0.525 \\
 \midrule
-Overlap-first & 0.716 & 0.509 \\
-Overlap-first + dep. & 0.718 & 0.514 \\
-Fast ramp & 0.725 & 0.503 \\
-Fast ramp + dep. & 0.706 & 0.523 \\
-Sandwich & 0.728 & 0.517 \\
-Sandwich + dep. & 0.715 & 0.501 \\
+Overlap-first & 0.716 & 0.577 & 0.670 & 0.502 \\
+Fast ramp & 0.722 & 0.593 & 0.673 & 0.509 \\
+Sandwich & 0.713 & 0.612 & 0.680 & 0.507 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-No curriculum schedule beats the simple NL baseline on OOD. The sandwich schedule gets close on ID (0.728) but still falls short on Laptop14. The fast-ramp + dependency variant gets closest to baseline OOD (0.523) but within noise. Curriculum learning optimises the learning trajectory for in-domain convergence but does not introduce domain-relevant variation.
+All three schedules drop Laptop14 performance by 1.6--2.3 points relative to the baseline. Curriculum schedules control the training trajectory but all data still comes from the restaurant domain. They affect how quickly the model converges on in-domain patterns, not what features it learns.
 
-\subsection{Aspect Masking}
+\subsection{Aspect Masking}\label{sec:masking}
 
-\begin{table}[htbp]
+\begin{table}[H]
 \centering
-\caption{Aspect masking results (NL format, 30 epochs). Masking at different fractions.}
+\caption{Aspect masking results (triplet micro-F1, NL format, 28 epochs, Rest14 training, seed 42). Mask fraction = 20\%.}
 \label{tab:masking}
 \small
-\begin{tabular}{@{}lcc@{}}
+\begin{tabular}{@{}lcccc@{}}
 \toprule
-\textbf{Configuration} & \textbf{Rest14 (ID)} & \textbf{Laptop14 (OOD)} \\
+\textbf{Configuration} & \textbf{Rest14 (ID)} & \textbf{Rest15} & \textbf{Rest16} & \textbf{Laptop14 (OOD)} \\
 \midrule
-NL baseline & 0.722 & 0.525 \\
+NL baseline (5-seed avg) & 0.722 & 0.602 & 0.680 & 0.525 \\
 \midrule
-Mask 10\% + dep. & 0.718 & 0.507 \\
-Mask 25\% + dep. & 0.719 & 0.488 \\
-Mask 50\% + dep. & 0.704 & 0.510 \\
-Mask 25\% (no dep.) & 0.713 & 0.511 \\
+Mask 20\% & 0.710 & 0.598 & 0.671 & 0.518 \\
+Mask 20\% + dep. & 0.705 & 0.598 & 0.675 & 0.511 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Masking consistently hurts OOD. The premise was that forcing the model to predict aspects from context rather than by copying would improve generalisation to novel aspects. In practice, removing real aspect context from the input removes the very signal the model needs. Instead, it learns to hallucinate plausible aspects from the training domain rather than recognising novel ones.
+Masking consistently hurts. The premise was that forcing the model to predict aspects from context would improve generalisation to novel aspects. In practice, removing real aspect context removes the very signal the model needs. During training on restaurant data, the model learns to infer masked aspects from surrounding restaurant vocabulary, reinforcing domain-specific priors rather than building domain-general representations.
 
-\subsection{Cross-Domain Data Mixing}
+\subsection{Cross-Domain Data Mixing}\label{sec:domainmix}
 
-\begin{table}[htbp]
+\begin{table}[H]
 \centering
-\caption{Domain mixing results (Rest14 + fraction from DMASTE domains). Single seed (42). The NL baseline 5-seed confidence interval for Laptop14 is 0.525$\pm$0.012.}
+\caption{Domain mixing results (triplet micro-F1, Rest14 + DMASTE domain fraction, seed 42).}
 \label{tab:domainmix}
 \small
 \begin{tabular}{@{}lcccc@{}}
 \toprule
 \textbf{Mixed domain} & \textbf{Rest14} & \textbf{Rest15} & \textbf{Rest16} & \textbf{Laptop14} \\
 \midrule
-None (NL baseline) & 0.727 & 0.607 & 0.672 & 0.543 \\
+None (baseline) & 0.727 & 0.607 & 0.672 & 0.543 \\
 \midrule
 + Beauty & 0.707 & 0.610 & 0.699 & 0.523 \\
 + Electronics & 0.720 & 0.605 & 0.685 & 0.526 \\
@@ -1087,11 +941,11 @@ None (NL baseline) & 0.727 & 0.607 & 0.672 & 0.543 \\
 \end{tabular}
 \end{table}
 
-No domain mix improves Laptop14 OOD: all fall within the baseline confidence interval (0.525$\pm$0.012). Adding all four DMASTE domains helps near-OOD (Rest15: 0.615, best) but not far-OOD. The home domain gives the best ID result (0.736, vocabulary overlap with restaurant). Adding diverse data helps within the same domain family but does not bridge the gap to a fundamentally different domain.
+No domain mix improves Laptop14 OOD: all fall within the baseline confidence interval. Adding all four DMASTE domains helps near-OOD (Rest15: 0.615) but not far-OOD. The DMASTE domains share annotation conventions and sentence structure with each other but differ substantially from SemEval. Adding more Amazon-style data diversifies product vocabulary but does not bridge the structural gap to SemEval laptop reviews.
 
 \subsection{Opinion Synonym Augmentation}
 
-\begin{table}[htbp]
+\begin{table}[H]
 \centering
 \caption{LLM-generated opinion synonym augmentation (Gemma2:27b).}
 \label{tab:opinion-aug}
@@ -1107,13 +961,13 @@ No domain mix improves Laptop14 OOD: all fall within the baseline confidence int
 \end{tabular}
 \end{table}
 
-Both augmentation fractions hurt performance across the board. Less augmentation means less damage, but even 20\% synthetic data degrades OOD from 0.525 to 0.486. The LLM-generated sentences introduce distributional mismatch (different sentence structures, tokenisation patterns) that the model learns as noise. This is not a dosage problem; the direction is consistently negative.
+Both augmentation fractions hurt performance across the board. Even 20\% synthetic data degrades OOD from 0.525 to 0.486. The LLM-generated sentences introduce distributional mismatch (different sentence structures, tokenisation patterns) that the model learns as noise.
 
-\subsection{Decoding Strategies}
+\subsection{Decoding Strategies}\label{sec:decoding}
 
-\begin{table}[htbp]
+\begin{table}[H]
 \centering
-\caption{Decoding strategies evaluated on the NL + compact dep. checkpoint.}
+\caption{Decoding strategies evaluated on the NL + compact dep.\ checkpoint (seed 42).}
 \label{tab:decoding}
 \small
 \begin{tabular}{@{}lcc@{}}
@@ -1124,22 +978,36 @@ Greedy (default) & 0.708 & 0.541 \\
 Beam search (k=4) & 0.713 & 0.530 \\
 Sampling (t=0.7) & 0.699 & 0.477 \\
 Sampling (t=0.9) & 0.672 & 0.446 \\
-Voting (5$\times$, t=0.8, thresh=3) & 0.710 & 0.520 \\
+Voting (5$\times$, t=0.8) & 0.710 & 0.520 \\
 Constrained decoding & 0.699 & 0.483 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Greedy decoding is optimal for OOD. All alternatives hurt. Temperature sampling introduces noise that compounds on OOD data where the model is already less certain. Beam search provides marginal ID gains but hurts OOD. Constrained decoding (FSM-based template enforcement) is unnecessary since the NL format already provides strong implicit constraints during training, and the FSM restrictions fight the model's learned generation patterns.
+Greedy decoding is optimal for OOD. Temperature sampling introduces noise that compounds on OOD data where the model is already less certain. Constrained decoding (FSM-based template enforcement) is unnecessary since the NL format already provides strong implicit constraints during training.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\textwidth]{figures/r3_negative_results_tornado.pdf}
+\caption{F1 improvement over the structured baseline for each training strategy on Laptop14 (OOD). The NL format provides the largest gain; no further strategy adds reliably on top of it.}
+\label{fig:tornado-ood}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\textwidth]{figures/r3_id_results_tornado.pdf}
+\caption{F1 improvement over the structured baseline for each training strategy on Rest14 (ID). Most NL-based strategies provide 2--4 F1 points of improvement.}
+\label{fig:tornado-id}
+\end{figure}
 
 
-\section{DMASTE Cross-Domain Benchmark}
+\section{DMASTE Cross-Domain Benchmark}\label{sec:dmaste}
 
 Table~\ref{tab:dmaste} presents results on the DMASTE benchmark, which provides a more rigorous cross-domain evaluation with 4 target domains held out entirely from training.
 
-\begin{table}[htbp]
+\begin{table}[H]
 \centering
-\caption{DMASTE cross-domain results (triplet micro-F1). Single seed (42).}
+\caption{DMASTE cross-domain results (triplet micro-F1, single seed).}
 \label{tab:dmaste}
 \small
 \begin{tabular}{@{}lccccc@{}}
@@ -1154,36 +1022,171 @@ NL + multi-ordering & 37.28 & 43.78 & 40.33 & 46.72 & 42.03 \\
 NL + compact dep. & 34.74 & 42.45 & 38.47 & 44.77 & 40.11 \\
 RoBERTa (span) & 10.59 & 16.08 & 15.35 & 13.95 & 13.99 \\
 \midrule
-GAS (paper) & 35.57 & 39.16 & 38.17 & 43.55 & 39.11 \\
-Span-ASTE (paper) & 40.36 & 45.36 & 41.04 & 47.23 & 43.50 \\
+GAS$^\dagger$~\cite{zhang2021towards} & 35.57 & 39.16 & 38.17 & 43.55 & 39.11 \\
+Span-ASTE$^\dagger$~\cite{xu2021learning} & \textbf{40.36} & \textbf{45.36} & \textbf{41.04} & \textbf{47.23} & \textbf{43.50} \\
 \midrule
-\multicolumn{6}{l}{\textit{Multi-source (Elec.+Beauty+Fashion+Home $\rightarrow$ target)}} \\
+\multicolumn{6}{l}{\textit{Multi-source (All 4 sources $\rightarrow$ target)}} \\
 \midrule
 Structured & 37.50 & 44.96 & 42.47 & 47.33 & 43.07 \\
 NL baseline & 41.27 & 46.62 & 43.22 & 50.16 & 45.32 \\
-NL + multi-ordering & 41.83 & 46.90 & 43.06 & 50.02 & 45.45 \\
-NL + compact dep. & 40.45 & 46.47 & 43.77 & 48.56 & 44.81 \\
+NL + multi-ordering & \textbf{41.83} & \textbf{46.90} & 43.06 & 50.02 & \textbf{45.45} \\
+NL + compact dep. & 40.45 & 46.47 & \textbf{43.77} & 48.56 & 44.81 \\
 RoBERTa (span) & 20.39 & 23.16 & 22.37 & 22.15 & 22.02 \\
 \midrule
-Span-ASTE (paper) & 41.83 & 46.07 & 43.62 & 50.16 & 45.42 \\
+Span-ASTE$^\dagger$~\cite{xu2021learning} & \textbf{41.83} & 46.07 & 43.62 & \textbf{50.16} & 45.42 \\
+\bottomrule
+\multicolumn{6}{l}{\small $^\dagger$ Results as reported by Xu et al.~\cite{xu2023dmaste}.}
+\end{tabular}
+\end{table}
+
+In the multi-source setting, our NL models (45.32--45.45 avg) match Span-ASTE (45.42), the best result reported in the DMASTE paper. This is achieved without any domain adaptation, using a simple FLAN-T5-base model with NL output. In single-source, we outperform GAS (+3 avg F1) and approach Span-ASTE ($-$1.5 avg).
+
+The NL format advantage over structured output (+2.3 avg in multi-source) is smaller than on SemEval (+8.6) but consistent. The RoBERTa span baseline generalises very poorly (14--22 avg), confirming that the naive discriminative approach fundamentally lacks cross-domain transfer capability.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\textwidth]{figures/r3_dmaste_comparison.pdf}
+\caption{DMASTE multi-source cross-domain results by method and target domain.}
+\label{fig:r3-dmaste}
+\end{figure}
+
+
+\section{LLM Comparison on English ASTE}\label{sec:llm-english}
+
+Table~\ref{tab:llm-semeval} presents LLM results on the SemEval ASTE benchmark alongside our fine-tuned baselines.
+
+\begin{table}[H]
+\centering
+\caption{Cross-method comparison on SemEval ASTE (triplet micro-F1). LLMs use per-dataset demonstrations for 6-shot.}
+\label{tab:llm-semeval}
+\small
+\begin{tabular}{@{}lrcccc@{}}
+\toprule
+\textbf{Method} & \textbf{Params} & \textbf{Rest14} & \textbf{Rest15} & \textbf{Rest16} & \textbf{Laptop14} \\
+\midrule
+\multicolumn{6}{l}{\textit{LLMs (few-shot, no fine-tuning)}} \\
+\midrule
+Gemma2 27B 0-shot & 27B & 0.441 & 0.418 & 0.455 & 0.275 \\
+Gemma2 27B 6-shot & 27B & 0.646 & 0.592 & 0.637 & 0.410 \\
+Qwen2.5 32B 0-shot & 32B & 0.535 & 0.451 & 0.556 & 0.363 \\
+Qwen2.5 32B 6-shot & 32B & 0.603 & 0.527 & 0.614 & 0.370 \\
+Command-R 0-shot & 35B & 0.318 & 0.256 & 0.309 & 0.206 \\
+Command-R 6-shot & 35B & 0.576 & 0.499 & 0.568 & 0.373 \\
+\midrule
+\multicolumn{6}{l}{\textit{Fine-tuned models}} \\
+\midrule
+RoBERTa span (ours) & 125M & 0.544 & 0.461 & 0.560 & 0.379 \\
+T5 structured & 250M & 0.693 & 0.575 & 0.640 & 0.439 \\
+T5 NL baseline & 250M & \textbf{0.722} & \textbf{0.602} & \textbf{0.680} & \textbf{0.525} \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-In the multi-source setting, our NL models (45.32--45.45 avg) match Span-ASTE (45.42), the best result reported in the DMASTE paper. This is achieved without any domain adaptation techniques, using a simple FLAN-T5-base model with NL output. In single-source, we significantly outperform GAS (+3 avg) and approach Span-ASTE ($-$1.5 avg).
+The fine-tuned T5 with NL output (250M) outperforms all LLMs on every test set, despite being 100$\times$ smaller than the largest model tested. The gap is particularly large on OOD data: 0.525 vs 0.410 for the best LLM (Gemma2 27B 6-shot) on Laptop14, a difference of 11.5 F1 points.
 
-The NL format advantage over structured output (+2.3 avg in multi-source) is smaller than on SemEval (+8.6 points) but consistent. Syntax enrichment does not help on DMASTE (slightly negative), consistent with our SemEval findings.
+Among the LLMs, Gemma2 27B with 6-shot demonstrations performs best across all datasets. The advantage provided by the few-shot setting is substantial, especially for Gemma2 and Command-R, that benefit from an average increase in F1 score of 0.174 and 0.258 respectively. Interestingly, although in the Laptop14 few-shot evaluation the 6 examples presented to the models were picked from the Rest14 dataset (to simulate OOD testing), the drop in performance between few-shot and 0-shot did not increase compared to in-domain, suggesting that the LLMs were not particularly affected by the vocabulary shift in the demonstrations.
 
-The RoBERTa span baseline generalises very poorly to DMASTE (14--22 avg), confirming that the naive discriminative approach fundamentally lacks cross-domain transfer capability.
+Our naive RoBERTa span baseline (125M, fine-tuned) performs comparably to the LLMs in 6-shot on Laptop14 (0.379 vs 0.370--0.410). The fine-tuned T5 structured baseline (250M) outperforms all LLMs even without the NL format advantage. This suggests that for structured extraction tasks, task-specific fine-tuning remains more effective than in-context learning at the 27--35B parameter scale.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\textwidth]{figures/r4_crossmethod_english.pdf}
+\caption{Cross-method comparison on SemEval ASTE: LLMs (few-shot) vs fine-tuned models, showing both in-domain (Rest14) and out-of-domain (Laptop14) performance.}
+\label{fig:crossmethod}
+\end{figure}
 
 
-\section{Cross-Method Comparison}
+\section{Romanian ABSA}\label{sec:romanian}
 
-\subsection{In-Domain Benchmark Results}
+Figures~\ref{fig:r4-polarity}--\ref{fig:r4-sentlen} characterise the Romanian eMAG dataset. The polarity distribution is heavily skewed toward positive (72.4\%), similar to the English SemEval data. Sentences are considerably longer than in English SemEval: mean 43.5 words (median 23), with a long tail reaching up to 309 words. At the subword token level (T5 tokenizer), the mean is 73.6 tokens (median 39, P95 = 266). The most frequent category is ``experience'' (25.7\%), followed by ``performance'' (11.5\%) and ``battery'' (10.3\%).
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\textwidth]{figures/r4_polarity_distribution.pdf}
+\caption{Polarity distribution in the Romanian eMAG training and test sets.}
+\label{fig:r4-polarity}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{figures/r4_category_distribution.pdf}
+\caption{Category distribution in the Romanian eMAG training set (11 classes).}
+\label{fig:r4-categories}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\textwidth]{figures/r4_sentence_length_histogram.pdf}
+\caption{Sentence length distributions for the Romanian eMAG dataset at word and subword token level.}
+\label{fig:r4-sentlen}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\caption{Romanian ABSA results on eMAG phone reviews. Pair F1 = polarity + category must both match.}
+\label{tab:romanian}
+\small
+\begin{tabular}{@{}lrccc@{}}
+\toprule
+\textbf{Method} & \textbf{Params} & \textbf{Pair F1} & \textbf{Polarity F1} & \textbf{Category F1} \\
+\midrule
+\multicolumn{5}{l}{\textit{LLMs (few-shot, no fine-tuning)}} \\
+\midrule
+Gemma2 27B 0-shot & 27B & 0.745 & \textbf{0.888} & 0.804 \\
+Gemma2 27B 6-shot & 27B & 0.758 & \textbf{0.888} & 0.826 \\
+Qwen2.5 32B 0-shot & 32B & 0.621 & 0.854 & 0.689 \\
+Qwen2.5 32B 6-shot & 32B & 0.740 & 0.881 & 0.807 \\
+Command-R 0-shot & 35B & 0.535 & 0.766 & 0.612 \\
+Command-R 6-shot & 35B & 0.750 & 0.880 & 0.821 \\
+\midrule
+\multicolumn{5}{l}{\textit{Fine-tuned models}} \\
+\midrule
+RoBERT-base (RO) & 114M & 0.792 & 0.878 & \textbf{0.862} \\
+bert-base-ro-cased & 110M & 0.793 & 0.877 & 0.858 \\
+XLM-R-base & 278M & \textbf{0.795} & 0.881 & 0.861 \\
+FLAN-T5-base (NL) & 250M & 0.764 & 0.882 & 0.853 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Polarity classification is easy for all methods (0.85--0.89 F1), with only 0-shot Command-R scoring under 0.85. The bottleneck is category prediction, where LLMs score 0.61--0.83 while fine-tuned models achieve 0.85--0.86. We believe this is due to the taxonomy (11 classes) being specific to this dataset and not something LLMs would have encountered during pre-training. The 6-shot examples help LLMs learn the taxonomy, enabling a jump of roughly 0.2 in Category F1 for Command-R, but they still fall short of fine-tuned models that have seen the full training set.
+
+XLM-R-base achieves the best pair F1 (0.795), followed closely by the monolingual Romanian models: bert-base-romanian-cased (0.793) and RoBERT-base (0.792). FLAN-T5-base trails slightly (0.764). All fine-tuned models outperform all LLMs on pair F1 by an average of roughly 0.1.
+
+Gemma2 stands out: in 0-shot it achieves 0.745 pair F1 without any task-specific data, nearly matching the fine-tuned FLAN-T5. Interestingly, Gemma2 is by far the most English-centric of the three, its training data being primarily English~\cite{team2024gemma}. By contrast, Qwen2.5 is reported to have been trained on more than 29 languages including Romanian~\cite{hui2024qwen2}, and Command-R on 10 major languages, although Romanian was not included~\cite{cohere2024commandr}.
+
+The monolingual Romanian models (110--114M) perform within 0.3 F1 points of XLM-R-base (278M) despite being 2.5$\times$ smaller. This is consistent with the ``curse of multilinguality''~\cite{chang2023multilinguality}: XLM-R distributes its capacity across 100 languages, while RoBERT dedicates all capacity to Romanian. Bérard et al.~\cite{berard2026capacity} confirmed this empirically, showing that multilingual language models consistently underperform monolingual counterparts due to capacity constraints. XLM-R-base (278M parameters) distributes its capacity across 100 languages, meaning Romanian gets a fraction of the total representational budget. RoBERT-base (114M parameters) dedicates all its capacity to Romanian, having been trained on 12GB of exclusively Romanian text. The result is that per-parameter efficiency for Romanian is much higher in the monolingual model.
+
+This finding is not specific to Romanian. Velankar et al.~\cite{velankar2022mono} demonstrated the same pattern for Marathi: monolingual Marathi BERT models outperformed XLM-RoBERTa on five downstream tasks despite the multilingual model being substantially larger. Hasan et al.~\cite{tanvir2023bangla} reported consistent findings for Bangla sentiment analysis.
+
+In our results, XLM-R does still slightly outperform the monolingual models (0.795 vs 0.792--0.793). This small advantage may come from cross-lingual transfer: XLM-R has seen sentiment-related patterns across many languages during pre-training. The difference is small enough (0.2--0.3 F1 points) that it would likely disappear with multi-seed evaluation. For practical purposes, the monolingual and multilingual models are equivalent on this task.
+
+The practical implication is that for Romanian ABSA classification, a 110M monolingual model provides essentially the same performance as a 278M multilingual model at lower computational cost. This matters for deployment: the monolingual model is faster to fine-tune, requires less memory at inference, and achieves the same result.
+
+FLAN-T5-base trails by 3 points despite being a 250M model. This is expected: it is an English-centric generative model being asked to perform a classification task in a language it was not primarily trained on. That it still achieves 0.764, outperforming all LLMs, demonstrates that even modest fine-tuning on target-language data is effective. But for this particular task (classification with a fixed taxonomy), the encoder-based classifiers with language-appropriate pre-training have a natural architectural advantage.
+
+Interestingly, among the LLMs, the relationship between language coverage and performance appears to reverse. Gemma2, the most English-centric of the three (trained on 13 trillion tokens of primarily English web data~\cite{team2024gemma}), outperforms both Qwen2.5 (29+ languages including Romanian~\cite{hui2024qwen2}) and Command-R (10 languages~\cite{cohere2024commandr}) on Romanian text. Kapo\v{c}i\={u}t\.{e}-Dzikien\.{e} et al.~\cite{kapociute2025baltic} observed a similar pattern when evaluating open-weight LLMs on Baltic languages, where Gemma~2 performed close to top commercial models while explicitly multilingual LLMs struggled. The explanation likely lies in the task structure: the system prompt, category labels, and polarity names are all in English; only the review text is in Romanian. Recent work has shown that English-dominant LLMs convert non-English input into English-like internal representations in their early layers and perform reasoning in an English-aligned concept space before routing back to the target language~\cite{wendler2024llamas, zhao2024multilingualism, schut2025multilingual}. Since our task requires no non-English output, a model that concentrates all its capacity on English might have stronger representations precisely where the task demands them.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{figures/r4_romanian_comparison.pdf}
+\caption{Romanian ABSA model comparison: all models ranked by polarity + category pair F1.}
+\label{fig:romanian}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\textwidth]{figures/r4_llm_0shot_vs_6shot.pdf}
+\caption{LLM performance in 0-shot vs 6-shot settings on English ASTE (left) and Romanian ABSA (right).}
+\label{fig:0vs6}
+\end{figure}
+
+
+\section{In-Domain Benchmark Context}
 
 To contextualise our OOD results, Table~\ref{tab:indomain-benchmark} shows in-domain performance when each dataset is trained and tested separately (the standard benchmark setup).
 
-\begin{table}[htbp]
+\begin{table}[H]
 \centering
 \caption{In-domain ASTE benchmark results (train and test on same dataset). Published results from original papers.}
 \label{tab:indomain-benchmark}
@@ -1196,7 +1199,6 @@ To contextualise our OOD results, Table~\ref{tab:indomain-benchmark} shows in-do
 \midrule
 GTS (2020) & 70.92 & 59.46 & 62.53 & 68.71 \\
 Span-ASTE (2021) & 72.89 & 62.40 & 64.45 & 71.85 \\
-BDTF (2022) & 74.35 & 62.59 & 66.12 & 72.27 \\
 BTF-CCL (2025) & 75.88 & 63.29 & 67.68 & 73.80 \\
 \midrule
 \multicolumn{5}{l}{\textit{Generative (published)}} \\
@@ -1210,257 +1212,185 @@ FLAN-T5 NL baseline & 72.4 & 62.7 & 64.0 & 72.5 \\
 \end{tabular}
 \end{table}
 
-Our per-dataset NL baseline is competitive with Span-ASTE across all four datasets and matches or exceeds GTS. It falls 3--4 points below BTF-CCL and MvP, both of which use specialised techniques (cross-granularity contrastive learning and 10-dataset multi-task training respectively). This confirms that our model is a reasonable representative of the generative ABSA approach, not state-of-the-art in-domain, but solidly in the competitive range.
-
-\subsection{Out-of-Domain Comparison}
-
-Having established that our model performs credibly in-domain, we now compare all method families in the OOD setting, the primary focus of this thesis. Table~\ref{tab:crossmethod} shows results when training on Rest14 and testing on Laptop14.
-
-\begin{table}[htbp]
-\centering
-\caption{Cross-method comparison on SemEval ASTE (Rest14 / Laptop14).}
-\label{tab:crossmethod}
-\small
-\begin{tabular}{@{}lccc@{}}
-\toprule
-\textbf{Method} & \textbf{Params} & \textbf{Rest14 (ID)} & \textbf{Laptop14 (OOD)} \\
-\midrule
-\multicolumn{4}{l}{\textit{LLMs (few-shot, no fine-tuning)}} \\
-\midrule
-Gemma2 27B 0-shot & 27B & 0.44 & 0.28 \\
-Gemma2 27B 6-shot & 27B & 0.65 & 0.41 \\
-Qwen2.5 32B 0-shot & 32B & 0.54 & 0.36 \\
-Qwen2.5 32B 6-shot & 32B & 0.60 & 0.37 \\
-Command-R 6-shot & 35B & 0.58 & 0.37 \\
-\midrule
-\multicolumn{4}{l}{\textit{Discriminative (fine-tuned)}} \\
-\midrule
-RoBERTa span (ours) & 125M & 0.54 & 0.38 \\
-XLM-R span (ours) & 278M & 0.47 & 0.34 \\
-\midrule
-\multicolumn{4}{l}{\textit{Generative (fine-tuned)}} \\
-\midrule
-T5 structured baseline & 250M & 0.693 & 0.439 \\
-T5 NL baseline & 250M & 0.722 & 0.525 \\
-T5 NL + multi-ordering & 250M & 0.730 & 0.524 \\
-\midrule
-\multicolumn{4}{l}{\textit{Published (in-domain only)}} \\
-\midrule
-Span-ASTE & $\sim$110M & 0.73 &, \\
-BTF-CCL & $\sim$110M & 0.76 &, \\
-MvP (multi-task, 10 datasets) & $\sim$400M & 0.76 &, \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-The comparison highlights several findings:
-\begin{enumerate}
-    \item Fine-tuned FLAN-T5-base (250M) outperforms all LLMs tested in few-shot (27--35B) on both ID and OOD, by large margins on OOD (0.525 vs 0.41 for the best LLM).
-    \item Our naive RoBERTa baseline underperforms the fine-tuned T5 by 18 points ID and 14 points OOD, the generative approach provides genuine architectural advantages for this task, not just better engineering.
-    \item Published discriminative SOTA (BTF-CCL: 0.76) uses specialised architectures with GCN, contrastive learning, and boundary detection that our simple baseline does not implement. Our generative approach (0.72--0.73 ID) is competitive without any such specialisation.
-    \item The published in-domain numbers for MvP (0.76) use multi-task training across 10 datasets. Our single-dataset MvP replication achieves 0.73 ID, suggesting that most of MvP's reported gain comes from multi-task data exposure rather than the multi-view mechanism itself.
-\end{enumerate}
+Our per-dataset NL baseline is competitive with Span-ASTE across all four datasets and matches or exceeds GTS. It falls 3--4 points below BTF-CCL and MvP, both of which use specialised techniques. This confirms that our model is a reasonable representative of the generative ABSA approach.
 
 
-\section{Romanian ABSA}
+\section{Error Analysis}\label{sec:errors}
 
-\begin{table}[htbp]
-\centering
-\caption{Romanian ABSA results on eMAG phone reviews (polarity + category pair F1).}
-\label{tab:romanian}
-\small
-\begin{tabular}{@{}lccc@{}}
-\toprule
-\textbf{Method} & \textbf{Pair F1} & \textbf{Polarity F1} & \textbf{Category F1} \\
-\midrule
-FLAN-T5-base (NL) & 0.764 & 0.882 & 0.853 \\
-XLM-R (classifier) & 0.795 & 0.881 & 0.861 \\
-\midrule
-Gemma2 27B 0-shot & 0.745 & 0.888 & 0.804 \\
-Gemma2 27B 6-shot & 0.758 & 0.888 & 0.826 \\
-Qwen2.5 32B 6-shot & 0.740 & 0.881 & 0.807 \\
-Command-R 6-shot & 0.750 & 0.880 & 0.821 \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-On Romanian, fine-tuned FLAN-T5-base matches or exceeds 27--32B LLMs despite being an English-centric model fine-tuned on a small Romanian dataset. Polarity classification is easy for all methods ($\sim$0.88), while category prediction is the bottleneck for LLMs (0.80--0.83 vs T5's 0.85), LLMs struggle with the closed category taxonomy.
-
-XLM-R (classifier approach) performs best overall due to its multilingual pretraining, but the margin over T5 is small. The main takeaway is consistent with our English findings: fine-tuning a 250M model remains competitive with much larger models even in a language it was not primarily designed for.
-
-
-\section{Error Analysis}
-
-We ran detailed error analysis on 7 model variants (Rest14 test + Laptop14 test) to understand \textit{why} performance drops OOD and how error patterns differ between methods. Here we focus on the NL baseline (our best OOD model) to characterise the nature of out-of-domain failures.
+We ran detailed error analysis on the NL baseline (seed 42) for both Rest14 (ID, F1 = 0.725) and Laptop14 (OOD, F1 = 0.542).
 
 \subsection{Error Distribution}
 
-Table~\ref{tab:errors-ood} breaks down the error types on Laptop14 for the NL baseline. The model produces 517 predictions against 543 gold triplets, with 278 correct matches.
-
-\begin{table}[htbp]
+\begin{table}[H]
 \centering
-\caption{Error breakdown for the NL baseline on Laptop14 OOD (239 false positives, 265 false negatives).}
-\label{tab:errors-ood}
+\caption{Classification of missed gold triplets by whether the aspect/opinion terms appeared in training.}
+\label{tab:errors-missed}
 \small
-\begin{tabular}{@{}lr@{}}
+\begin{tabular}{@{}lrrrr@{}}
 \toprule
-\textbf{False Positive Type} & \textbf{Count (\% of FP)} \\
+& \multicolumn{2}{c}{\textbf{Rest14 (ID)}} & \multicolumn{2}{c}{\textbf{Laptop14 (OOD)}} \\
+\textbf{Missed type} & \textbf{Count} & \textbf{\%} & \textbf{Count} & \textbf{\%} \\
 \midrule
-Spurious prediction (other) & 83 (35\%) \\
-Polarity error (correct span, wrong polarity) & 57 (24\%) \\
-Product name treated as aspect & 42 (18\%) \\
-Opinion span boundary error & 27 (11\%) \\
-Aspect span boundary error & 15 (6\%) \\
-Unannotated but valid aspect & 7 (3\%) \\
+Aspect unseen in training & 147 & 53.5 & 254 & 97.3 \\
+Aspect seen in training & 128 & 46.5 & 7 & 2.7 \\
 \midrule
-\textbf{False Negative Type} & \textbf{Count (\% of FN)} \\
-\midrule
-Unseen aspect (never in training) & 152 (57\%) \\
-Near-miss aspect (partial span match) & 54 (20\%) \\
-Near-miss opinion (partial span match) & 50 (19\%) \\
-Missed despite seen aspect & 5 (2\%) \\
+Opinion unseen in training & 95 & 34.5 & 131 & 50.2 \\
+Opinion seen in training & 180 & 65.5 & 130 & 49.8 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-The dominant OOD error type is \textbf{unseen aspects} (57\% of false negatives). These are aspects that never appeared in the restaurant training data, terms like ``OS'', ``setup'', ``runs'', ``portability'', ``keyboard''. The model has no training signal for recognising technology-domain aspects in the syntactic positions where they appear in laptop reviews. No training strategy we tested addresses this fundamental vocabulary gap.
+The clearest evidence for why OOD performance drops: on Laptop14, 97.3\% of missed gold aspects are terms that never appeared in the restaurant training data (words like ``OS'', ``trackpad'', ``portability'', ``setup''). The model has no learned association between these tokens and the concept of ``aspect.'' Opinion terms show an even split (50.2\% unseen vs 49.8\% seen), consistent with the higher opinion token overlap.
 
-The second major OOD error is \textbf{product names as spurious aspects} (18\% of false positives). The model, trained on restaurant reviews where restaurant names are rarely annotated as aspects, encounters laptop reviews where product names (``MBP'', ``Mac Mini'', ``Air'') appear in aspect-like syntactic positions. The model identifies them as aspects and attaches sentiments to them, a reasonable behaviour that happens not to match the annotation guidelines of the Laptop14 dataset.
+\subsection{Element-Level Error Patterns}
 
-Near-miss errors (aspect boundary: 20\%, opinion boundary: 19\%) represent cases where the model identifies the right element but disagrees on span boundaries (e.g., predicting ``bluetooth devices'' vs gold ``integrate bluetooth devices'', or ``screens'' vs gold ``screen''). These are not conceptual failures but boundary ambiguities.
+\begin{table}[H]
+\centering
+\caption{Element-level error classification for unmatched predictions on Rest14 (ID) and Laptop14 (OOD). Percentages are relative to the total number of errors in each category.}
+\label{tab:errors-element}
+\small
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+& \multicolumn{2}{c}{\textbf{Rest14 (ID)}} & \multicolumn{2}{c}{\textbf{Laptop14 (OOD)}} \\
+\textbf{Error type} & \textbf{Count} & \textbf{\%} & \textbf{Count} & \textbf{\%} \\
+\midrule
+\multicolumn{5}{l}{\textit{Aspect errors}} \\
+\midrule
+Spurious & 81 & 57.4 & 115 & 81.6 \\
+Boundary & 55 & 39.0 & 20 & 14.2 \\
+Paraphrase & 4 & 2.8 & 1 & 0.7 \\
+Hallucination & 1 & 0.7 & 5 & 3.5 \\
+\midrule
+\multicolumn{5}{l}{\textit{Opinion errors}} \\
+\midrule
+Spurious & 100 & 70.4 & 73 & 68.2 \\
+Boundary & 42 & 29.6 & 33 & 30.8 \\
+Hallucination & 0 & 0.0 & 1 & 0.9 \\
+\midrule
+\multicolumn{5}{l}{\textit{Polarity errors}} \\
+\midrule
+Wrong polarity & 130 & --- & 126 & --- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Table~\ref{tab:errors-element} shows a notable shift in error composition between in-domain and out-of-domain evaluation. On Rest14, aspect boundary errors account for 39\% of aspect mistakes: the model identifies the correct region but disagrees on which words constitute the span (e.g., predicting ``grilled chicken'' where the gold is just ``chicken''). On Laptop14, boundary errors drop to 14.2\% while spurious errors rise from 57.4\% to 81.6\%: the model extracts real text that happens not to correspond to any annotated aspect. Many involve product names in aspect-like syntactic positions (``MBP'', ``Mac Mini'', ``Air'').
+
+Opinion errors are more stable across domains (spurious: 70.4\% ID, 68.2\% OOD; boundary: $\sim$30\% both), consistent with opinion vocabulary being more transferable.
+
+\subsection{Triplet-Level Error Patterns}
+
+\begin{table}[H]
+\centering
+\caption{Triplet-level error patterns: which element combinations are wrong in unmatched predictions.}
+\label{tab:errors-triplet}
+\small
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+& \multicolumn{2}{c}{\textbf{Rest14 (ID)}} & \multicolumn{2}{c}{\textbf{Laptop14 (OOD)}} \\
+\textbf{Pattern} & \textbf{Count} & \textbf{\%} & \textbf{Count} & \textbf{\%} \\
+\midrule
+aspect+opinion+polarity & 70 & 25.9 & 71 & 33.0 \\
+aspect only & 63 & 23.3 & 58 & 27.0 \\
+opinion only & 63 & 23.3 & 26 & 12.1 \\
+polarity only & 43 & 15.9 & 33 & 15.3 \\
+aspect+polarity & 8 & 3.0 & 12 & 5.6 \\
+opinion+polarity & 9 & 3.3 & 10 & 4.7 \\
+duplicate & 14 & 5.2 & 5 & 2.3 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Table~\ref{tab:errors-triplet} breaks down errors by which element combination is wrong. On in-domain data, the distribution is relatively even. On OOD data, opinion-only errors drop from 23.3\% to 12.1\% (opinion vocabulary transfers), while the all-three-wrong pattern rises to 33\%, representing cases where the model has pointed at an entirely unrelated part of the sentence.
 
 \subsection{Polarity Confusion}
 
-Polarity errors on OOD data show a clear pattern in the confusion matrix. The most frequent confusions are: gold \textit{negative} predicted as neutral (21 cases), and gold \textit{positive} predicted as neutral (16 cases). At first glance this suggests the model becomes overly conservative on OOD data, defaulting to neutral when uncertain. However, examining the actual sentences reveals a different explanation: most of these ``neutral'' gold labels appear in desire/requirement contexts (``I needed a laptop with big storage'') or factual statements about missing features (``There is no HDMI receptacle''). The model predicts negative for missing features and positive for positive-valence adjectives, interpretations that are arguably more natural than the annotated neutral labels.
-
-The reverse direction is less frequent: neutral→negative (7 cases) and neutral→positive (3 cases). This asymmetry reflects the training distribution, Rest14 has only 7\% neutral annotations, so the model has limited exposure to neutral contexts. When it encounters the Laptop14 dataset, which has 12\% neutral (often in non-standard contexts like wish-lists), it tends to assign the polarity that the surface-level words would suggest rather than inferring the neutral pragmatic intent.
+The most frequent polarity confusions on OOD data are: gold \textit{negative} predicted as neutral (21 cases), and gold \textit{positive} predicted as neutral (16 cases). Examining the actual sentences reveals that most ``neutral'' gold labels appear in desire/requirement contexts (``I needed a laptop with big storage'') or factual statements about missing features (``There is no HDMI receptacle''). The model predicts the polarity that surface-level words suggest rather than inferring the neutral pragmatic intent. The training distribution contributes: Rest14 has only 7\% neutral annotations, so the model has limited exposure to neutral contexts.
 
 \subsection{Annotation Quality Issues}
 
-A non-trivial fraction of ``errors'' reflect questionable gold annotations rather than model failures. We identified several recurring patterns:
+A non-trivial fraction of ``errors'' reflect questionable gold annotations:
 
-\textbf{Hypotheticals and counterfactuals.} The Rest14 annotations sometimes treat hypothetical statements as actual opinions:
 \begin{itemize}
-    \item ``a spice rub \textit{might have} overwhelmed'', annotated as [spice rub, overwhelmed, negative], but this is a hypothetical dismissal (``it would have been bad, so they didn't do it''), not an actual negative opinion about spice rub.
-    \item ``herb mix or other sauce \textit{would have done much} to enhance'', annotated as [herb mix, to enhance, negative] and [sauce, to enhance, negative]. The reviewer is expressing a wish, not criticising the herbs or sauce themselves.
+    \item \textbf{Hypotheticals}: ``a spice rub \textit{might have} overwhelmed'' annotated as negative about spice rub, despite being a hypothetical dismissal.
+    \item \textbf{Neutral in opinionated contexts}: ``There is no HDMI receptacle'' annotated neutral; model predicts negative (reporting a missing feature carries implicit dissatisfaction).
+    \item \textbf{Desire context}: ``I needed a laptop with big storage, a nice screen and fast'' annotated neutral for ``big'' and ``nice''; model predicts positive for positive-valence adjectives.
 \end{itemize}
 
-\textbf{Neutral annotation in clearly opinionated contexts.} The Laptop14 dataset frequently uses ``neutral'' for statements that most readers would interpret as having clear sentiment:
-\begin{itemize}
-    \item ``It is really thick around the battery'', annotated as [battery, thick, \textit{neutral}]. The model predicts negative, which seems more natural given the complaint-like phrasing.
-    \item ``There is no HDMI receptacle'', annotated as [HDMI receptacle, no, \textit{neutral}]. The model predicts negative. Reporting a missing feature in a review context carries implicit dissatisfaction.
-    \item ``Apple removed the DVD drive'', annotated as [DVD drive, removed, \textit{neutral}]. The sentence context makes clear this is a complaint.
-    \item ``the intel 4000 graphics chipset'' described as ``defective design'', annotated \textit{neutral}. The model predicts negative.
-\end{itemize}
-
-\textbf{Desire/requirement context.} When reviewers describe what they wanted rather than what they experienced, the annotation guidelines label this as neutral:
-\begin{itemize}
-    \item ``I needed a laptop with big storage, a nice screen and fast'', [storage, big, neutral], [screen, nice, neutral]. The model predicts positive for ``big'' and ``nice'' because these are inherently positive-valence adjectives in most training contexts.
-\end{itemize}
-
-\textbf{Debatable polarity.} Some annotations reflect subjective judgement calls:
-\begin{itemize}
-    \item ``The staff should be a bit more friendly'', [staff, friendly, \textit{negative}]. The model predicts positive because ``friendly'' is positive-valence. The negativity comes from ``should be more'' (implying they are not), which requires pragmatic inference.
-    \item ``The sushi is cut in blocks bigger than my cell phone'', [sushi, bigger, \textit{negative}]. The model predicts positive (bigger could be generous portions). Whether oversized sushi is positive or negative depends on personal preference.
-    \item ``Average cake'', annotated as \textit{negative}. The model predicts neutral. Whether ``average'' constitutes a negative opinion is debatable.
-\end{itemize}
-
-These cases represent irreducible annotation noise. They inflate the gap between reported F1 and true task performance, but affect all methods equally and do not change relative comparisons. We estimate that 5--10\% of Laptop14 annotations involve genuinely ambiguous polarity where the model's prediction is at least as defensible as the gold label.
-
-
-\section{Data Analysis}
-
-\subsection{Vocabulary Overlap and Performance}
-
-One of the clearest predictors of cross-domain performance is the degree of vocabulary overlap between training and test data. The aspect token overlap between Rest14 training and Laptop14 test is only 8.7\%, compared to 31\% for the Rest14 test set itself. This 3.5$\times$ reduction in shared vocabulary partially explains the 20-point F1 gap between in-domain and out-of-domain evaluation.
-
-The relationship is visible in the vocabulary overlap matrix (Figure~\ref{fig:vocab-overlap}): SemEval datasets share 20--50\% of their aspect vocabulary within the restaurant family, while cross-domain overlap drops to single digits. Opinion token overlap is consistently higher than aspect overlap across all pairs (47\% for Laptop14 vs Rest14 train), which makes sense, opinion words like ``good'', ``terrible'', and ``excellent'' are largely domain-independent, while aspect terms are inherently domain-specific.
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=0.95\textwidth]{figures/vocab_overlap.pdf}
-\caption{Aspect and opinion token vocabulary overlap between training data and each test set. Aspect overlap is much lower cross-domain than opinion overlap.}
-\label{fig:vocab-overlap}
-\end{figure}
-
-However, vocabulary overlap alone does not predict performance. Figure~\ref{fig:overlap-f1} plots F1 against several dataset characteristics. The Pet domain has 54.5\% aspect overlap with DMASTE training sources (highest among target domains) but second-worst F1, explained by its 47.4\% implicit aspect rate (the highest of any domain). Vocabulary overlap is necessary but not sufficient; implicit aspects, sentence length, and annotation density all modulate the relationship.
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=0.95\textwidth]{figures/overlap_vs_f1.pdf}
-\caption{F1 plotted against dataset characteristics: vocabulary overlap, implicit aspect rate, sentence length, and triplets per sentence. Multiple factors interact to determine cross-domain performance.}
-\label{fig:overlap-f1}
-\end{figure}
-
-\subsection{Linguistic Differences Between Domains}
-
-Beyond vocabulary, there are structural linguistic differences between the annotation styles of different benchmarks that affect transferability. Figure~\ref{fig:pos} compares the part-of-speech distribution of aspect and opinion head tokens across all 13 datasets.
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=0.95\textwidth]{figures/pos_comparison.pdf}
-\caption{POS distribution of aspect heads (top) and opinion heads (bottom) across all datasets. SemEval opinions are ADJ-dominant while DMASTE opinions are VERB-dominant.}
-\label{fig:pos}
-\end{figure}
-
-The most striking difference is in opinion annotations: SemEval opinions are ADJ-dominant (37--46\% of opinion head POS are adjectives, ``delicious'', ``horrible'', ``great''), while DMASTE opinions are VERB-dominant (21--24\% verbs, ``works'', ``love'', ``recommend''). This is not just a vocabulary difference but a fundamental annotation style difference. SemEval annotators tend to select single adjectives as opinion spans, while DMASTE annotators include verb phrases and multi-word expressions. A model trained exclusively on adjective-heavy SemEval opinions will underperform on verb-heavy DMASTE opinions regardless of vocabulary overlap.
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=0.95\textwidth]{figures/dataset_characteristics.pdf}
-\caption{Dataset characteristics comparison: sentence length, triplets per sentence, implicit aspect rate, aspect span length, and opinion span length across all datasets.}
-\label{fig:characteristics}
-\end{figure}
-
-The dataset characteristics (Figure~\ref{fig:characteristics}) reveal further structural differences. DMASTE sentences are 3--4$\times$ longer than SemEval (55--64 tokens vs 15--17), contain 2$\times$ more triplets per sentence (3.3--4.0 vs 1.5--2.0), and have much higher implicit aspect rates (38--47\% vs 0\% in SemEval). These compounding differences make DMASTE a substantially harder cross-domain target than the near-OOD SemEval restaurant variants.
+We estimate 5--10\% of Laptop14 annotations involve genuinely ambiguous polarity where the model's prediction is at least as defensible as the gold label. This affects all methods equally and does not change relative comparisons.
 
 
 \section{Discussion}
 
 \subsection{Why Does NL Format Help OOD?}
 
-The +8.6 point OOD improvement from NL format is the largest single finding of this thesis. We believe it works through two mechanisms:
+The +8.6 point OOD improvement from NL format is the largest finding. We believe it works through two mechanisms:
 
 \begin{enumerate}
-    \item \textbf{Pre-training alignment}: FLAN-T5 was pre-trained to generate fluent English. The NL templates (``X is described as Y, expressing a Z sentiment'') are within the model's pre-training distribution. On OOD inputs where the model is uncertain about specific aspects or opinions, it can still generate well-formed template text and fill in the slots with its best guess. The structured format ([X, Y, Z]) is an arbitrary syntax that provides no such fallback.
+    \item \textbf{Pre-training alignment}: FLAN-T5 was pre-trained to generate fluent English. The NL templates are within the model's pre-training distribution. On OOD inputs where the model is uncertain, it can still generate well-formed template text. The structured format is an arbitrary syntax that provides no such fallback.
     
-    \item \textbf{Implicit structural constraints}: The template words act as barriers against degenerate outputs. A model generating structured output can easily produce malformed brackets or skip elements when uncertain. The NL template's connecting phrases (``is described as'', ``expressing a'') force the model to commit to a complete triplet or produce nothing recognisable.
+    \item \textbf{Implicit structural constraints}: The template words act as barriers against degenerate outputs. A model generating structured output can easily produce malformed brackets when uncertain. The NL template's connecting phrases force complete triplets or nothing recognisable.
 \end{enumerate}
 
-The evidence against a third hypothesis, that NL simply provides more training signal through longer outputs, is that the structured format generates fewer tokens but the same number of information-bearing elements per example. If longer output sequences alone helped generalisation, we would expect augmentation strategies that increase training volume (sub-task decomposition, multi-ordering) to show similar gains, but they do not. The benefit is specifically from \textit{output-side} alignment with pre-training, not from output length.
+The evidence against a third hypothesis, that NL simply provides more training signal through longer outputs, is that strategies which increase training volume (sub-task decomposition, multi-ordering) do not show similar gains. The benefit is specifically from output-side alignment with pre-training.
 
 \subsection{Why Do Most Interventions Fail?}
 
 The negative results share a common pattern: interventions that increase training variety \textit{within the same domain} do not help when the test domain has fundamentally different vocabulary and annotation style. Curriculum learning, sub-task decomposition, masking, and multi-ordering all produce more diverse training examples, but the diversity is over task structure, not over domain content.
 
-Cross-domain data mixing is the one intervention that adds actual domain diversity, yet it still fails for far-OOD (Laptop14). The reason is likely that the DMASTE domains (electronics, beauty, fashion, home) are more similar to each other (Amazon product reviews with similar annotation style) than to the SemEval restaurant domain. Adding more Amazon-style data does not bridge the gap to laptop reviews annotated in SemEval style.
+Cross-domain data mixing is the one intervention that adds actual domain diversity, yet it still fails for far-OOD. The DMASTE domains are more similar to each other (Amazon product reviews) than to the SemEval restaurant domain. Adding more Amazon-style data does not bridge the gap to laptop reviews annotated in SemEval style.
+
+\subsection{Annotation Quality and Performance Ceiling}
+
+Evaluating models on benchmark data assumes that the gold annotations represent ground truth. In practice, annotation is subjective: Miñarro-Giménez et al.~\cite{minarro2019quantitative} demonstrated that even trained annotators show non-trivial disagreement on structured labelling tasks. Hu and Liu~\cite{hu2004mining}, in their early work on opinion mining, acknowledged that identifying what constitutes an opinion is inherently context-dependent. Li et al.~\cite{li2021implicit} showed that neural language models develop implicit representations of entity state from text alone, but these representations are imperfect. Sun et al.~\cite{sun2025implicit} argue that text embedding research should move beyond surface meaning toward modelling implicit semantics, precisely the kind of pragmatic inference needed to correctly handle ambiguous polarity cases.
+
+For the English SemEval data, we estimate that 5--10\% of Laptop14 annotations involve genuinely ambiguous polarity. The annotation guidelines leave room for interpretation in cases involving implicit sentiment, pragmatic inference, and debatable polarity. The distinction between surface semantics and implicit meaning is at the core of many ``errors'': the model, trained on surface-level aspect-opinion-polarity annotations, predictably struggles with cases where the correct label requires understanding speech acts, pragmatic implicature, or counterfactual reasoning.
+
+For the Romanian dataset specifically, the GPT-4 annotation pipeline introduces additional concerns:
+\begin{itemize}
+    \item Category assignment is the most annotation-sensitive component. The boundary between categories like ``experience'' and ``performance'', or ``design'' and ``durability'', requires domain expertise and subjective judgement that GPT-4 may resolve differently from a human annotator.
+    \item There is an inherent circularity concern: models are trained on LLM-annotated data and then compared against LLMs on test data from a related pipeline. We mitigate this by using an independently annotated test set, but biases in the training set still propagate to all fine-tuned models.
+    \item The quality ceiling is bounded by GPT-4's ability to perform fine-grained Romanian ABSA. Aldeen et al.~\cite{aldeen2023chatgpt} found that LLM-generated annotations achieve competitive quality for sentiment classification but human annotators consistently outperform on tasks requiring nuanced contextual judgement.
+\end{itemize}
+
+The practical consequence is that reported F1 scores on both datasets should be interpreted with caution. The gap between model performance and ``perfect'' F1 is not entirely due to model limitations; a portion reflects genuine annotation ambiguity. Importantly, this annotation noise affects all methods equally: relative comparisons between models remain valid even if absolute F1 scores overstate the difficulty.
+
+
 
 \chapter{Conclusions}\label{ch:conclusions}
 
+This chapter summarises the findings of the thesis, acknowledges the limitations of the experimental setup, and outlines directions for future research.
+
 \section{Summary}
 
-This thesis presented a systematic empirical study of training strategies for out-of-domain generalisation in generative aspect-based sentiment analysis. We evaluated output format, syntactic enrichment, multiple data augmentation strategies, task decomposition methods, and decoding strategies, measuring their OOD impact with multi-seed statistical validation across three benchmarks.
+This thesis presented a systematic empirical study of training strategies for out-of-domain generalisation in generative aspect-based sentiment analysis. We evaluated output format, syntactic enrichment, multiple data augmentation strategies, task decomposition methods, decoding strategies, large language models in few-shot settings, and application to Romanian, measuring their OOD impact with multi-seed statistical validation across three benchmarks.
 
 The main finding is that natural-language output format is the single most effective lever for OOD generalisation, providing +8.6 F1 points over structured output with non-overlapping confidence intervals. This is a design choice that costs nothing in terms of additional data or computation, yet delivers larger OOD gains than any other intervention we tested.
 
 On the DMASTE benchmark, our FLAN-T5-base model with NL output matches the best previously reported cross-domain result (Span-ASTE) without any domain adaptation. On the SemEval benchmark, it outperforms 27--32B parameter LLMs in few-shot settings by 10+ F1 points on OOD data.
 
+On Romanian ABSA, fine-tuned models (110--278M parameters) outperform all LLMs tested (27--35B parameters). Monolingual Romanian models perform within 0.3 F1 points of the 2.5$\times$ larger multilingual XLM-R, confirming that dedicated language-specific pre-training compensates for smaller model size.
+
 Most other interventions we tested, syntactic enrichment, curriculum learning, aspect masking, cross-domain data mixing, LLM-generated opinion augmentation, training with permuted task orderings (and a faithful replication of MvP's inference-time voting~\cite{gou2023mvp}), sub-task decomposition~\cite{xie2025star}, and alternative decoding strategies, did not reliably improve OOD performance. These negative results are documented in detail so that future work can avoid repeating them.
 
 \section{Limitations}
 
-This work has several limitations that should be acknowledged:
+This work has several limitations:
 
 \begin{itemize}
-    \item \textbf{Single language family}: All ASTE experiments are in English. The Romanian experiments use a different task formulation (polarity+category, not full triplets), so we cannot confirm that the NL format advantage extends to non-English triplet extraction.
+    \item \textbf{Single language family for ASTE}: All triplet extraction experiments are in English. The Romanian experiments use a different task formulation (polarity+category, not full triplets), so we cannot confirm that the NL format advantage extends to non-English triplet extraction.
     
     \item \textbf{Single model size}: We tested only FLAN-T5-base (250M). It is possible that the NL format advantage diminishes at larger scales where the model has more capacity to learn arbitrary output formats.
     
-    \item \textbf{Annotation noise ceiling}: The SemEval benchmarks contain annotation inconsistencies (counterfactuals labelled as opinions, disagreeable polarity assignments) that affect all methods equally but make it difficult to determine the true performance ceiling.
+    \item \textbf{Annotation noise ceiling}: The SemEval benchmarks contain annotation inconsistencies that affect all methods equally but make it difficult to determine the true performance ceiling.
     
-    \item \textbf{Single-seed for some experiments}: While the primary comparisons use 5 seeds, several ablation studies (curriculum, masking, domain mixing) use a single seed due to computational constraints. Results within the baseline's confidence interval cannot be conclusively interpreted.
+    \item \textbf{Single-seed for some experiments}: While the primary comparisons use 5 seeds, several ablation studies use a single seed due to computational constraints. Results within the baseline's confidence interval cannot be conclusively interpreted.
     
-    \item \textbf{DMASTE implicit aspects}: The DMASTE datasets have 40--47\% implicit aspects which our model handles but cannot truly solve, predicting aspects not mentioned in the text is a fundamentally different problem from extracting mentioned spans.
+    \item \textbf{DMASTE implicit aspects}: The DMASTE datasets have 40--47\% implicit aspects which our model handles but cannot truly solve; predicting aspects not mentioned in the text is a fundamentally different problem from extracting mentioned spans.
+    
+    \item \textbf{LLM quantisation}: All LLMs are 4-bit quantised, which reduces performance relative to full-precision inference. Results represent a lower bound on LLM capability.
+    
+    \item \textbf{Romanian annotation quality}: The eMAG training data was annotated with GPT-4 assistance, which may introduce systematic biases bounded by GPT-4's capabilities on Romanian text.
 \end{itemize}
 
 \section{Future Work}
@@ -1474,16 +1404,21 @@ Several directions could extend this work:
     
     \item \textbf{Larger model scales}: Testing whether the NL format advantage persists with FLAN-T5-large (780M) or T5-XL (3B), and whether the augmentation strategies that failed at 250M become effective with more capacity.
     
-    \item \textbf{Multi-task cross-domain training}: Combining NL output format with MvP-style multi-dataset training (the recipe behind MvP's 76.08 ID result). If multi-task exposure provides domain diversity, it might compound with the NL format's OOD advantage.
+    \item \textbf{Multi-task cross-domain training}: Combining NL output format with MvP-style multi-dataset training. If multi-task exposure provides domain diversity, it might compound with the NL format's OOD advantage.
     
-    \item \textbf{Better augmentation targets}: Our augmentation attempts modified opinions (synonym replacement) and inputs (masking, data mixing). Augmenting the \textit{aspects} themselves, generating training sentences with novel aspect terms from target-domain vocabulary, could address the unseen-aspect problem that accounts for 57\% of OOD errors.
+    \item \textbf{Better augmentation targets}: Our augmentation attempts modified opinions (synonym replacement) and inputs (masking, data mixing). Augmenting the aspects themselves, generating training sentences with novel aspect terms from target-domain vocabulary, could address the unseen-aspect problem that accounts for 57\% of OOD errors.
+    
+    \item \textbf{Fine-tuning smaller LLMs}: Testing 7--8B parameter models fine-tuned on ABSA to find the scale at which fine-tuned LLMs begin to outperform fine-tuned smaller models.
+    
+    \item \textbf{Romanian triplet extraction}: Expanding Romanian ABSA evaluation to full ASTE rather than polarity+category classification.
 \end{itemize}
+
 
 \chapter{Annex}\label{ch:annex}
 
 \section{Per-Seed Results}
 
-\begin{table}[htbp]
+\begin{table}[H]
 \centering
 \caption{NL baseline: per-seed triplet F1 on all test sets (Rest14-only training).}
 \small
@@ -1491,19 +1426,19 @@ Several directions could extend this work:
 \toprule
 \textbf{Seed} & \textbf{Rest14} & \textbf{Rest15} & \textbf{Rest16} & \textbf{Laptop14} \\
 \midrule
-42 & 0.7265 & 0.6073 & 0.6723 & 0.5430 \\
-123 & 0.7180 & 0.5978 & 0.6882 & 0.5173 \\
-456 & 0.7173 & 0.6034 & 0.6717 & 0.5198 \\
-789 & 0.7268 & 0.5997 & 0.6902 & 0.5316 \\
-1337 & 0.7203 & 0.6032 & 0.6765 & 0.5118 \\
+42 & 0.727 & 0.607 & 0.672 & 0.543 \\
+123 & 0.718 & 0.598 & 0.688 & 0.517 \\
+456 & 0.717 & 0.603 & 0.672 & 0.520 \\
+789 & 0.727 & 0.600 & 0.690 & 0.532 \\
+1337 & 0.720 & 0.603 & 0.677 & 0.512 \\
 \midrule
-Mean & 0.7218 & 0.6023 & 0.6798 & 0.5247 \\
-Std & 0.0047 & 0.0043 & 0.0096 & 0.0116 \\
+Mean & 0.722 & 0.602 & 0.680 & 0.525 \\
+Std & 0.005 & 0.004 & 0.010 & 0.012 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\begin{table}[htbp]
+\begin{table}[H]
 \centering
 \caption{Structured baseline: per-seed triplet F1 (Rest14-only training).}
 \small
@@ -1511,14 +1446,14 @@ Std & 0.0047 & 0.0043 & 0.0096 & 0.0116 \\
 \toprule
 \textbf{Seed} & \textbf{Rest14} & \textbf{Rest15} & \textbf{Rest16} & \textbf{Laptop14} \\
 \midrule
-42 & 0.6980 & 0.5700 & 0.6367 & 0.4205 \\
-123 & 0.6842 & 0.5802 & 0.6402 & 0.4413 \\
-456 & 0.6935 & 0.5648 & 0.6318 & 0.4488 \\
-789 & 0.7012 & 0.5815 & 0.6508 & 0.4406 \\
-1337 & 0.6862 & 0.5770 & 0.6400 & 0.4438 \\
+42 & 0.698 & 0.570 & 0.637 & 0.421 \\
+123 & 0.684 & 0.580 & 0.640 & 0.441 \\
+456 & 0.694 & 0.565 & 0.632 & 0.449 \\
+789 & 0.701 & 0.582 & 0.651 & 0.441 \\
+1337 & 0.686 & 0.577 & 0.640 & 0.444 \\
 \midrule
-Mean & 0.6926 & 0.5747 & 0.6399 & 0.4390 \\
-Std & 0.0081 & 0.0093 & 0.0089 & 0.0119 \\
+Mean & 0.693 & 0.575 & 0.640 & 0.439 \\
+Std & 0.008 & 0.009 & 0.009 & 0.012 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -1532,22 +1467,22 @@ Output: food is described as Great, expressing a positive sentiment ;
         service is described as dreadful, expressing a negative sentiment
 \end{lstlisting}
 
-\textbf{OOD error, unseen aspect (Laptop14):}
+\textbf{OOD error --- unseen aspect (Laptop14):}
 \begin{lstlisting}
 Input: This Macbook Pro is fast, powerful, and runs super quiet and cool.
 Gold: runs -> quiet [positive] ; runs -> cool [positive]
 Pred: Macbook Pro -> fast [positive] ; Macbook Pro -> powerful [positive] ;
       Macbook Pro -> quiet [positive] ; Macbook Pro -> cool [positive]
 \end{lstlisting}
-The model identifies the product name as the aspect (reasonable) rather than the verb ``runs'' (gold annotation). This reflects different annotation conventions between restaurant and laptop domains.
+The model identifies the product name as the aspect rather than the verb ``runs''. This reflects different annotation conventions between restaurant and laptop domains.
 
-\textbf{OOD error, polarity confusion (Laptop14):}
+\textbf{OOD error --- polarity confusion (Laptop14):}
 \begin{lstlisting}
 Input: I needed a laptop with big storage, a nice screen and fast ...
 Gold: storage -> big [neutral] ; screen -> nice [neutral]
 Pred: storage -> big [positive] ; screen -> nice [positive]
 \end{lstlisting}
-Desire/wish context should be neutral per annotation guidelines, but the model (trained mostly on opinionated restaurant reviews) defaults to positive for positive-sounding adjectives.
+Desire/wish context should be neutral per annotation guidelines, but the model defaults to positive for positive-sounding adjectives.
 
 \section{Input/Output Format Examples}
 
@@ -1559,10 +1494,138 @@ Syntax: staff->was:nsubj horrible->was:acomp
 Output: staff is described as horrible, expressing a negative sentiment
 \end{lstlisting}
 
-\textbf{MvP marker format (for comparison):}
+\textbf{Structured output for the same input:}
 \begin{lstlisting}
+Task: aspect-extraction, sentiment-extraction, polarity-inference
 Input: The staff was so horrible to us .
-Output: [A] staff [O] horrible [S] negative [SSEP]
+Output: [staff, horrible, negative]
+\end{lstlisting}
+
+
+\section{Multi-Ordering Template Permutations}\label{sec:annex-templates}
+
+The 6 natural-language templates used for multi-ordering training on the full ASTE triplet task:
+
+\begin{table}[H]
+\centering
+\caption{NL output templates for all 6 element orderings of the ASTE triplet.}
+\small
+\begin{tabular}{@{}lp{10.5cm}@{}}
+\toprule
+\textbf{Task prefix order} & \textbf{Template} \\
+\midrule
+aspect, sentiment, polarity & \texttt{\{aspect\} is described as \{sentiment\}, expressing a \{polarity\} sentiment} \\
+aspect, polarity, sentiment & \texttt{\{aspect\} carries a \{polarity\} opinion, expressed as \{sentiment\}} \\
+sentiment, aspect, polarity & \texttt{the opinion \{sentiment\} is expressed towards \{aspect\}, conveying a \{polarity\} sentiment} \\
+sentiment, polarity, aspect & \texttt{\{sentiment\} conveys a \{polarity\} sentiment about \{aspect\}} \\
+polarity, aspect, sentiment & \texttt{a \{polarity\} sentiment toward \{aspect\} is expressed as \{sentiment\}} \\
+polarity, sentiment, aspect & \texttt{a \{polarity\} sentiment is expressed as \{sentiment\}, regarding \{aspect\}} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+\section{Per-Model LLM Results (English)}
+
+\begin{table}[H]
+\centering
+\caption{Gemma2 27B detailed results (SemEval ASTE, triplet micro-F1).}
+\small
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+\textbf{Setting} & \textbf{Rest14} & \textbf{Rest15} & \textbf{Rest16} & \textbf{Laptop14} \\
+\midrule
+0-shot & 0.441 & 0.418 & 0.455 & 0.275 \\
+6-shot & 0.646 & 0.592 & 0.637 & 0.410 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Qwen2.5 32B detailed results (SemEval ASTE, triplet micro-F1).}
+\small
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+\textbf{Setting} & \textbf{Rest14} & \textbf{Rest15} & \textbf{Rest16} & \textbf{Laptop14} \\
+\midrule
+0-shot & 0.535 & 0.451 & 0.556 & 0.363 \\
+6-shot & 0.603 & 0.527 & 0.614 & 0.370 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Command-R detailed results (SemEval ASTE, triplet micro-F1).}
+\small
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+\textbf{Setting} & \textbf{Rest14} & \textbf{Rest15} & \textbf{Rest16} & \textbf{Laptop14} \\
+\midrule
+0-shot & 0.318 & 0.256 & 0.309 & 0.206 \\
+6-shot & 0.576 & 0.499 & 0.568 & 0.373 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+\section{LLM Prompt Templates}
+
+\textbf{English ASTE (6-shot format):}
+\begin{lstlisting}
+[system]
+You are an aspect-based sentiment analysis system. Given a review
+sentence, extract all (aspect, opinion, polarity) triplets.
+
+Output format: one triplet per line as [aspect, opinion, polarity]
+- aspect: the entity or feature being discussed (exact span from text)
+- opinion: the opinion expression about the aspect (exact span from text)
+- polarity: positive, negative, or neutral
+
+If there are no triplets, output: none
+Do not explain your reasoning. Only output the triplets.
+
+[user]
+Input: The price is reasonable although the service is poor .
+
+[assistant]
+[price, reasonable, positive]
+[service, poor, negative]
+
+... (5 more examples) ...
+
+[user]
+Input: The design and atmosphere is just as good .
+\end{lstlisting}
+
+\textbf{Romanian ABSA (6-shot format):}
+\begin{lstlisting}
+[system]
+You are a sentiment analysis system for phone reviews written in
+Romanian. Given a review, extract all (category, polarity) pairs.
+
+Output format: one pair per line as [category, polarity]
+- category: Must be one of: experience, durability, performance,
+  battery, price_quality, design, camera, audio, software, brand,
+  service
+- polarity: Must be one of: positive, negative, neutral
+
+If there are no pairs, output: none
+Do not explain your reasoning. Only output the pairs.
+
+[user]
+Input: Nu merita. Se incalzeste tare.
+
+[assistant]
+[experience, negative]
+[performance, negative]
+[price_quality, negative]
+
+... (5 more examples) ...
+
+[user]
+Input: Super telefon pentru cei cunoscatori!
 \end{lstlisting}
 
 

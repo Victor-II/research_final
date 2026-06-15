@@ -44,7 +44,10 @@
     showtabs=false,
     tabsize=2
 }
-\lstset{style=mystyle}
+\lstset{style=mystyle,
+  literate={ă}{{\u{a}}}1 {â}{{\^{a}}}1 {î}{{\^{i}}}1 {ș}{{\c{s}}}1 {ț}{{\c{t}}}1
+           {Ă}{{\u{A}}}1 {Â}{{\^{A}}}1 {Î}{{\^{I}}}1 {Ș}{{\c{S}}}1 {Ț}{{\c{T}}}1
+}
 
 \usepackage{chngcntr}
 \counterwithout{figure}{chapter}
@@ -99,7 +102,8 @@ COMPUTER SCIENCE AND ENGINEERING DEPARTMENT\\}
 \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}p{6cm}r}
 &{\large\textbf{#5}}\vspace{10pt}\\
 &{\large \AdvisorA}\\
-&{\large \AdvisorB}
+&{\large \AdvisorB}\\
+&{\large \AdvisorC}
 \end{tabular*}
 \vspace{20pt}
 \begin{center}
@@ -133,9 +137,10 @@ COMPUTER SCIENCE AND ENGINEERING DEPARTMENT\\}
 
 \newcommand{\ProjectTitleEN}{Cross-Lingual and Large Language Model Approaches to Aspect-Based Sentiment Analysis}
 \newcommand{\ProjectSubtitleEN}{Master Program IISC}
-\newcommand{\Name}{[TO DO]}
-\newcommand{\AdvisorA}{[TO DO]}
-\newcommand{\AdvisorB}{}
+\newcommand{\Name}{Victor-Iulian Istrătescu}
+\newcommand{\AdvisorA}{Assoc.Prof.PhD.Habil.Engr. Elena-Simona Apostol}
+\newcommand{\AdvisorB}{Assoc.Prof.PhD.Habil.Engr. Cirpian-Octavia Truică}
+\newcommand{\AdvisorC}{PhD.Stud.Engr. Ana-Maria Luisa Mocanu}
 \newcommand{\Year}{2026}
 
 \title{Raport de cercetare}
@@ -156,146 +161,23 @@ COMPUTER SCIENCE AND ENGINEERING DEPARTMENT\\}
 \AbstractPage
 
 
-\chapter{Introduction}\label{ch:introduction}\pagestyle{fancy}
-
-\section{Summary of Previous Work}
-
-In a previous report, we presented an empirical study of training strategies for out-of-domain generalisation in generative Aspect-Based Sentiment Analysis. We formulated Aspect Sentiment Triplet Extraction (ASTE) as a sequence-to-sequence problem using FLAN-T5-base (250M parameters) and evaluated the effect of output format, syntactic input enrichment, multi-ordering training, sub-task decomposition, curriculum learning, aspect masking, cross-domain data mixing, and decoding strategies on cross-domain performance.
-
-The main finding was that natural-language output templates provide the largest improvement for OOD generalisation: +8.6 F1 points over structured output (5 seeds, non-overlapping confidence intervals). On the DMASTE multi-domain benchmark, our model matched the best previously reported cross-domain result (Span-ASTE~\cite{xu2023dmaste}) without any domain adaptation. Most other interventions (syntax enrichment, curriculum learning, aspect masking, data mixing, task decomposition) did not reliably help. The common pattern was that strategies which increase training variety within the same domain do not address the vocabulary and annotation style differences that characterise cross-domain transfer.
-
-That work focused exclusively on English and on the generative T5-based approach. Two questions remained open: how does a fine-tuned 250M model compare against much larger language models that have seen far more diverse pre-training data, and whether the findings extend to languages other than English where annotated ABSA data is scarce.
-
-
-\section{Motivation}
-
-This report addresses both questions. On the LLM side, we evaluate Gemma2 27B, Qwen2.5 32B, and Command-R (35B) in zero-shot and six-shot settings on the same SemEval ASTE task used previously. The comparison is straightforward: can a model with 100$\times$ more parameters, but no task-specific training, outperform a small fine-tuned model on structured extraction?
-
-On the multilingual side, we evaluate on Romanian using a dataset of eMAG phone reviews annotated for aspect polarity and category. Romanian is a medium-resource language: pre-trained models exist (RoBERT~\cite{masala2020robert}, bert-base-romanian-cased~\cite{dumitrescu2020birth}) but fine-grained ABSA datasets are rare. This setting lets us compare several approaches: monolingual Romanian models (110--114M), a multilingual encoder (XLM-R, 278M), an English-centric generative model fine-tuned on Romanian data (FLAN-T5, 250M), and large language models prompted in Romanian without any fine-tuning.
-
-The practical question is: for a practitioner with limited ABSA data in a non-English language, what is the most effective approach? Fine-tune a small monolingual model, fine-tune a multilingual model, fine-tune an English generative model, or prompt a large model with a few examples?
-
-
-\section{Objectives}
-
-\begin{enumerate}
-    \item Compare large language models (27--35B parameters, few-shot) against fine-tuned models (110--278M parameters) on English ASTE extraction.
-
-    \item Evaluate the same LLMs on Romanian ABSA (polarity + category prediction on eMAG phone reviews).
-
-    \item Compare monolingual Romanian models (RoBERT-base, bert-base-romanian-cased) against multilingual (XLM-R-base) and English-centric generative (FLAN-T5-base) approaches on the same Romanian task.
-
-    \item Discuss the role of LLM-generated annotations in low-resource ABSA settings, given that our Romanian training data was produced with GPT-4 assistance.
-\end{enumerate}
-
-
-\section{Structure}
-
-Chapter~\ref{ch:relatedwork} reviews the relevant literature on multilingual models, LLMs for ABSA, and Romanian NLP. Chapter~\ref{ch:methodology} describes the experimental setup. Chapter~\ref{ch:implementation} covers the datasets and implementation details. Chapter~\ref{ch:results} presents results and analysis. Chapter~\ref{ch:conclusions} summarises findings.
-
-
-
-\chapter{Related Work}\label{ch:relatedwork}
-
-Two pre-trained language models exist specifically for Romanian. Masala et al.~\cite{masala2020robert} (COLING 2020) introduced RoBERT, a BERT model trained from scratch on Romanian text. They released three sizes: RoBERT-small (19M parameters), RoBERT-base (114M), and RoBERT-large (341M), all uncased. The training corpus consists of approximately 12GB of cleaned Romanian text from OSCAR, RoTex, and Wikipedia. On downstream tasks such as part-of-speech tagging and named entity recognition, RoBERT outperformed multilingual BERT by a considerable margin, demonstrating the value of monolingual pre-training even at the base model scale. Dumitrescu et al.~\cite{dumitrescu2020birth} (EMNLP 2020 Findings) independently trained another Romanian BERT, bert-base-romanian-cased, on a 15GB corpus comprising OPUS, OSCAR, and Wikipedia data. Their model is cased (unlike RoBERT which is uncased) and also outperformed multilingual BERT on Romanian benchmarks. Both papers report that language-specific pre-training on even moderately-sized corpora produces models that outperform multilingual alternatives on downstream tasks in that language. We use both models in our experiments as monolingual baselines for Romanian ABSA.
-
-On the multilingual side, XLM-RoBERTa~\cite{conneau2020unsupervised} (XLM-R) is a transformer model trained on 2.5TB of filtered CommonCrawl data in 100 languages. At the base scale (278M parameters), it provides competitive performance across many languages without language-specific training. The trade-off is that its capacity is spread across 100 languages, so for any single language it has seen less language-specific data than a dedicated monolingual model, but it benefits from cross-lingual transfer. For Romanian specifically, XLM-R has been used as a backbone for various NLP tasks but its performance relative to the monolingual Romanian models on fine-grained tasks like ABSA has not been systematically compared.
-
-The question of whether large language models can perform ABSA without fine-tuning has been investigated in several recent papers. Simmering and Huoviala~\cite{veyseh2024llm_absa} evaluated GPT-3.5 and GPT-4 on the SemEval 2014 joint aspect term extraction and polarity classification task and found that fine-tuned GPT-3.5 achieves state-of-the-art performance (83.8 F1), while GPT-4 in 6-shot settings reaches 71.3 F1 --- below fine-tuned smaller models. A consistent finding is that LLMs perform better at classification (determining whether something is positive or negative) than at extraction (identifying which specific words constitute an aspect or opinion span). This matches what we observe in our experiments: LLMs achieve reasonable aspect-level F1 but full triplet F1 drops substantially because opinion span matching is difficult without fine-tuning.
-
-\v{S}m\'{i}d et al.~\cite{smid2024multilingual_llm_absa} (2024) conducted a systematic evaluation of LLMs for zero-shot multilingual ABSA across several languages. Their results indicate that while LLMs show promise, they generally fall short of fine-tuned task-specific models. They also found that simpler zero-shot prompts often outperform more complex prompting strategies, especially in high-resource languages. This is relevant context for our experiments: we use a straightforward structured prompt rather than elaborate chain-of-thought reasoning, and our results are consistent with their finding that fine-tuned models retain an advantage.
-
-The same group~\cite{smid2025czech_absa} (2025) applied this comparison to Czech, a medium-resource language comparable to Romanian. They found that small domain-specific models fine-tuned for ABSA outperform general-purpose LLMs in zero-shot and few-shot settings. This parallels our Romanian findings and suggests the pattern is not language-specific but reflects a general property of extraction tasks: task-specific fine-tuning remains more sample-efficient than scaling model size for structured prediction.
-
-On the cross-lingual ABSA front, recent work~\cite{fewshot_crosslingual_absa2025} has shown that adding as few as ten target-language examples to a sequence-to-sequence model significantly improves performance over zero-shot cross-lingual transfer. This is consistent with our setup: we fine-tune FLAN-T5-base on a small Romanian dataset rather than relying on zero-shot transfer from English, and it performs competitively with much larger models. A broader survey of cross-lingual transfer strategies for ABSA~\cite{crosslingual_transfer_absa2026} confirms that the field remains largely English-focused, and that practical approaches for non-English languages typically involve some amount of target-language fine-tuning rather than relying purely on zero-shot transfer.
-
-A separate but relevant question concerns the use of LLMs as annotators for training data creation. Aldeen et al.~\cite{aldeen2023chatgpt} (ICMLA 2023) compared ChatGPT annotations against human annotators across several NLP tasks and found that LLM-generated annotations achieve competitive quality for sentiment analysis, though human annotators consistently outperform on more complex tasks requiring nuanced judgement. This is directly relevant to our setup: the Romanian eMAG training dataset was annotated with GPT-4 assistance (aspect categories and polarities generated by GPT-4, then reviewed). The quality of this annotation process affects the ceiling of what any model trained on it can achieve. We discuss this further in the results chapter.
-
-For our generative approach on Romanian, we use FLAN-T5-base~\cite{chung2022scaling}, which was instruction-tuned primarily on English tasks. Despite being English-centric, FLAN-T5's tokenizer (SentencePiece) covers Romanian characters, and the model can generate Romanian text with fine-tuning. The question is whether this English-centric model, fine-tuned on a small Romanian dataset, can compete with models that have dedicated Romanian pre-training. Our previous report established that the natural-language output format~\cite{zhang2021aspect} helps OOD generalisation in English; here we test whether that benefit extends to a cross-lingual setting where the model generates text in a language it was not primarily designed for.
-
-
-
-\chapter{Methodology}\label{ch:methodology}
-
-This chapter describes the models, prompting strategies, and evaluation metrics used in our experiments.
-
-\section{Models}
-
-\subsection{Large Language Models (Few-Shot)}
-
-We evaluate three LLMs via the ollama inference server, all 4-bit quantised:
-
-\begin{itemize}
-    \item \textbf{Gemma2 27B}~\cite{team2024gemma} --- Google's 27B parameter model.
-    \item \textbf{Qwen2.5 32B}~\cite{hui2024qwen2} --- Alibaba's 32B parameter model.
-    \item \textbf{Command-R}~\cite{cohere2024commandr} --- Cohere's 35B parameter model, designed for retrieval-augmented generation.
-\end{itemize}
-
-Each model is tested in 0-shot (task description only) and 6-shot (task description plus 6 demonstration examples) settings. For the 6-shot setting, demonstrations are retrieved from the training set using a hybrid strategy: 3 examples via BM25 (lexical similarity to the test sentence) and 3 via SimCSE (semantic similarity), ensuring both vocabulary and structural diversity.
-
-\subsection{Fine-Tuned Classifier Models (Romanian)}
-
-For Romanian polarity + category classification, we compare three encoder-based models:
-
-\begin{itemize}
-    \item \textbf{RoBERT-base}~\cite{masala2020robert} --- 114M parameters, Romanian-only, uncased.
-    \item \textbf{bert-base-romanian-cased}~\cite{dumitrescu2020birth} --- 110M parameters, Romanian-only, cased.
-    \item \textbf{XLM-R-base}~\cite{conneau2020unsupervised} --- 278M parameters, multilingual (100 languages).
-\end{itemize}
-
-All use the same classifier architecture: the encoder produces a sentence representation which is passed through linear heads for polarity classification and category classification. Training uses AdamW with a learning rate of $2 \times 10^{-5}$, 8 epochs, and early stopping with patience 3.
-
-\subsection{Fine-Tuned Generative Model (Romanian)}
-
-FLAN-T5-base~\cite{chung2022scaling} (250M parameters) is fine-tuned on the Romanian eMAG training set using natural-language output templates, following the same approach as our English experiments. The model generates text like ``polarity is positive, category is performance'' given a Romanian input sentence.
-
-
-\section{Few-Shot Prompt Design}
-
-For the English ASTE task, the LLM receives:
-
-\begin{lstlisting}
-Extract all (aspect, opinion, polarity) triplets from the sentence.
-Polarity is one of: positive, negative, neutral.
-Output format: [aspect, opinion, polarity]
-
-Sentence: But the staff was so horrible to us .
-Output:
-\end{lstlisting}
-
-In the 6-shot setting, 6 example input-output pairs precede the test sentence.
-
-For Romanian, the prompt requests polarity and category extraction with the category taxonomy provided in the system prompt. Demonstrations (when used) are Romanian sentences from the training set.
-
-
-\section{Evaluation}
-
-For English ASTE, we use micro-averaged triplet F1 (exact match on all three elements), consistent with our previous report.
-
-For Romanian, we report three metrics:
-\begin{itemize}
-    \item Polarity + Category pair F1 (both must match for a correct prediction).
-    \item Polarity F1 (polarity alone).
-    \item Category F1 (category alone).
-\end{itemize}
-
-This decomposition helps identify whether errors come from polarity classification (relatively easy) or category prediction (harder, especially for LLMs unfamiliar with the specific taxonomy).
-
-
-
 \chapter{Implementation}\label{ch:implementation}
 
-\section{Datasets}
+This chapter covers the data used in our experiments (Section~\ref{sec:datasets}), the LLM inference setup 
+together with retrieval strategy for few-shot prompting (Section~\ref{sec:llm-inference}), 
+the fine-tuning strategies of the three discriminative models (Section~\ref{sec:classifier-models}) 
+and the Flan T5 model (Section~\ref{sec:gen-model-ro}) for the romanian language experiments, as well as the 
+additions to the experimental pipeline as a whole (Section~\ref{sec:pipeline}).
 
-We evaluate on two tasks across two languages:
+\section{Datasets}\label{sec:datasets}
 
-\begin{enumerate}
-    \item \textbf{English ASTE} (SemEval): Aspect Sentiment Triplet Extraction on restaurant/laptop reviews. Train on Rest14 (1266 sentences), test on Rest14 (in-domain), Rest15, Rest16, and Laptop14 (out-of-domain). This is the same setup as our previous report, now used to compare LLMs against the fine-tuned baseline.
+For English, we use the same SemEval ASTE setup as the previous report: train on Rest14 (1266 sentences), test on Rest14 (in-domain), Rest15, Rest16, and Laptop14 (out-of-domain).
 
-    \item \textbf{Romanian ABSA} (eMAG): Joint polarity and category prediction on phone reviews from eMAG (a Romanian e-commerce platform). The task is to predict (polarity, category) pairs for each annotated aspect in a review sentence. Categories are drawn from a fixed taxonomy of 11 classes (experience, durability, performance, battery, price\_quality, design, camera, audio, software, brand, service). Polarities are positive, negative, or neutral. The training set was produced with GPT-4 assistance: reviews were processed by GPT-4 to identify aspects and assign polarity/category labels from the predefined taxonomy, followed by human review. The test set was annotated independently.
-\end{enumerate}
+For Romanian, we use a dataset of phone reviews from eMAG. The annotation process involved GPT-4: given a review sentence, GPT-4 assigned polarity (positive/negative/neutral) and category labels from a predefined 11-class taxonomy (experience, durability, performance, battery, price\_quality, design, camera, audio, software, brand, service). A human reviewer then verified and corrected the labels. The test set was annotated separately using the same process. Unlike SemEval ASTE, this dataset does not include aspect or opinion span annotations — only polarity and category.
 
-Figures~\ref{fig:r4-polarity}--\ref{fig:r4-sentlen} characterise the Romanian dataset. The training set contains 27,630 sentences with 90,778 annotations (3.29 per sentence on average), drawn from a vocabulary of 65,188 unique words. Sentences are considerably longer than in the English SemEval data: mean 43.5 words (median 23), with a long tail reaching up to 309 words. At the subword token level (T5 tokenizer), the mean is 73.6 tokens (median 39, P95 = 266). The polarity distribution is heavily skewed toward positive (72.4\%), with negative at 22.6\% and neutral at only 5.0\%. The most frequent category is ``experience'' (25.7\%), followed by ``performance'' (11.5\%) and ``battery'' (10.3\%). The test set (3,093 sentences, 9,478 annotations) follows similar distributions, with slightly shorter sentences (mean 36.1 words) and a slightly higher neutral proportion (8.7\%).
+The training set has 27,630 sentences with 90,778 (polarity, category) labels (about 3.3 per sentence on average). Vocabulary size is 65,188 unique words. Sentences are long compared to SemEval: mean 43.5 words, median 23, maximum 309. In T5 subword tokens: mean 73.6, median 39, P95 = 266. The test set has 3,093 sentences with 9,478 labels.
+
+Polarity is imbalanced: 72.4\% positive, 22.6\% negative, 5.0\% neutral in training. The test set has more neutral examples (8.7\%). Figure~\ref{fig:r4-polarity} shows the polarity distribution, Figure~\ref{fig:r4-categories} shows the category distribution (experience is most common at 25.7\%), and Figure~\ref{fig:r4-sentlen} shows sentence length histograms.
 
 \begin{figure}[H]
 \centering
@@ -318,13 +200,39 @@ Figures~\ref{fig:r4-polarity}--\ref{fig:r4-sentlen} characterise the Romanian da
 \label{fig:r4-sentlen}
 \end{figure}
 
-\section{LLM Inference}
+\section{LLM Inference}\label{sec:llm-inference}
 
-We use the ollama inference server to run quantised models locally. All three LLMs (Gemma2 27B, Qwen2.5 32B, Command-R) are loaded in 4-bit quantisation. Inference is performed sequentially on each test sentence. For the 6-shot setting, the hybrid demonstration retrieval combines BM25 (via rank-bm25) and SimCSE (via sentence-transformers) to select 3 lexically similar and 3 semantically similar examples from the training set. This ensures demonstrations cover both vocabulary overlap and structural similarity with the test sentence.
+We evaluate three 4-bit quantised LLMs (Gemma2 27B, Qwen2.5 32B, Command-R), using the ollama server, in both 0-shot
+and few-shot setups. In the few-shot setting we provide the model with six examples retrieved from the corresponding training set of
+the data used. The examples are extracted using a hybrid approach, combining the BM25~\cite{robertson2009bm25} and
+SimCSE~\cite{gao2021simcse} methods. Each technique is used to select half of the examples. We hope this will result in an optimal
+balance of lexical and semantic similarity between the test sentence and examples.
 
-Output parsing follows the same strict protocol as our fine-tuned models: generated text is matched against expected patterns, and malformed outputs score zero. For English ASTE, we parse bracketed triplets; for Romanian, we parse polarity-category pairs from the generated text.
+The outputs were evaluated in the same fashion as for the other models: only exact predictions count as correct.
 
-Figure~\ref{fig:pipeline-r4} shows the three parallel evaluation paths used in this report.
+\section{Classifier Models}\label{sec:classifier-models}
+
+For RoBERT, bert-base-romanian-cased, and XLM-R we load the pre-trained encoder and add a two-layer MLP classification head on top of the \texttt{[CLS]} representation. Since each sentence can have multiple (category, polarity) annotations, we frame the task as multi-label classification over all 33 possible category×polarity combinations (11 categories × 3 polarities) and train with binary cross-entropy loss over all label positions, applying a 0.5 threshold to the sigmoid outputs at inference time to determine which labels are present.
+
+The training hyperparameters are fairly standard and are shared across models. 
+We use a learning rate of $2 \times 10^{-5}$, weight decay 0.01, warmup ratio 0.06, batch size 16, gradient 
+clipping 1.0, and bf16 mixed precision. Training runs for up to 8 epochs with early stopping at patience 3 (judged
+based on validation F1 score). Because the romanian dataset does not include a dedicated validation set
+we randomly selected 10\% of training data for this purpose.
+
+\section{Generative Model (Romanian)}\label{sec:gen-model-ro}
+
+We fine-tune FLAN-T5-base on the Romanian training set using natural-language output templates, 
+following the same approach as our English experiments. We use a learning rate of $3 \times 10^{-4}$ 
+with a cosine schedule, 12 epochs, and an effective batch size of 32. The model generates Romanian 
+text in a fixed template format which we then parse into polarity-category pairs.
+
+\section{Data Pipeline}\label{sec:pipeline}
+
+Figure~\ref{fig:pipeline-r4} shows the complete training and evaluation pipeline. This architecture builds on
+what was presented in the previous report, the changes being exclusively additive. Two new paths have been added,
+besides the generative one: the Classifier Path, which exposes the three BERT-based models and the LLM Inference Path which adds another three models to the setup. 
+For each of the new paths, we added specific data loaders, parsers and evaluation metrics.
 
 \begin{figure}[p]
 \centering
@@ -333,27 +241,18 @@ Figure~\ref{fig:pipeline-r4} shows the three parallel evaluation paths used in t
 \label{fig:pipeline-r4}
 \end{figure}
 
-\section{Classifier Models}
-
-The encoder-based classifiers (RoBERT, bert-ro, XLM-R) share the same architecture: the input sentence is tokenised, passed through the encoder, and the \texttt{[CLS]} token representation is used as input to two linear classification heads (one for polarity, one for category). The model is trained with cross-entropy loss on both heads simultaneously.
-
-All classifiers use the same hyperparameters: learning rate $2 \times 10^{-5}$, weight decay 0.01, warmup ratio 0.06, batch size 16, gradient clipping at 1.0, bf16 mixed precision, and up to 8 epochs with early stopping (patience 3 on validation F1). A 10\% validation split is held out from the training data.
-
-\section{Generative Model (Romanian)}
-
-FLAN-T5-base is fine-tuned on the Romanian training set with natural-language output templates. The setup mirrors our English experiments: learning rate $3 \times 10^{-4}$, cosine schedule, 12 epochs (fewer than English due to the smaller dataset), effective batch size 32. The model generates Romanian-language output following a fixed template structure, which is then parsed back into polarity-category pairs.
-
-
-
 \chapter{Experimental Results}\label{ch:results}
+
+This chapter presents results from both evaluation paths: LLMs on the English SemEval ASTE benchmark 
+(Section~\ref{sec:llm-english}), LLMs and fine-tuned models on Romanian ABSA (Section~\ref{sec:llm-romanian}), 
+followed by a discussion of monolingual versus multilingual model performance (Section~\ref{sec:mono-vs-multi}) 
+and the implications of annotation quality for interpreting these results (Section~\ref{sec:annotation}).
 
 \section{LLMs on English ASTE}\label{sec:llm-english}
 
-Table~\ref{tab:llm-semeval} presents LLM results on the SemEval ASTE benchmark alongside our fine-tuned baselines from the previous report.
-
 \begin{table}[H]
 \centering
-\caption{Cross-method comparison on SemEval ASTE (triplet micro-F1). LLMs use per-dataset demonstrations for 6-shot.}
+\caption{Cross-method comparison on SemEval ASTE (triplet micro-F1). LLMs use per-dataset examples for 6-shot.}
 \label{tab:llm-semeval}
 \small
 \begin{tabular}{@{}lrcccc@{}}
@@ -371,18 +270,27 @@ Command-R 6-shot & 35B & 0.576 & 0.499 & 0.568 & 0.373 \\
 \midrule
 \multicolumn{6}{l}{\textit{Fine-tuned models}} \\
 \midrule
-RoBERTa span (ours) & 125M & 0.544 & 0.461 & 0.560 & 0.379 \\
+RoBERTa span & 125M & 0.544 & 0.461 & 0.560 & 0.379 \\
 T5 structured & 250M & 0.693 & 0.575 & 0.640 & 0.439 \\
 T5 NL baseline & 250M & \textbf{0.722} & \textbf{0.602} & \textbf{0.680} & \textbf{0.525} \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-The fine-tuned T5 with NL output (250M) outperforms all LLMs on every test set, despite being 100$\times$ smaller than the largest model tested. The gap is particularly large on OOD data: 0.525 vs 0.410 for the best LLM (Gemma2 27B 6-shot) on Laptop14, a difference of 11.5 F1 points.
+The fine-tuned T5 models produced the best overall results, on the SemEval data. Out of the two output formats
+evaluated, the natural language format leads with an average of +0.32 ID and a much more noticeable advantage of
+approximately 0.11 OOD.
 
-Among the LLMs, Gemma2 27B with 6-shot demonstrations performs best across all datasets. The 6-shot setting provides substantial improvements over 0-shot (roughly +15--20 F1 points), indicating that these models benefit from seeing the expected output format and task structure. Qwen2.5 32B is competitive on Rest14 in 0-shot (0.535) but gains less from demonstrations than Gemma2. Command-R starts weakest in 0-shot and recovers substantially with demonstrations but still trails both alternatives.
+Out of the three LLMs, Gemma2 with 6-shot performs best across all datasets. The advantage provided by the
+few-shot setting substantial, especially for Gemma2 and Command-R, that benefit from an average increase in F1
+score of 0.174 and 0. respectively. Interestingly, although in the Laptop14 few-shot evaluation, the 6 examples presented
+to the models were picked from the Rest14 dataset, to simulate OOD testing, the drop in performance between
+few-shot and 0-shot did not increase compared to in-domain, suggesting that the LLMs were not particularly affected
+by the vocabulary shift.
 
-Interestingly, our naive RoBERTa span baseline (125M, fine-tuned) performs comparably to the LLMs in 6-shot on Laptop14 (0.379 vs 0.370--0.410). The fine-tuned T5 structured baseline (250M) outperforms all LLMs even without the NL format advantage. This suggests that for structured extraction tasks, task-specific fine-tuning remains more effective than in-context learning at the 27--35B parameter scale.
+Our naive fine-tuned RoBERTa baseline performs comparably to the
+LLMs in 6-shot on Laptop14, falling behind with only 0.031 from Gemma2's score of 0.410. In ID setting, we observe a larger performance
+gap, with results almost identical to 0-shot Qwen2.5.
 
 \begin{figure}[H]
 \centering
@@ -422,11 +330,22 @@ FLAN-T5-base (NL) & 250M & 0.764 & 0.882 & 0.853 \\
 \end{tabular}
 \end{table}
 
-Polarity classification is easy for all methods (0.85--0.89 F1). The bottleneck is category prediction, where LLMs score 0.61--0.83 while fine-tuned models achieve 0.85--0.86. This makes sense: the category taxonomy (11 classes) is specific to this dataset and not something LLMs would have encountered during pre-training. The 6-shot demonstrations help LLMs learn the taxonomy (Command-R jumps from 0.61 to 0.82 in category F1 with examples), but they still fall short of fine-tuned models that have seen the full training set.
 
-XLM-R-base (278M, multilingual) achieves the best pair F1 (0.795), followed closely by the two monolingual Romanian models: bert-base-romanian-cased (0.793) and RoBERT-base (0.792). FLAN-T5-base (0.764) trails slightly. All fine-tuned models outperform all LLMs on pair F1.
+XLM-R-base (278M, multilingual) achieves the overall best pair F1 of 0.795, followed closely by the two monolingual 
+Romanian models: bert-base-romanian-cased at 0.793 and RoBERT-base at 0.792, while FLAN-T5-base falls behind slightly. 
+All fine-tuned models outperform all LLMs on pair F1 by an average of roughly 0.1.
 
-Gemma2 27B stands out in 0-shot: it achieves 0.745 pair F1 without any task-specific data, nearly matching the fine-tuned FLAN-T5. This suggests that Gemma2's multilingual pre-training included enough Romanian text to perform sentiment analysis competently. However, it still falls short on category prediction (0.804 vs 0.858--0.862 for fine-tuned models).
+Polarity classification alone proved to be a relatively easy for all methods, with only 0-shot Command-R scoring under 0.85. 
+The bottleneck is category prediction, where LLMs score 0.61--0.83 while fine-tuned models achieve 0.85--0.86. We believe this is due to 
+the taxonomy (11 classes) being specific to this dataset and not something LLMs would have encountered during 
+pre-training. The 6-shot examples help LLMs learn the taxonomy, enabling a jump of roughly 0.2 in Category F1 for Command-R, but they still fall short of fine-tuned models that have seen the full training 
+set.
+
+Gemma2 stands out the most: in 0-shot it achieves 0.745 pair F1 without any task-specific data, nearly matching 
+the fine-tuned FLAN-T5. Interestingly, Gemma2 is by far the most English-centric of the three, 
+it's training data being primarily English~\cite{team2024gemma}. By contrast, Qwen2.5 is reported to have been
+trained on more than 29 languages, including Romanian~\cite{hui2024qwen2} and Command-R on 10 major languages, although Romanian was
+not included~\cite{cohere2024commandr}.
 
 \begin{figure}[H]
 \centering
@@ -442,62 +361,80 @@ Gemma2 27B stands out in 0-shot: it achieves 0.745 pair F1 without any task-spec
 \label{fig:r4-0vs6}
 \end{figure}
 
-
 \section{Discussion: Monolingual vs Multilingual Models}\label{sec:mono-vs-multi}
 
-The Romanian experiments provide a direct comparison along the language specialisation axis:
+The Romanian results allow a comparison across the language specialisation spectrum. 
+RoBERT-base (114M, Romanian-only) and bert-base-romanian-cased (110M, Romanian-only) achieve 0.792 and 0.793 
+pair F1 respectively, XLM-R-base (278M, 100 languages) reaches 0.795, FLAN-T5-base (250M, English 
+instruction-tuned) obtains 0.764, and the LLMs range from 0.740 (Qwen2.5 32B, 6-shot) to 0.758 (Gemma2 
+27B, 6-shot). The monolingual Romanian models, despite being 2.5$\times$ smaller than XLM-R, perform within 
+0.3 F1 points of it.
 
-\begin{itemize}
-    \item RoBERT-base (114M, Romanian-only): 0.792 pair F1
-    \item bert-base-romanian-cased (110M, Romanian-only): 0.793 pair F1
-    \item XLM-R-base (278M, 100-language): 0.795 pair F1
-    \item FLAN-T5-base (250M, English instruction-tuned): 0.764 pair F1
-\end{itemize}
+Masala et al.~\cite{masala2020robert} and Dumitrescu et al.~\cite{dumitrescu2020birth} observed the 
+same pattern when they introduced their respective Romanian models, finding that on POS tagging and NER, 
+monolingual pre-training on dedicated Romanian corpora matched or approached larger multilingual alternatives. 
+Similar findings have been reported for other languages. Velankar et al.~\cite{velankar2022mono} showed that 
+monolingual Marathi BERT outperformed XLM-RoBERTa on five downstream tasks despite being substantially 
+smaller, and Hasan et al.~\cite{tanvir2023bangla} found that monolingual transformers exceeded multilingual 
+models on Bangla sentiment analysis even in few-shot scenarios. Our results on Romanian data confirm what
+the studies suggest, that a dedicated monolingual model is likely to match or exceed a larger multilingual one on downstream tasks in that 
+language, provided sufficient monolingual pre-training data exists.
 
-The monolingual Romanian models (110--114M) perform within 0.3 F1 points of XLM-R-base (278M) despite being 2.5$\times$ smaller. This is consistent with what Masala et al.~\cite{masala2020robert} and Dumitrescu et al.~\cite{dumitrescu2020birth} reported for POS tagging and NER: monolingual pre-training on dedicated Romanian corpora produces models that match or approach larger multilingual models on downstream tasks in that language.
+Conneau et al.~\cite{conneau2020unsupervised} acknowledged this trade-off when introducing XLM-R, and 
+subsequent work has termed it the ``curse of multilinguality''~\cite{chang2023multilinguality, 
+pfeiffer2024breaking}. As a fixed-capacity model covers more languages, per-language performance decreases 
+because the parameters must simultaneously encode the structure of all languages. 
+Bérard et al.~\cite{berard2026capacity} confirmed this empirically, showing that multilingual language models 
+consistently underperform monolingual counterparts due to capacity constraints. XLM-R-base distributes 
+its 278M parameters across 100 languages, whereas RoBERT-base dedicates all 114M to Romanian, having been 
+trained on 12GB of exclusively Romanian text. Per-parameter efficiency for Romanian is therefore much higher 
+in the monolingual model. That XLM-R still edges ahead in our results (0.795 vs 0.792--0.793) may reflect 
+cross-lingual transfer, as XLM-R has encountered sentiment-related patterns across many languages during 
+pre-training, and some of these transfer to Romanian even without explicit supervision.
 
-This finding is not specific to Romanian. Velankar et al.~\cite{velankar2022mono} demonstrated the same pattern for Marathi: monolingual Marathi BERT models outperformed XLM-RoBERTa on five downstream tasks including text classification, despite the multilingual model being substantially larger. Hasan et al.~\cite{tanvir2023bangla} reported consistent findings for Bangla sentiment analysis, where monolingual transformer models outperformed multilingual alternatives even in few-shot scenarios. The pattern appears to be general: for a given downstream task in a specific language, a dedicated monolingual model matches or exceeds a larger multilingual model when sufficient monolingual pre-training data is available.
+From a practical standpoint, the monolingual models offer the same performance as XLM-R at lower computational 
+cost, being faster to fine-tune and requiring less memory at inference, which matters for deployment when 
+target-language fine-tuning data is available and the additional capacity of a multilingual model provides 
+no benefit.
 
-The explanation lies in what Conneau et al.~\cite{conneau2020unsupervised} acknowledged when introducing XLM-R and what subsequent work has termed the ``curse of multilinguality''~\cite{chang2023multilinguality, pfeiffer2024breaking}: as a fixed-capacity model covers more languages, per-language performance decreases because the model's parameters must simultaneously represent the structure of all languages. Bérard et al.~\cite{berard2026capacity} confirmed this empirically in 2026, showing that multilingual language models consistently underperform monolingual counterparts due to capacity constraints. XLM-R-base (278M parameters) distributes its capacity across 100 languages, meaning Romanian gets a fraction of the total representational budget. RoBERT-base (114M parameters) dedicates all its capacity to Romanian, having been trained on 12GB of exclusively Romanian text. The result is that per-parameter efficiency for Romanian is much higher in the monolingual model.
+FLAN-T5-base trails by 3 points despite being a 250M model, which is was expected given that it is an 
+English-centric generative model performing a classification task in a language it was not primarily trained 
+on. The encoder-based classifiers have a natural architectural advantage here, as they produce a single 
+representation that feeds directly into classification heads, while the generative model must produce the 
+correct output token by token. Although, the fact that FLAN-T5 
+still reaches 0.764 and outperforms all LLMs shows that even modest fine-tuning on target-language data 
+compensates for a mismatch between the model's pre-training language and the task language.
 
-In our results, XLM-R does still slightly outperform the monolingual models (0.795 vs 0.792--0.793). This small advantage may come from cross-lingual transfer: XLM-R has seen sentiment-related patterns across many languages during pre-training, and some of these transfer to Romanian. The difference is small enough (0.2--0.3 F1 points) that it would likely disappear with multi-seed evaluation or reverse with slightly different hyperparameters. For practical purposes, the monolingual and multilingual models are equivalent on this task.
-
-The practical implication is that for Romanian ABSA classification, a 110M monolingual model provides essentially the same performance as a 278M multilingual model at lower computational cost. This matters for deployment: the monolingual model is faster to fine-tune, requires less memory at inference, and achieves the same result. The additional capacity of XLM-R provides no meaningful benefit when target-language fine-tuning data is available.
-
-FLAN-T5-base trails by 3 points despite being a 250M model. This is expected: it is an English-centric generative model being asked to perform a classification task in a language it was not primarily trained on. That it still achieves 0.764, outperforming all LLMs, demonstrates that even modest fine-tuning on target-language data is effective. But for this particular task (classification with a fixed taxonomy), the encoder-based classifiers with language-appropriate pre-training have a natural architectural advantage: they produce a single representation that feeds directly into classification heads, while the generative model must produce the correct output token by token, which is a harder problem for a model generating in an unfamiliar language.
+Interestingly, the relationship between language coverage and performance appears to reverse in the case
+of our LLM experiments on Romanian data. 
+Gemma2, the most English-centric of the three (trained on 13 trillion tokens of primarily English web 
+data and officially described as ``available in English''~\cite{team2024gemma}), outperforms both Qwen2.5 
+(29+ languages including Romanian~\cite{hui2024qwen2}) and Command-R (10 languages~\cite{cohere2024commandr}) 
+on Romanian text. Kapo\v{c}i\={u}t\.{e}-Dzikien\.{e} et al.~\cite{kapociute2025baltic} observed a similar 
+pattern when evaluating open-weight LLMs without fine-tuning on Baltic languages, where Gemma~2 performed 
+close to top commercial models while explicitly multilingual LLMs struggled. In our case, the explanation 
+likely lies in the task structure itself. The system prompt, category labels, and polarity names are all 
+in English; only the review text is in Romanian. Recent work has shown that English-dominant LLMs convert 
+non-English input into English-like internal representations in their early layers and perform reasoning 
+in an English-aligned concept space before routing back to the target language in the final 
+layers~\cite{wendler2024llamas, zhao2024multilingualism, schut2025multilingual}. Since our task requires 
+no non-English output, this final routing step is unnecessary, and a model that concentrates all its 
+capacity on English might have stronger representations precisely where the task demands them. 
+The multilingual training of Qwen2.5 and Command-R seems to provide no advantage here because both the 
+reasoning and the output are conducted in English regardless of the input language.
 
 
 \section{Discussion: Annotation Quality and Performance Ceiling}\label{sec:annotation}
 
-Evaluating models on benchmark data assumes that the gold annotations represent ground truth. In practice, annotation is a subjective and error-prone process, and the degree of annotator agreement sets an upper bound on achievable performance. Miñarro-Giménez et al.~\cite{minarro2019quantitative} demonstrated this quantitatively for clinical text annotation: even trained annotators show non-trivial disagreement on structured labelling tasks, with error rates and inconsistencies that cannot be eliminated through guidelines alone. The implication is that any model evaluated against a single set of gold annotations is being measured against an imperfect standard.
+Hu and Liu~\cite{hu2004mining}, in their foundational work on opinion mining, observed that identifying what constitutes an opinion versus a factual statement is inherently subjective and context-dependent. This subjectivity propagates to annotation: Miñarro-Giménez et al.~\cite{minarro2018qualitative} found that even trained annotators show non-trivial disagreement on structured clinical text labelling tasks, with inconsistencies that cannot be eliminated through guidelines alone. The degree of annotator agreement therefore sets an upper bound on achievable model performance when evaluating against a single gold standard.
 
-This applies directly to ABSA. The SemEval datasets~\cite{pontiki2014semeval} were annotated by human annotators following task-specific guidelines, but the guidelines leave room for interpretation in cases involving implicit sentiment, pragmatic inference, and debatable polarity. In our error analysis on Laptop14 (detailed in our previous report), we identified several recurring patterns where the model's prediction is at least as defensible as the gold label:
+The SemEval ABSA datasets~\cite{pontiki2014semeval} are no exception. The annotation guidelines leave room for interpretation in cases involving implicit sentiment, pragmatic inference, and debatable polarity. Our error analysis on Laptop14 (detailed in the previous report) surfaced several recurring patterns where the model prediction is arguably as defensible as the gold label: ``I needed a laptop with big storage'' is annotated [storage, big, neutral] because the desire context is treated as non-opinionated, but the model predicts positive since ``big'' carries positive valence in most training examples; ``There is no HDMI receptacle'' receives a neutral label under a strict reading of the guidelines (no explicit opinion word), but the model predicts negative, which is how most readers would interpret a complaint about a missing feature; hypotheticals like ``a spice rub might have overwhelmed'' are annotated as negative opinions even though the reviewer is only presenting a hypothetical situation. Based on this analysis, we estimate that 5--10\% of Laptop14 annotations involve genuinely ambiguous polarity.
 
-\begin{itemize}
-    \item Desire and requirement contexts: ``I needed a laptop with big storage'' is annotated as [storage, big, neutral], treating the desire context as non-opinionated. The model predicts positive because ``big'' is a positive-valence adjective in the vast majority of its training examples. Neither interpretation is clearly wrong; it depends on whether the annotation scheme prioritises surface lexical polarity or pragmatic speech-act intent.
+These difficult cases require pragmatic reasoning about speaker intent, speech acts, or counterfactual constructions. Li et al.~\cite{li2021implicit} showed that neural language models do develop implicit representations of entity states from text alone, but noted that these representations are incomplete. More recently, Sun et al.~\cite{sun2025implicit} argued that text embedding research remains narrowly focused on surface-level semantics rather than the implicit meaning needed for pragmatic inference. Our models, trained on surface-level aspect-opinion-polarity annotations, predictably struggle with cases where the correct label depends on understanding what the reviewer meant rather than what they literally said.
 
-    \item Missing-feature complaints: ``There is no HDMI receptacle'' is annotated as neutral. The model predicts negative, which aligns with how most readers would interpret a review statement about a missing feature. The neutral label follows from a strict reading of the guidelines (no explicit opinion word), but misses the implicit dissatisfaction.
+The Romanian dataset introduces additional concerns. The training data was annotated with GPT-4 assistance (polarity and category labels generated by GPT-4, then reviewed by humans), and Aldeen et al.~\cite{aldeen2023chatgpt} found that while LLM-generated annotations achieve competitive quality for straightforward sentiment classification, human annotators consistently outperform on tasks requiring nuanced contextual judgement. Category assignment is probably the most annotation-sensitive component in our setup: the boundary between ``experience'' and ``performance'', or ``design'' and ``durability'', requires domain familiarity that GPT-4 may resolve differently from a human annotator who knows Romanian consumer electronics vocabulary. There is also an inherent circularity when we train models on LLM-annotated data and then evaluate LLMs on test data from the same annotation pipeline. We mitigate this by using an independently annotated test set, but biases in the training set still propagate to all fine-tuned models. Gemma2 27B achieves approximately 0.75 pair F1 on Romanian in 0-shot, and GPT-4 is likely somewhat better but not dramatically so on this specific task, so the training data quality ceiling is bounded by what an imperfect annotator can produce. The proportion of ambiguous annotations in the Romanian data may be higher than in SemEval given the automated annotation pipeline, though we have not quantified it precisely.
 
-    \item Hypothetical and counterfactual constructions: ``a spice rub might have overwhelmed'' is annotated as a negative opinion about spice rub, despite being a hypothetical dismissal (the reviewer is saying the chef avoided something bad). These require pragmatic reasoning that goes beyond what surface-level patterns can capture.
-\end{itemize}
-
-These cases connect to a broader issue in NLP: the distinction between surface semantics and implicit meaning. Li et al.~\cite{li2021implicit} showed that neural language models develop implicit representations of entity state and situation dynamics from text alone, but these representations are imperfect and incomplete. Sun et al.~\cite{sun2025implicit} argue more recently that text embedding research should move beyond capturing surface meaning toward modelling implicit semantics, precisely the kind of pragmatic inference needed to correctly handle the cases above. Our models, trained on surface-level aspect-opinion-polarity annotations, predictably struggle with cases where the correct label requires understanding speech acts, pragmatic implicature, or counterfactual reasoning.
-
-The problem is compounded for the Romanian dataset. The eMAG training data was annotated with GPT-4 assistance: reviews were processed by GPT-4 to identify aspects and assign polarity and category labels, followed by human review. Aldeen et al.~\cite{aldeen2023chatgpt} found that LLM-generated annotations achieve competitive quality for sentiment classification tasks, but human annotators consistently outperform on tasks requiring nuanced contextual judgement. For our Romanian data specifically, this means:
-
-\begin{itemize}
-    \item Category assignment is the most annotation-sensitive component. The boundary between categories like ``experience'' and ``performance'', or ``design'' and ``durability'', requires domain expertise and subjective judgement that GPT-4 may resolve differently from a human annotator familiar with Romanian consumer electronics vocabulary.
-
-    \item There is an inherent circularity concern: models are trained on LLM-annotated data and then compared against LLMs on test data from the same annotation pipeline. We mitigate this by using an independently annotated test set, but biases in the training set still propagate to all fine-tuned models.
-
-    \item The quality ceiling is bounded by the annotation model's ability to perform fine-grained Romanian ABSA. Our evaluation shows that Gemma2 27B achieves approximately 0.75 pair F1 on this task in 0-shot, and GPT-4 (used for annotation) is likely somewhat better but not dramatically so on this specific Romanian task. Training data produced by an imperfect annotator, whether human or LLM, may contain systematic errors that limit all models trained on it.
-\end{itemize}
-
-The practical consequence is that reported F1 scores on both datasets should be interpreted with caution. The gap between model performance and ``perfect'' F1 is not entirely due to model limitations; a portion reflects genuine annotation ambiguity. Hu and Liu~\cite{hu2004mining}, in their early work on opinion mining, acknowledged that the task of identifying what constitutes an opinion and what is merely a factual statement is inherently subjective and context-dependent. Two decades later, this remains the fundamental challenge.
-
-For the English SemEval data, we estimate that 5--10\% of Laptop14 annotations involve genuinely ambiguous polarity. For the Romanian data, the proportion may be higher due to the automated annotation pipeline, though we have not quantified it precisely. Importantly, this annotation noise affects all methods equally: relative comparisons between models remain valid even if absolute F1 scores overstate the difficulty of the underlying task.
-
-On the English side, the LLM evaluation on SemEval is free from annotation circularity since the test data was annotated by humans independently. The LLMs' lower performance relative to fine-tuned models on this data reflects genuine capability differences in structured extraction rather than annotation artefacts.
+For practical interpretation, these observations mean that reported F1 scores on both datasets should be read with appropriate caution. A portion of the gap between model performance and perfect F1 reflects genuine annotation ambiguity rather than model limitations. Importantly, this noise affects all methods equally: relative comparisons between models remain valid even if absolute scores overstate the underlying task difficulty. On the English side, the LLM evaluation on SemEval is free from annotation circularity since the test data was annotated by humans independently, so the LLMs' lower performance relative to fine-tuned models reflects genuine capability differences in structured extraction rather than annotation artefacts.
 
 
 
@@ -516,7 +453,6 @@ On Romanian ABSA, fine-tuned models (XLM-R, RoBERT, bert-ro, FLAN-T5) outperform
 \begin{itemize}
     \item LLM quantisation: all LLMs are 4-bit quantised, which reduces performance relative to full-precision inference. Results represent a lower bound on LLM capability.
     \item Single inference run: LLM evaluations use a single run (no temperature variation or multiple sampling). Variance is not characterised.
-    \item Romanian dataset size: the eMAG training set is relatively small, which may advantage models that converge quickly (BERT-based classifiers) over generative models that typically need more data.
     \item GPT-4 annotation: the training data annotation quality is bounded by GPT-4's capabilities on Romanian text, which may introduce systematic biases.
 \end{itemize}
 
@@ -532,39 +468,66 @@ On Romanian ABSA, fine-tuned models (XLM-R, RoBERT, bert-ro, FLAN-T5) outperform
 
 \chapter{Annex}\label{ch:annex}
 
-\section{LLM Prompt Templates}
+\section{LLM Prompt Templates}\label{annex:few-shot-prompts}
 
 \textbf{English ASTE (6-shot format):}
 \begin{lstlisting}
-Extract all (aspect, opinion, polarity) triplets from the sentence.
-Polarity is one of: positive, negative, neutral.
-Output format: [aspect, opinion, polarity]
+[system]
+You are an aspect-based sentiment analysis system. Given a review sentence, extract all (aspect, opinion, polarity) triplets.
 
-Example 1:
-Sentence: Great food but the service was dreadful !
-Output: [food, Great, positive] [service, dreadful, negative]
+Output format: one triplet per line as [aspect, opinion, polarity]
+- aspect: the entity or feature being discussed (exact span from text)
+- opinion: the opinion expression about the aspect (exact span from text)
+- polarity: positive, negative, or neutral
 
-... (5 more examples) ...
+If there are no triplets, output: none
+Do not explain your reasoning. Only output the triplets.
 
-Sentence: {test_sentence}
-Output:
+[user]
+Input: The price is reasonable although the service is poor .
+
+[assistant]
+[price, reasonable, positive]
+[service, poor, negative]
+
+... (Another 5 examples) ...
+
+[user]
+Input: The design and atmosphere is just as good .
 \end{lstlisting}
 
 \textbf{Romanian ABSA (6-shot format):}
 \begin{lstlisting}
-Extrageti perechi (polaritate, categorie) din recenzia data.
-Polaritatea: positive, negative, neutral.
-Categorii: experience, durability, performance, battery,
-  price_quality, design, camera, audio, software, brand, service.
+[system]
+You are a sentiment analysis system for phone reviews written in Romanian. Given a review, extract all (category, polarity) pairs that are discussed.
 
-Exemplu 1:
-Recenzie: Telefonul este rapid si bateria tine bine.
-Output: [positive, performance] [positive, battery]
+Output format: one pair per line as [category, polarity]
+- category: Must be one of: experience, durability, performance, battery, price_quality, design, camera, audio, software, brand, service
+- polarity: Must be one of: positive, negative, neutral
 
-... (5 more examples) ...
+Category descriptions (for reference):
+  experience = overall satisfaction, durability = build quality/longevity,
+  performance = speed/responsiveness, battery = battery life/charging,
+  price_quality = value for money, design = appearance/form factor,
+  camera = photo/video quality, audio = speakers/microphone,
+  software = OS/apps/updates, brand = manufacturer reputation,
+  service = delivery/customer support/warranty
 
-Recenzie: {test_sentence}
-Output:
+If there are no pairs, output: none
+Do not explain your reasoning. Only output the pairs.
+
+[user]
+Input: Nu merită. Se încălzește tare.
+
+[assistant]
+[experience, negative]
+[performance, negative]
+[price_quality, negative]
+
+... (Another 5 examples) ...
+
+[user]
+Input: Super telefon pentru cei cunoscători!
 \end{lstlisting}
 
 \section{Per-Model LLM Results (English)}

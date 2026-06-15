@@ -106,7 +106,8 @@ COMPUTER SCIENCE AND ENGINEERING DEPARTMENT\\}
 \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}p{6cm}r}
 &{\large\textbf{#5}}\vspace{10pt}\\
 &{\large \AdvisorA}\\
-&{\large \AdvisorB}
+&{\large \AdvisorB}\\
+&{\large \AdvisorC}
 \end{tabular*}
 \vspace{20pt}
 \begin{center}
@@ -143,16 +144,17 @@ COMPUTER SCIENCE AND ENGINEERING DEPARTMENT\\}
 \newcommand{\ProjectSubtitleRO}{Programul de master IISC}
 \newcommand{\ProjectTitleEN}{A Systematic Empirical Study of Training Strategies for Out-of-Domain Generalisation in Generative Aspect-Based Sentiment Analysis}
 \newcommand{\ProjectSubtitleEN}{Master Program IISC}
-\newcommand{\Name}{[TO DO]}
-\newcommand{\AdvisorA}{[TO DO]}
-\newcommand{\AdvisorB}{}
-\newcommand{\Year}{2025}
+\newcommand{\Name}{Victor-Iulian Istrătescu}
+\newcommand{\AdvisorA}{Assoc.Prof.PhD.Habil.Engr. Elena-Simona Apostol}
+\newcommand{\AdvisorB}{Assoc.Prof.PhD.Habil.Engr. Cirpian-Octavia Truică}
+\newcommand{\AdvisorC}{PhD.Stud.Engr. Ana-Maria Luisa Mocanu}
+\newcommand{\Year}{2026}
 
 \title{Raport de cercetare}
 \author{\Name}
 \date{\Year}
 
-\newcommand{\AbstractEN}{This report presents an empirical study of training strategies for out-of-domain generalisation in generative Aspect-Based Sentiment Analysis. We formulate Aspect Sentiment Triplet Extraction as a sequence-to-sequence problem using FLAN-T5-base and systematically evaluate the effect of output format, syntactic input enrichment, multi-ordering training, mixed-objective training, curriculum learning, aspect masking, cross-domain data mixing, and decoding strategies on cross-domain performance. Experiments are conducted on the SemEval ASTE benchmark (restaurant to laptop transfer) and the DMASTE multi-domain benchmark, with multi-seed statistical validation. Our main finding is that natural-language output templates provide the largest improvement for OOD generalisation (+8.6 F1 over structured output, 5 seeds, non-overlapping confidence intervals), while most other interventions do not reliably help. On the DMASTE benchmark, our model matches the best previously reported cross-domain result without any domain adaptation techniques.}
+\newcommand{\AbstractEN}{This report presents an empirical study of training strategies for out-of-domain generalisation in generative Aspect-Based Sentiment Analysis. We decompose Aspect Sentiment Triplet Extraction into three base objectives (aspect extraction, opinion extraction, polarity inference) and formulate the task as conditional text generation using FLAN-T5-base, where the model receives a task prefix specifying which objectives to extract and produces the results in either a structured or natural-language format. We evaluate the effect of output format, syntactic input enrichment, multi-ordering training, mixed-objective training, curriculum learning, aspect masking, cross-domain data mixing, and decoding strategies on cross-domain performance, testing on the SemEval ASTE benchmark (restaurant to laptop transfer) and the DMASTE multi-domain benchmark with multi-seed statistical validation. Our main finding is that natural-language output templates provide the largest improvement for OOD generalisation, with +8.6 F1 over structured output across 5 seeds and non-overlapping confidence intervals, while the other strategies we tested do not produce statistically significant improvements beyond the NL baseline. On the DMASTE benchmark, our model matches the best previously reported cross-domain result without any domain adaptation techniques.}
 
 \begin{document}
 
@@ -267,7 +269,7 @@ Finally, Zhang et al.~\cite{zhang2019aspect} used dependency parse trees with gr
 
 \chapter{Methodology}\label{ch:methodology}
 
-This chapter presents the various methods we experimented with. The performance of each is discussed in the Results~\ref{ch:results} Chapter.
+This chapter presents the various methods we experimented with. The performance of each is discussed in Chapter~\ref{ch:results}. Experimental Results.
 
 \section{Task Formulation}\label{sec:task-formulation}
 
@@ -424,7 +426,7 @@ In mixed-objective training, each training example is randomly assigned to a sub
 
 The hypothesis is that exposure to simpler extraction variants teaches the model to recognise individual elements (aspects, opinions) in isolation, which might produce more robust representations for OOD transfer.
 
-For comparison, we also replicate STAR~\cite{xie2025star}, which takes the opposite approach: every training example is duplicated into all 7 configurations simultaneously, multiplying the dataset size by 7$\times$. Both methods expose the model to the same set of task configurations, but differ in whether they replace or duplicate.
+For comparison, we also replicate STAR~\cite{xie2025star}, which takes the opposite approach: every training example is duplicated into all 7 configurations simultaneously, multiplying the dataset size by 7. Both methods expose the model to the same set of task configurations, but differ in whether they replace or duplicate.
 
 \subsection{Curriculum Learning}
 
@@ -483,6 +485,7 @@ All primary comparisons use 5 random seeds (42, 123, 456, 789, 1337), reporting 
 
 
 \chapter{Implementation}\label{ch:implementation}
+\textcolor{red}{[TO DO] - introducere capitol}
 
 \section{Datasets}\label{sec:datasets}
 
@@ -709,14 +712,6 @@ NL + mixed-objective & \textbf{0.730$\pm$0.005} & 0.593$\pm$0.010 & \textbf{0.68
 
 The NL format provides +8.6 F1 points on OOD data over structured output (0.525 vs 0.439), with non-overlapping confidence intervals. The improvement comes entirely from the format switch: +2.9 F1 on Rest14, +2.7 on Rest15, +4.0 on Rest16, and +8.6 on Laptop14, with the gap widening as domain distance increases. Once the model uses NL output, adding syntax enrichment or mixed-objective training on top does not produce further gains: all NL variants land between 0.506 and 0.525 on Laptop14, within overlapping confidence intervals of each other. We believe the format advantage comes from alignment with FLAN-T5's pre-training distribution: on OOD data where the model has less task-specific confidence, generating fluent template sentences is something it can still fall back on, while producing correctly-structured bracket sequences requires a precision that degrades with domain shift.
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.85\textwidth]{figures/r3_output_format_comparison.pdf}
-\caption{Output format comparison: structured vs natural-language F1 across all test sets (5-seed mean).}
-\label{fig:r3-format}
-\end{figure}
-
-
 \section{Syntax Enrichment}\label{sec:syntax-results}
 
 % Table~\ref{tab:format-5seed} already shows that compact dependency and compact POS annotations do not 
@@ -938,6 +933,9 @@ In the multi-source setting, our NL models (45.32--45.45 avg) match Span-ASTE (4
 The NL format advantage over structured output (+2.3 avg in multi-source) is smaller than on SemEval (+8.6) but consistent. Syntax enrichment does not help on DMASTE (slightly negative), consistent with SemEval findings.
 
 The RoBERTa span baseline generalises very poorly to DMASTE (14--22 avg), confirming that our naive discriminative implementation lacks cross-domain transfer capability. Published discriminative methods like Span-ASTE, which use specialised architectures, perform considerably better (43.50--45.42 avg).
+
+A visual comparison of the triplet F1 score achieved by the best three models presented in 
+Table~\ref{tab:dmaste} plus the structured output baseline is presented in Figure~\ref{fig:r3-dmaste}.
 
 \begin{figure}[H]
 \centering
